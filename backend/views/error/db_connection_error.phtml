@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Regix</title>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Database error</h1>
+			<?php
+			if($this->CONF['debug_db']) {
+				echo $error_message . ": " . $this->mysqli->connect_error . " (" . $this->mysqli->connect_errno . ") ";
+			}
+			?>
+		</div>
+	</body>
+</html>
+
