@@ -2,10 +2,12 @@
 
 //readfile("../frontend/html/index.html");
 
-error_reporting(E_ALL | E_STRICT);
-ini_set('display_errors', 1);
-
 $CONF = parse_ini_file("config/regix.ini");
+
+if ($CONF['debug_php']) {
+	error_reporting(E_ALL | E_STRICT);
+	ini_set('display_errors', 1);
+}
 
 switch ($CONF['db_adapter']) {
 	case "mysql":
