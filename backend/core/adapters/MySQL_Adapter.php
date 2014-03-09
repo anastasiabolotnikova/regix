@@ -49,6 +49,12 @@ class MySQL_Adapter implements DB_Adapter {
 		return $controller_name;
 	}
 	
+	/**
+	 * Prepares all statements needed by this adapter.
+	 * 
+	 * @todo Separate statements and prepare them only if they are actually
+	 * needed in the given session.
+	 */
 	private function prepare_statements() {
 		
 		// For get_controller
@@ -61,6 +67,17 @@ class MySQL_Adapter implements DB_Adapter {
 				limit 1;");
 	}
 	
+	/**
+	 * Stop script execution and show database error page.
+	 * 
+	 * @param string $error_message Informational message to be displayed.
+	 * Should not contain sensitive information.
+	 * 
+	 * @todo This method of stopping controller is ugly and dangerous. See
+	 * if we can gracefully tell a controller to stop execution. Suggestions:
+	 * * throw error when appropriate function is called;
+	 * * return predefined value.
+	 */
 	private function error($error_message) {
 		$error_message = "[MySQL_Adapter] " . $error_message;
 		include("views/error/db_connection_error.phtml");
