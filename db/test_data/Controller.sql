@@ -1,1 +1,3 @@
 INSERT INTO `test_user`.`Controller` (`name`, `description`, `enabled`, `uri_name`, `file_path`) VALUES ('MainPageController', 'Main page controller', TRUE, 'main', 'MainPageController.php');
+INSERT INTO `test_user`.`Controller` (`name`, `description`, `enabled`, `uri_name`, `file_path`) VALUES ('TestEnabledController', 'Test controller (enabled).', TRUE, 'test_en', 'TestEnabledController.php');
+INSERT INTO `test_user`.`Controller` (`name`, `description`, `enabled`, `uri_name`, `file_path`) VALUES ('TestDisabledController', 'Test controller (disabled).', FALSE, 'test_dis', 'TestDisabledController.php');
