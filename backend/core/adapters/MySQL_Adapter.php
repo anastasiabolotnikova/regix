@@ -4,20 +4,30 @@ include_once "core/adapters/DB_Adapter.php";
 
 class MySQL_Adapter implements DB_Adapter {
 	
-	public function __construct($CONF) {
-		$this->CONF = $CONF;
+	private $config;
+	private $mysqli;
+	
+	public function __construct($config) {
+		$this->config = $config;
 	}
 	
 	public function connect() {
+		try {
+			$this->mysqli = new mysqli(
+					$this->config->get_value('db_host'),
+					$this->config->get_value('db_user'),
+					$this->config->get_value('db_password'),
+					$this->config->get_value('db_name'),
+					$this->config->get_value('db_port'));
+		} catch (ConfigException $e) {
+			throw new DBConnectionException(
+					"Could not get connection configuration");
+		}
 		
-		$this->mysqli = new mysqli(
-				$this->CONF['db_host'],
-				$this->CONF['db_user'],
-				$this->CONF['db_password'],
-				$this->CONF['db_name'],
-				$this->CONF['db_port']);
 		
-		if ($this->mysqli->connect_errno) $this->error("Could not connect to database");
+		if ($this->mysqli->connect_errno) {
+			throw new DBConnectionException("Could not connect to database");
+		}
 		
 		$this->prepare_statements();
 	}
@@ -29,24 +39,28 @@ class MySQL_Adapter implements DB_Adapter {
 	
 	public function get_controller($controller_uri_name) {
 		if (!$this->stmt_select_controller) {
-			$this->error("get_controller: MySQL statement is not prepared");
+			throw new DBRequestException("MySQL statement is not prepared");
 		}
 		
-		if (!$this->stmt_select_controller->bind_param("s", $controller_uri_name)) {
-			$this->error("get_controller: could not bing parameters");
+		if (!$this->stmt_select_controller->bind_param("s",
+				$controller_uri_name)) {
+			throw new DBRequestException("Could not bing parameters");
 		}
 		
 		if (!$this->stmt_select_controller->execute()) {
-			$this->error("get_controller: could not execute statement");
+			throw new DBRequestException("Could not execute statement");
 		}
 		
-		if (!$this->stmt_select_controller->bind_result($controller_name)) {
-			$this->error("get_controller: could not bind result");
+		if (!$this->stmt_select_controller->bind_result($name, $file_path)) {
+			throw new DBRequestException("Could not bind result");
 		}
 		
 		$this->stmt_select_controller->fetch();
 		
-		return $controller_name;
+		return array(
+			'name' => $name,
+			'file_path' => $file_path,
+		);
 	}
 	
 	/**
@@ -60,27 +74,10 @@ class MySQL_Adapter implements DB_Adapter {
 		// For get_controller
 		
 		$this->stmt_select_controller = $this->mysqli->prepare(
-				"select `name`
+				"select `name`, `file_path`
 				from `Controller`
 				where `uri_name` = (?)
 				and `enabled` = true
 				limit 1;");
-	}
-	
-	/**
-	 * Stop script execution and show database error page.
-	 * 
-	 * @param string $error_message Informational message to be displayed.
-	 * Should not contain sensitive information.
-	 * 
-	 * @todo This method of stopping controller is ugly and dangerous. See
-	 * if we can gracefully tell a controller to stop execution. Suggestions:
-	 * * throw error when appropriate function is called;
-	 * * return predefined value.
-	 */
-	private function error($error_message) {
-		$error_message = "[MySQL_Adapter] " . $error_message;
-		include("views/error/db_connection_error.phtml");
-		exit();
 	}
 }

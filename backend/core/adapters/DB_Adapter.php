@@ -1,7 +1,19 @@
 <?php
 /**
- * This file contains generic database adapter interface (DB_Adapter).
+ * This file contains generic database adapter interface (DB_Adapter) and
+ * exceptions used by it.
  */
+
+/**
+ * Exception that should be thrown when it is impossible to connect to the DB.
+ */
+class DBConnectionException extends Exception {}
+
+
+/**
+ * Exception that should be thrown when it is impossible to execute a request.
+ */
+class DBRequestException extends Exception {}
 
 /**
  * Generic database interface that can be used by all components.
@@ -14,8 +26,6 @@
  * Note, that you must also add code for loading this adapter into
  * system bootstrap file (index.php). See MySQL_Adapter for reference
  * implementation.
- * 
- * @author Sergei Jakovlev
  *
  */
 interface DB_Adapter {
@@ -23,19 +33,21 @@ interface DB_Adapter {
 	/**
 	 * Initializes database adapter.
 	 * 
-	 * @param array $CONF Should contain at least following values:
-	 * * CONF['db_host'] - database server address;
-	 * * CONF['db_user'] - database user;
-	 * * CONF['db_password'] - password for database user;
-	 * * CONF['db_name'] - database (schema) name;
-	 * * CONF['db_port'] - port of the database server.
+	 * @param Config $config Should contain at least following values:
+	 * * db_host - database server address;
+	 * * db_user - database user;
+	 * * db_password - password for database user;
+	 * * db_name - database (schema) name;
+	 * * db_port - port of the database server.
 	 */
-	public function __construct($CONF);
+	public function __construct($config);
 	
 	/**
 	 * Creates a new connection to the database.
 	 * 
 	 * This method should be called *before* any of the others.
+	 * 
+	 * @throws DBConnectionException when connection to the database fails.
 	 * 
 	 * @note Should we merge this method with the constructor and avoid
 	 * problems related to forgetting to call it before others altogether?
@@ -57,12 +69,20 @@ interface DB_Adapter {
 	/**
 	 * Get actual name of the controller file if it is enabled.
 	 * 
+	 * Returns name and path to the implementation of the controller with
+	 * the given uri_name if such controller exists and is enabled in
+	 * the database.
+	 * 
 	 * @param string $controller_uri_name uri_name of the controller (see
 	 * database model for details)
 	 * 
-	 * @return string Name of the main file of the controller with the given
-	 * uri_name if such controller exists and is enabled in the database,
-	 * NULL otherwise.
+	 * @return array Should contain the following:
+	 * * name - controller class name, NULL if this controller does not exist
+	 * or is disabled;
+	 * * file_path - path to controller implementation, NULL if this controller
+	 * does not exist or is disabled.
+	 * 
+	 * @throws DBRequestException when request cannot be fulfilled.
 	 */
 	public function get_controller($controller_uri_name);
 }
