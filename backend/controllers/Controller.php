@@ -13,4 +13,9 @@
  * @author Sergei Jakovlev
  *
  */
-interface Controller {}
+interface Controller {
+	public function set_db($db);
+	public function set_session($session);
+	public function set_arguments($args);
+	public function run();
+}

@@ -6,6 +6,8 @@
 
 require_once 'core/exceptions/LoaderException.php';
 require_once 'core/Config.php';
+require_once 'core/Session.php';
+require_once 'core/User.php';
 
 /**
  * Simple factory with interface control.
@@ -94,6 +96,7 @@ function createView($component_name) {
 	return createClass($path, $class, 'View');
 }
 
+// Configuration
 $config = new Config();
 
 try {
@@ -104,6 +107,8 @@ try {
 } catch (ConfigException $e) {
 	// Assume production values.
 }
+
+// DB
 
 try {
 	switch ($config->get_value("db_adapter")) {
@@ -118,19 +123,33 @@ try {
 	exit("Connection error (BL" . __LINE__ . ").");
 }
 
-
 $db->connect();
+
+// UAC
+
+$session = new Session();
+if (!$user = $session->get('user')) {
+	try {
+		$user = new User($config->get_value('default_user_id'), $db);
+	} catch (ConfigException $e) {
+		exit("Connection error (BL" . __LINE__ . ").");
+	}
+	
+	$session->set('user', $user);
+}
+
+// Launch
 
 $parts = explode("/", $_GET['uri'], 2);
 $controller_uri_name = $parts[0];
-$controller_args = isset($parts[1]) ? $parts[1] : null;
+$controller_args = isset($parts[1]) ? explode("/", $parts[1]) : null;
 
 $controller_data = $db->get_controller($controller_uri_name);
 
 if (isset($controller_data['name'])) {
 	// Controller found in the DB.
 	try {
-		createController($controller_data['name'],
+		$controller = createController($controller_data['name'],
 		$controller_data['file_path']);
 	} catch (LoaderException $e) {
 		try {
@@ -142,7 +161,7 @@ if (isset($controller_data['name'])) {
 } else {
 try {
 	// Load default controller.
-	createController($config->get_value('default_controller_name'),
+	$controller = createController($config->get_value('default_controller_name'),
 		$config->get_value('default_controller_file_path'));
 	} catch (LoaderException $e) {
 		try {
@@ -152,5 +171,10 @@ try {
 		} catch (ConfigException $e) {}
 	}
 }
+
+$controller->set_db($db);
+$controller->set_session($session);
+$controller->set_arguments($controller_args);
+$controller->run();
 
 $db->close();

@@ -28,8 +28,6 @@ class MySQL_Adapter implements DB_Adapter {
 		if ($this->mysqli->connect_errno) {
 			throw new DBConnectionException("Could not connect to database");
 		}
-		
-		$this->prepare_statements();
 	}
 	
 	public function close() {
@@ -38,24 +36,33 @@ class MySQL_Adapter implements DB_Adapter {
 	}
 	
 	public function get_controller($controller_uri_name) {
-		if (!$this->stmt_select_controller) {
+		
+		$stmt_select_controller = $this->mysqli->prepare(
+				"select `name`, `file_path`
+				from `Controller`
+				where `uri_name` = (?)
+				and `enabled` = true
+				limit 1;");
+		
+		if (!$stmt_select_controller) {
 			throw new DBRequestException("MySQL statement is not prepared");
 		}
 		
-		if (!$this->stmt_select_controller->bind_param("s",
+		if (!$stmt_select_controller->bind_param("s",
 				$controller_uri_name)) {
-			throw new DBRequestException("Could not bing parameters");
+			throw new DBRequestException("Could not bind parameters");
 		}
 		
-		if (!$this->stmt_select_controller->execute()) {
+		if (!$stmt_select_controller->execute()) {
 			throw new DBRequestException("Could not execute statement");
 		}
 		
-		if (!$this->stmt_select_controller->bind_result($name, $file_path)) {
+		if (!$stmt_select_controller->bind_result($name, $file_path)) {
 			throw new DBRequestException("Could not bind result");
 		}
 		
-		$this->stmt_select_controller->fetch();
+		$stmt_select_controller->fetch();
+		$stmt_select_controller->close();
 		
 		return array(
 			'name' => $name,
@@ -63,21 +70,68 @@ class MySQL_Adapter implements DB_Adapter {
 		);
 	}
 	
-	/**
-	 * Prepares all statements needed by this adapter.
-	 * 
-	 * @todo Separate statements and prepare them only if they are actually
-	 * needed in the given session.
-	 */
-	private function prepare_statements() {
+	public function get_user_name($user_id) {
 		
-		// For get_controller
+		$stmt_select_user_name = $this->mysqli->prepare(
+				"select `name`
+				from `User`
+				where `id` = (?);");
 		
-		$this->stmt_select_controller = $this->mysqli->prepare(
-				"select `name`, `file_path`
-				from `Controller`
-				where `uri_name` = (?)
-				and `enabled` = true
-				limit 1;");
+		if (!$stmt_select_user_name) {
+			throw new DBRequestException("MySQL statement is not prepared");
+		}
+		
+		if (!$stmt_select_user_name->bind_param("i",
+				$user_id)) {
+			throw new DBRequestException("Could not bind parameters");
+		}
+		
+		if (!$stmt_select_user_name->execute()) {
+			throw new DBRequestException("Could not execute statement");
+		}
+		
+		if (!$stmt_select_user_name->bind_result($user_name)) {
+			throw new DBRequestException("Could not bind result");
+		}
+		
+		$stmt_select_user_name->fetch();
+		$stmt_select_user_name->close();
+		
+		return $user_name;
+	}
+	
+	public function get_user_groups($user_id) {
+		
+		$stmt = $this->mysqli->prepare(
+				"select `Group_name`
+				from `User_has_Group`
+				where `User_id` = (?);");
+		
+		if (!$stmt) {
+			throw new DBRequestException("MySQL statement is not prepared");
+		}
+	
+		if (!$stmt->bind_param("i",
+				$user_id)) {
+			throw new DBRequestException("Could not bind parameters");
+		}
+	
+		if (!$stmt->execute()) {
+			throw new DBRequestException("Could not execute statement");
+		}
+	
+		if (!$stmt->bind_result($group_name)) {
+			throw new DBRequestException("Could not bind result");
+		}
+		
+		$result = array();
+		
+		while($stmt->fetch()) {
+			array_push($result, $group_name);
+		}
+		
+		$stmt->close();
+	
+		return $result;
 	}
 }

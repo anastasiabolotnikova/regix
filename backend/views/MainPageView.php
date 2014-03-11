@@ -17,6 +17,7 @@ class MainPageView implements View {
 		//$title = $this->get_model()->get_title();
 		//$content = $this->get_model()->get_content();
 		//include 'views/layouts/layout_basic_xhtml.phtml';
+		$user_name = $this->model->get_user_name();
 		include 'views/layouts/layout_placeholder_html.phtml';
 	}
 }

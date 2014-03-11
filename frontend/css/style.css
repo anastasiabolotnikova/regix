@@ -1,4 +1,7 @@
 body {
+	margin: 0;
+	padding: 0;
+	border: 0;
 	background-color: black;
 	color: white;
 }
@@ -40,4 +43,14 @@ body {
 .bl_center:active {
 	color: white;
 	outline-style: solid;
+}
+
+#user_bar {
+	padding: 0.5em;
+	
+	border-bottom: 1px solid #777;
+	
+	color: #777;
+	font-family: 'Helvetica', sans-serif;
+	font-size: 0.8em;
 }

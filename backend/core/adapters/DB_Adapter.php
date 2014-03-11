@@ -85,4 +85,20 @@ interface DB_Adapter {
 	 * @throws DBRequestException when request cannot be fulfilled.
 	 */
 	public function get_controller($controller_uri_name);
+	
+	/**
+	 * Get user name from DB by user id.
+	 * 
+	 * @param int $user_id User id in the User table.
+	 * @return string User name.
+	 */
+	public function get_user_name($user_id);
+	
+	/**
+	 * Get array of user groups from DB by user id.
+	 *
+	 * @param int $user_id User id in the User table.
+	 * @return array List of strings fit group names.
+	 */
+	public function get_user_groups($user_id);
 }
