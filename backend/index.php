@@ -142,7 +142,7 @@ if (!$user = $session->get('user')) {
 
 $parts = explode("/", $_GET['uri'], 2);
 $controller_uri_name = $parts[0];
-$controller_args = isset($parts[1]) ? explode("/", $parts[1]) : null;
+$controller_args = isset($parts[1]) ? explode("/", $parts[1]) : NULL;
 
 $controller_data = $db->get_controller($controller_uri_name);
 
