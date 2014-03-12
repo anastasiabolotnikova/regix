@@ -13,6 +13,7 @@ class LoginPageController extends Controller{
 		
 		if ($this->args[0] == 'logout') {
 			// Log out
+			$model->logout();
 			$view_content = new View(
 					"views/layouts/LoginPage/content_logout.phtml");
 			$title = "Logged out :: Regix";
