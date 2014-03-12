@@ -2,15 +2,13 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-CREATE SCHEMA IF NOT EXISTS `test_user` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `test_user` ;
 
 -- -----------------------------------------------------
--- Table `test_user`.`Controller`
+-- Table `Controller`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `test_user`.`Controller` ;
+DROP TABLE IF EXISTS `Controller` ;
 
-CREATE TABLE IF NOT EXISTS `test_user`.`Controller` (
+CREATE TABLE IF NOT EXISTS `Controller` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(200) NOT NULL,
   `description` TEXT NULL,
@@ -25,11 +23,11 @@ COMMENT = 'Collection of available controller modules.';
 
 
 -- -----------------------------------------------------
--- Table `test_user`.`ControllerProperty`
+-- Table `ControllerProperty`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `test_user`.`ControllerProperty` ;
+DROP TABLE IF EXISTS `ControllerProperty` ;
 
-CREATE TABLE IF NOT EXISTS `test_user`.`ControllerProperty` (
+CREATE TABLE IF NOT EXISTS `ControllerProperty` (
   `Controller_id` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `value` VARCHAR(200) NULL,
@@ -37,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `test_user`.`ControllerProperty` (
   INDEX `fk_ControllerProperty_Controller_idx` (`Controller_id` ASC),
   CONSTRAINT `fk_ControllerProperty_Controller`
     FOREIGN KEY (`Controller_id`)
-    REFERENCES `test_user`.`Controller` (`id`)
+    REFERENCES `Controller` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -45,17 +43,17 @@ COMMENT = 'Values of controller properties (settings).';
 
 
 -- -----------------------------------------------------
--- Table `test_user`.`PermissionRequirement`
+-- Table `PermissionRequirement`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `test_user`.`PermissionRequirement` ;
+DROP TABLE IF EXISTS `PermissionRequirement` ;
 
-CREATE TABLE IF NOT EXISTS `test_user`.`PermissionRequirement` (
+CREATE TABLE IF NOT EXISTS `PermissionRequirement` (
   `Controller_id` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`Controller_id`, `name`),
   CONSTRAINT `fk_PermissionRequirement_Controller1`
     FOREIGN KEY (`Controller_id`)
-    REFERENCES `test_user`.`Controller` (`id`)
+    REFERENCES `Controller` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -63,11 +61,11 @@ COMMENT = 'Describes permission required by the controller to perform s' /* comm
 
 
 -- -----------------------------------------------------
--- Table `test_user`.`User`
+-- Table `User`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `test_user`.`User` ;
+DROP TABLE IF EXISTS `User` ;
 
-CREATE TABLE IF NOT EXISTS `test_user`.`User` (
+CREATE TABLE IF NOT EXISTS `User` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`id`))
@@ -76,11 +74,11 @@ COMMENT = 'Users of the system. All components should use this table to' /* comm
 
 
 -- -----------------------------------------------------
--- Table `test_user`.`Group`
+-- Table `Group`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `test_user`.`Group` ;
+DROP TABLE IF EXISTS `Group` ;
 
-CREATE TABLE IF NOT EXISTS `test_user`.`Group` (
+CREATE TABLE IF NOT EXISTS `Group` (
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`name`))
 ENGINE = InnoDB
@@ -88,11 +86,11 @@ COMMENT = 'User groups. Used to manage permissions.';
 
 
 -- -----------------------------------------------------
--- Table `test_user`.`User_has_Group`
+-- Table `User_has_Group`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `test_user`.`User_has_Group` ;
+DROP TABLE IF EXISTS `User_has_Group` ;
 
-CREATE TABLE IF NOT EXISTS `test_user`.`User_has_Group` (
+CREATE TABLE IF NOT EXISTS `User_has_Group` (
   `User_id` INT NOT NULL,
   `Group_name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`User_id`, `Group_name`),
@@ -100,12 +98,12 @@ CREATE TABLE IF NOT EXISTS `test_user`.`User_has_Group` (
   INDEX `fk_User_has_Group_User1_idx` (`User_id` ASC),
   CONSTRAINT `fk_User_has_Group_User1`
     FOREIGN KEY (`User_id`)
-    REFERENCES `test_user`.`User` (`id`)
+    REFERENCES `User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_User_has_Group_Group1`
     FOREIGN KEY (`Group_name`)
-    REFERENCES `test_user`.`Group` (`name`)
+    REFERENCES `Group` (`name`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -113,11 +111,11 @@ COMMENT = 'Aggregates users into groups. Groups are used primarily for ' /* comm
 
 
 -- -----------------------------------------------------
--- Table `test_user`.`Group_has_Permission`
+-- Table `Group_has_Permission`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `test_user`.`Group_has_Permission` ;
+DROP TABLE IF EXISTS `Group_has_Permission` ;
 
-CREATE TABLE IF NOT EXISTS `test_user`.`Group_has_Permission` (
+CREATE TABLE IF NOT EXISTS `Group_has_Permission` (
   `Group_name` VARCHAR(45) NOT NULL,
   `PermissionRequirement_Controller_id` INT NOT NULL,
   `PermissionRequirement_name` VARCHAR(45) NOT NULL,
@@ -126,12 +124,12 @@ CREATE TABLE IF NOT EXISTS `test_user`.`Group_has_Permission` (
   INDEX `fk_Group_has_PermissionRequirement_Group1_idx` (`Group_name` ASC),
   CONSTRAINT `fk_Group_has_PermissionRequirement_Group1`
     FOREIGN KEY (`Group_name`)
-    REFERENCES `test_user`.`Group` (`name`)
+    REFERENCES `Group` (`name`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Group_has_PermissionRequirement_PermissionRequirement1`
     FOREIGN KEY (`PermissionRequirement_Controller_id` , `PermissionRequirement_name`)
-    REFERENCES `test_user`.`PermissionRequirement` (`Controller_id` , `name`)
+    REFERENCES `PermissionRequirement` (`Controller_id` , `name`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -139,11 +137,11 @@ COMMENT = 'Permissions granted to groups.';
 
 
 -- -----------------------------------------------------
--- Table `test_user`.`LocalLogin`
+-- Table `LocalLogin`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `test_user`.`LocalLogin` ;
+DROP TABLE IF EXISTS `LocalLogin` ;
 
-CREATE TABLE IF NOT EXISTS `test_user`.`LocalLogin` (
+CREATE TABLE IF NOT EXISTS `LocalLogin` (
   `User_id` INT NOT NULL,
   `username` VARCHAR(45) NOT NULL,
   `salt` VARCHAR(45) NOT NULL,
@@ -153,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `test_user`.`LocalLogin` (
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
   CONSTRAINT `fk_LocalLogin_User1`
     FOREIGN KEY (`User_id`)
-    REFERENCES `test_user`.`User` (`id`)
+    REFERENCES `User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -161,11 +159,11 @@ COMMENT = 'Table of LocalLogin component.';
 
 
 -- -----------------------------------------------------
--- Table `test_user`.`FacebookLogin`
+-- Table `FacebookLogin`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `test_user`.`FacebookLogin` ;
+DROP TABLE IF EXISTS `FacebookLogin` ;
 
-CREATE TABLE IF NOT EXISTS `test_user`.`FacebookLogin` (
+CREATE TABLE IF NOT EXISTS `FacebookLogin` (
   `User_id` INT NOT NULL,
   `username` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
@@ -175,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `test_user`.`FacebookLogin` (
   UNIQUE INDEX `oauth_uid_UNIQUE` (`oauth_uid` ASC),
   CONSTRAINT `fk_FacebookLogin_User1`
     FOREIGN KEY (`User_id`)
-    REFERENCES `test_user`.`User` (`id`)
+    REFERENCES `User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -183,11 +181,11 @@ COMMENT = 'Table of FacebookLogin component.';
 
 
 -- -----------------------------------------------------
--- Table `test_user`.`Calendar`
+-- Table `Calendar`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `test_user`.`Calendar` ;
+DROP TABLE IF EXISTS `Calendar` ;
 
-CREATE TABLE IF NOT EXISTS `test_user`.`Calendar` (
+CREATE TABLE IF NOT EXISTS `Calendar` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
@@ -197,11 +195,11 @@ COMMENT = 'Virtual calendars.';
 
 
 -- -----------------------------------------------------
--- Table `test_user`.`Event`
+-- Table `Event`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `test_user`.`Event` ;
+DROP TABLE IF EXISTS `Event` ;
 
-CREATE TABLE IF NOT EXISTS `test_user`.`Event` (
+CREATE TABLE IF NOT EXISTS `Event` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Calendar_id` INT NOT NULL,
   `name` VARCHAR(200) NULL,
@@ -216,17 +214,17 @@ CREATE TABLE IF NOT EXISTS `test_user`.`Event` (
   INDEX `fk_Event_Group1_idx` (`assigned_group` ASC),
   CONSTRAINT `fk_table1_Calendar1`
     FOREIGN KEY (`Calendar_id`)
-    REFERENCES `test_user`.`Calendar` (`id`)
+    REFERENCES `Calendar` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Event_User1`
     FOREIGN KEY (`assigned_user`)
-    REFERENCES `test_user`.`User` (`id`)
+    REFERENCES `User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Event_Group1`
     FOREIGN KEY (`assigned_group`)
-    REFERENCES `test_user`.`Group` (`name`)
+    REFERENCES `Group` (`name`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -234,11 +232,11 @@ COMMENT = 'Calendar events';
 
 
 -- -----------------------------------------------------
--- Table `test_user`.`EventConstraintGroup`
+-- Table `EventConstraintGroup`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `test_user`.`EventConstraintGroup` ;
+DROP TABLE IF EXISTS `EventConstraintGroup` ;
 
-CREATE TABLE IF NOT EXISTS `test_user`.`EventConstraintGroup` (
+CREATE TABLE IF NOT EXISTS `EventConstraintGroup` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
@@ -248,18 +246,18 @@ COMMENT = 'Group of limits for calendars.';
 
 
 -- -----------------------------------------------------
--- Table `test_user`.`EventConstraint`
+-- Table `EventConstraint`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `test_user`.`EventConstraint` ;
+DROP TABLE IF EXISTS `EventConstraint` ;
 
-CREATE TABLE IF NOT EXISTS `test_user`.`EventConstraint` (
+CREATE TABLE IF NOT EXISTS `EventConstraint` (
   `EventConstraintGroup_id` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `value` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`EventConstraintGroup_id`, `name`),
   CONSTRAINT `fk_EventConstraint_EventConstraintGroup1`
     FOREIGN KEY (`EventConstraintGroup_id`)
-    REFERENCES `test_user`.`EventConstraintGroup` (`id`)
+    REFERENCES `EventConstraintGroup` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -267,11 +265,11 @@ COMMENT = 'Settings limiting addition of events to the calendar.';
 
 
 -- -----------------------------------------------------
--- Table `test_user`.`Calendar_has_EventConstraintGroup`
+-- Table `Calendar_has_EventConstraintGroup`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `test_user`.`Calendar_has_EventConstraintGroup` ;
+DROP TABLE IF EXISTS `Calendar_has_EventConstraintGroup` ;
 
-CREATE TABLE IF NOT EXISTS `test_user`.`Calendar_has_EventConstraintGroup` (
+CREATE TABLE IF NOT EXISTS `Calendar_has_EventConstraintGroup` (
   `Calendar_id` INT NOT NULL,
   `EventConstraintGroup_id` INT NOT NULL,
   PRIMARY KEY (`Calendar_id`, `EventConstraintGroup_id`),
@@ -279,12 +277,12 @@ CREATE TABLE IF NOT EXISTS `test_user`.`Calendar_has_EventConstraintGroup` (
   INDEX `fk_Calendar_has_EventConstraintGroup_Calendar1_idx` (`Calendar_id` ASC),
   CONSTRAINT `fk_Calendar_has_EventConstraintGroup_Calendar1`
     FOREIGN KEY (`Calendar_id`)
-    REFERENCES `test_user`.`Calendar` (`id`)
+    REFERENCES `Calendar` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Calendar_has_EventConstraintGroup_EventConstraintGroup1`
     FOREIGN KEY (`EventConstraintGroup_id`)
-    REFERENCES `test_user`.`EventConstraintGroup` (`id`)
+    REFERENCES `EventConstraintGroup` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
