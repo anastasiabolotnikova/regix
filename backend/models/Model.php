@@ -1,12 +1,12 @@
 <?php
 /**
- * This file contains abstract model class and generic exceptions.
+ * This file contains generic model class and generic exceptions.
  */
 
 /**
  * All models used by Regix components should extend this class.
  */
-abstract class Model {
+class Model {
 	
 	protected $db;
 	protected $session;

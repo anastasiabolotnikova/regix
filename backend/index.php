@@ -66,7 +66,7 @@ $db->connect();
 // UAC
 
 $session = new Session();
-if (!$user = $session->get('user')) {
+if (!$user = $session->user) {
 	try {
 		$user = new User($config->get_value('default_user_id'), $db);
 	} catch (ConfigException $e) {
@@ -74,7 +74,7 @@ if (!$user = $session->get('user')) {
 		exit("Configuration error (BL" . __LINE__ . ").");
 	}
 	
-	$session->set('user', $user);
+	$session->user = $user;
 }
 
 // Launch
@@ -103,14 +103,17 @@ if (isset($controller_data['name'])) {
 try {
 	if (loadClass($controller_path, $controller_name, "Controller")) {
 		$controller = new $controller_name($db, $session, $controller_args);
-		$controller->run();
+		if (!$controller->run()) {
+			$db->close();
+			exit("Controller failed (BL" . __LINE__ . ").");
+		}
 	} else {
 		$db->close();
-		exit("Configuration error (BL" . __LINE__ . ").");
+		exit("Controller not loaded (BL" . __LINE__ . ").");
 	}
 } catch (Exception $e) {
 	$db->close();
-	exit("Configuration error (BL" . __LINE__ . ").");
+	exit("Controller error (BL" . __LINE__ . ").");
 }
 
 $db->close();

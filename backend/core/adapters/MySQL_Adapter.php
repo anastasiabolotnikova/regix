@@ -134,4 +134,39 @@ class MySQL_Adapter implements DB_Adapter {
 	
 		return $result;
 	}
+	
+	public function get_local_login_data($username) {
+		$stmt = $this->mysqli->prepare(
+				"select `User_id`, `salt`, `hash`, `email`
+				from `LocalLogin`
+				where `username` = (?)
+				limit 1;");
+		
+		if (!$stmt) {
+			throw new DBRequestException("MySQL statement is not prepared");
+		}
+		
+		if (!$stmt->bind_param("s", $username)) {
+			throw new DBRequestException("Could not bind parameters");
+		}
+		
+		if (!$stmt->execute()) {
+			throw new DBRequestException("Could not execute statement");
+		}
+		
+		if (!$stmt->bind_result($user_id, $salt, $hash, $email)) {
+			throw new DBRequestException("Could not bind result");
+		}
+		
+		$stmt->fetch();
+		
+		$stmt->close();
+		
+		return array(
+			"user_id" => $user_id,
+			"salt" => $salt,
+			"hash" => $hash,
+			"email" => $email
+		);
+	}
 }

@@ -101,4 +101,17 @@ interface DB_Adapter {
 	 * @return array List of strings fit group names.
 	 */
 	public function get_user_groups($user_id);
+	
+	/**
+	 * Get array of information needed to perform local login.
+	 * 
+	 * @param string $username username value from table LocalLogin
+	 * 
+	 * @return array with values
+	 * * user_id
+	 * * salt
+	 * * hash
+	 * * email
+	 */
+	public function get_local_login_data($username);
 }

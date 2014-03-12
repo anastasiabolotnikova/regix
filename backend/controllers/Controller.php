@@ -76,6 +76,8 @@ abstract class Controller {
 	 * 
 	 * This function is called by the bootloader after a controller is
 	 * initialized.
+	 * 
+	 * @return bool TRUE if execution finished successfully, FALSE otherwise.
 	 */
 	abstract public function run();
 }

@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `test_user`.`LocalLogin` (
   `User_id` INT NOT NULL,
   `username` VARCHAR(45) NOT NULL,
   `salt` VARCHAR(45) NOT NULL,
-  `hash` CHAR(128) NOT NULL,
+  `hash` CHAR(255) NOT NULL,
   `email` VARCHAR(200) NULL,
   PRIMARY KEY (`User_id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
