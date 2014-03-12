@@ -1,46 +1,42 @@
 <?php
 
 /**
- * This file contains controller interface.
+ * This file contains controller abstract class.
  */
 
 /**
- * Interface for Regix controllers.
+ * Abstract class for Regix controllers.
  * 
- * All controllers in the Regix system should implement this interface,
+ * All controllers in the Regix system should extend this class,
  * otherwise they will not be loaded.
- * 
- * @author Sergei Jakovlev
  *
  */
-interface Controller {
+abstract class Controller {
 	
 	/**
-	 * Passes database adapter to a controller.
-	 * 
-	 * This function is guaranteed to be called by the bootloader before
-	 * _run()_.
-	 * 
-	 * @param DB_Adapter $db Fully initialized database adapter object.
-	 * 
-	 * @see DB_Adapter
+	 * Global database adapter.
+	 * @var DB_Adapter
 	 */
-	public function set_db($db);
+	protected $db;
 	
 	/**
-	 * Passes session handler to a controller.
-	 * 
-	 * This function is guaranteed to be called by the bootloader before
-	 * _run()_.
-	 * 
-	 * @param Session $session Fully initialized session handler.
-	 * 
-	 * @see Session
+	 * Global session manager.
+	 * @var Session
 	 */
-	public function set_session($session);
+	protected $session;
 	
 	/**
-	 * Passes arguments received via URL to a controller.
+	 * URL arguments as array of strings.
+	 * @var array
+	 */
+	protected $args;
+	
+	/**
+	 * Creates a new controller.
+	 * 
+	 * @param DB_Adapter $db	fully initialized database adapter object.
+	 * @param Session $session	fully initialized session manager.
+	 * @param array|NULL $args	URL arguments.
 	 * 
 	 * As per URI usage policy, URL is considered to have the following format:
 	 *     example.com/controller/arg_1/arg_2...
@@ -68,16 +64,18 @@ interface Controller {
 	 *         3 => "",
 	 *     }
 	 * 
-	 * @param array|NULL $args Array of strings parsed from request URI.
 	 */
-	public function set_arguments($args);
+	public function __construct($db, $session, $args) {
+		$this->db = $db;
+		$this->session = $session;
+		$this->args = $args;
+	}
 	
 	/**
 	 * Runs an initialized controller.
 	 * 
 	 * This function is called by the bootloader after a controller is
-	 * initialized. Within this function controller must call _show_ methods
-	 * of appropriate views.
+	 * initialized.
 	 */
-	public function run();
+	abstract public function run();
 }

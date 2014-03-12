@@ -1,7 +1,7 @@
 <?php
 require_once 'View.php';
 
-class MainPageView implements View {
+class MainPageView extends View {
 	
 	private $model;
 	
