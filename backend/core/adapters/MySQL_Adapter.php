@@ -5,7 +5,7 @@
  * This file contains MySQL implementation of the database adapter interface.
  */
 
-include_once "core/adapters/DB_Adapter.php";
+include_once "DB_Adapter.php";
 
 /**
  * MySQL implementation of a database adapter.
@@ -35,10 +35,6 @@ class MySQL_Adapter extends DB_Adapter {
 		throw new DBRequestException($msg . " (DB_MYSQL" . $line .")");
 	}
 	
-	/**
-	 * (non-PHPdoc)
-	 * @see DB_Adapter::connect()
-	 */
 	public function connect() {
 		$this->mysqli = new mysqli(
 				$this->config->db_host,
@@ -52,10 +48,6 @@ class MySQL_Adapter extends DB_Adapter {
 		}
 	}
 	
-	/**
-	 * (non-PHPdoc)
-	 * @see DB_Adapter::close()
-	 */
 	public function close() {
 		if ($this->mysqli) {
 			$this->mysqli->close();
@@ -63,10 +55,6 @@ class MySQL_Adapter extends DB_Adapter {
 		}
 	}
 	
-	/**
-	 * (non-PHPdoc)
-	 * @see DB_Adapter::get_controller()
-	 */
 	public function get_controller($controller_uri_name) {
 		
 		$stmt = $this->mysqli->prepare(
@@ -100,10 +88,6 @@ class MySQL_Adapter extends DB_Adapter {
 		return $res;
 	}
 	
-	/**
-	 * (non-PHPdoc)
-	 * @see DB_Adapter::get_user_name()
-	 */
 	public function get_user_name($user_id) {
 		
 		$stmt = $this->mysqli->prepare(
@@ -128,10 +112,6 @@ class MySQL_Adapter extends DB_Adapter {
 		return $user_name;
 	}
 	
-	/**
-	 * (non-PHPdoc)
-	 * @see DB_Adapter::get_user_groups()
-	 */
 	public function get_user_groups($user_id) {
 		
 		$stmt = $this->mysqli->prepare(
@@ -161,11 +141,6 @@ class MySQL_Adapter extends DB_Adapter {
 		return $result;
 	}
 	
-	
-	/**
-	 * (non-PHPdoc)
-	 * @see DB_Adapter::get_local_login_data()
-	 */
 	public function get_local_login_data($username) {
 		$stmt = $this->mysqli->prepare(
 				"select `User_id`, `salt`, `hash`, `email`

@@ -1,17 +1,21 @@
 <?php
-require_once 'Controller.php';
-require_once 'views/View.php';
+require_once REGIX_PATH.'controllers/Controller.php';
+require_once REGIX_PATH.'views/View.php';
 
 class MainPageController extends Controller{
 	
 	public function run() {
-		if (loadClass("models/MainPageModel.php", "MainPageModel", "Model")) {
+		if (loadClass(
+				REGIX_PATH."models/MainPageModel.php",
+				"MainPageModel",
+				"Model")) {
 			$model = new MainPageModel($this->db, $this->session);
 		} else {
 			return FALSE;
 		}
 		
-		$view = new View("views/layouts/layout_placeholder_html.phtml");
+		$view = new View(
+				REGIX_PATH."views/layouts/layout_placeholder_html.phtml");
 		
 		$view->user_name = $model->get_user_name();
 		$view->render(TRUE);

@@ -1,6 +1,6 @@
 <?php
-require_once 'Controller.php';
-require_once 'views/View.php';
+require_once REGIX_PATH.'controllers/Controller.php';
+require_once REGIX_PATH.'views/View.php';
 
 class LoginPageController extends Controller{
 	

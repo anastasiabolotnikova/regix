@@ -1,5 +1,5 @@
 <?php
-require_once 'Controller.php';
+require_once REGIX_PATH.'controllers/Controller.php';
 
 class TestDisabledController extends Controller {
 	

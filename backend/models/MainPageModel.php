@@ -1,5 +1,5 @@
 <?php
-require_once 'Model.php';
+require_once REGIX_PATH.'models/Model.php';
 
 class MainPageModel extends Model {
 	public function get_user_name() {

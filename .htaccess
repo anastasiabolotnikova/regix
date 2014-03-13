@@ -1,10 +1,9 @@
 RewriteEngine On
 
-RewriteRule ^css/(.*) frontend/css/$1 [L]
-RewriteRule ^fonts/(.*) frontend/fonts/$1 [L]
-RewriteRule ^img/(.*) frontend/img/$1 [L]
-RewriteRule ^js/(.*) frontend/js/$1 [L]
-RewriteRule ^backend backend/index.php [L]
+# If requested file exists in subdirectory static, redirect request there.
+RewriteCond %{DOCUMENT_ROOT}/static/$1 -f
+RewriteRule ^(.*)$ static/$1 [NC,L]
 
+# If file does not exist, redirect to index.php.
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ backend/index.php?uri=$1 [L]
+RewriteRule ^(.*)$ index.php?uri=$1 [NC,L]

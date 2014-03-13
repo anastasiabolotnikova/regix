@@ -6,12 +6,20 @@
  * This file contains Regix bootloader.
  */
 
+/**
+ * Include path
+ * 
+ * Must have trailing slash.
+ * @var string
+ */
+define("REGIX_PATH", "backend/");
+
 
 // Try to include all needed core components.
 
-require_once 'core/Config.php';
-require_once 'core/Session.php';
-require_once 'core/User.php';
+require_once REGIX_PATH.'core/Config.php';
+require_once REGIX_PATH.'core/Session.php';
+require_once REGIX_PATH.'core/User.php';
 
 
 /**
@@ -63,9 +71,11 @@ function loadClass($path, $class, $parent) {
 	}
 }
 
+define("REGIX", TRUE);
+
 // Configuration
 try {
-	$config = new Config("config/regix.ini");
+	$config = new Config(REGIX_PATH."config/regix.ini");
 } catch (Exception $e) {
 	exit("Could not load configuration (BL" . __LINE__. ")");
 }
@@ -85,12 +95,13 @@ try {
 	switch ($config->db_adapter) {
 		case "mysql":
 		default:
-			include_once "core/adapters/MySQL_Adapter.php";
+			include_once REGIX_PATH."core/adapters/MySQL_Adapter.php";
 			$db = new MySQL_Adapter($config);
 	}
-} catch (ConfigException $e) {
-	exit("Configuration error (BL" . __LINE__ . ").");
 } catch (DBConnectionException $e) {
+	if ($config->debug_php) {
+		echo $e->getMessage();
+	}
 	exit("Connection error (BL" . __LINE__ . ").");
 }
 
@@ -122,12 +133,12 @@ $controller_data = $db->get_controller($controller_uri_name);
 if (isset($controller_data['name'])) {
 	// Controller found in the DB.
 	$controller_name = $controller_data['name'];
-	$controller_path = $controller_data['file_path'];
+	$controller_path = REGIX_PATH.$controller_data['file_path'];
 } else {
 	// Load default controller.
 	try {
 		$controller_name = $config->default_controller_name;
-		$controller_path = $config->default_controller_file_path;
+		$controller_path = REGIX_PATH.$config->default_controller_file_path;
 	} catch (ConfigException $e) {
 		$db->close();
 		exit("Configuration error (BL" . __LINE__ . ").");
