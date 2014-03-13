@@ -1,105 +1,137 @@
 <?php
+/**
+ * @file MySQL_Adapter.php
+ * 
+ * This file contains MySQL implementation of the database adapter interface.
+ */
 
 include_once "core/adapters/DB_Adapter.php";
 
-class MySQL_Adapter implements DB_Adapter {
+/**
+ * MySQL implementation of a database adapter.
+ * 
+ * This class provides access to MySQL databases using mysqli PHP module.
+ * 
+ * **This class should use prepared statements for all parameterized SQL
+ * queries!** This _significantly_ reduces the risk of SQL injections.
+ */
+class MySQL_Adapter extends DB_Adapter {
 	
-	private $config;
-	private $mysqli;
+	/**
+	 * MySQLi object.
+	 *
+	 * NULL if connection is not established or closed.
+	 *
+	 * @var mysqli|NULL
+	 */
+	protected $mysqli;
 	
-	public function __construct($config) {
-		$this->config = $config;
+	/**
+	 * Convenience method for handling request exceptions.
+	 * @param string $msg Error message.
+	 * @param string $line Number of line where error is detected.
+	 */
+	private function request_exception($msg, $line = NULL) {
+		throw new DBRequestException($msg . " (DB_MYSQL" . $line .")");
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see DB_Adapter::connect()
+	 */
 	public function connect() {
-		try {
-			$this->mysqli = new mysqli(
-					$this->config->get_value('db_host'),
-					$this->config->get_value('db_user'),
-					$this->config->get_value('db_password'),
-					$this->config->get_value('db_name'),
-					$this->config->get_value('db_port'));
-		} catch (ConfigException $e) {
-			throw new DBConnectionException(
-					"Could not get connection configuration");
-		}
+		$this->mysqli = new mysqli(
+				$this->config->db_host,
+				$this->config->db_user,
+				$this->config->db_password,
+				$this->config->db_name,
+				$this->config->db_port);
 		
-		
-		if ($this->mysqli->connect_errno) {
+		if ($this->mysqli->connect_error) {
 			throw new DBConnectionException("Could not connect to database");
 		}
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see DB_Adapter::close()
+	 */
 	public function close() {
-	
-		$this->mysqli->close();
+		if ($this->mysqli) {
+			$this->mysqli->close();
+			$this->mysqli = NULL;
+		}
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see DB_Adapter::get_controller()
+	 */
 	public function get_controller($controller_uri_name) {
 		
-		$stmt_select_controller = $this->mysqli->prepare(
+		$stmt = $this->mysqli->prepare(
 				"select `name`, `file_path`
 				from `Controller`
 				where `uri_name` = (?)
 				and `enabled` = true
 				limit 1;");
 		
-		if (!$stmt_select_controller) {
-			throw new DBRequestException("MySQL statement is not prepared");
+		if (!$stmt) self::request_exception("Statement not prepared", __LINE__);
+		
+		if (!$stmt->bind_param("s", $controller_uri_name))
+			self::request_exception("Parameters not bound", __LINE__);
+		
+		if (!$stmt->execute())
+			self::request_exception("Request execution failed", __LINE__);
+		
+		if (!$stmt->bind_result($name, $file_path))
+			self::request_exception("Could not bind result", __LINE__);
+		
+		if($stmt->fetch()) {
+			$res = array(
+				'name' => $name,
+				'file_path' => $file_path,
+			);
+		} else {
+			$res = NULL;
 		}
 		
-		if (!$stmt_select_controller->bind_param("s",
-				$controller_uri_name)) {
-			throw new DBRequestException("Could not bind parameters");
-		}
-		
-		if (!$stmt_select_controller->execute()) {
-			throw new DBRequestException("Could not execute statement");
-		}
-		
-		if (!$stmt_select_controller->bind_result($name, $file_path)) {
-			throw new DBRequestException("Could not bind result");
-		}
-		
-		$stmt_select_controller->fetch();
-		$stmt_select_controller->close();
-		
-		return array(
-			'name' => $name,
-			'file_path' => $file_path,
-		);
+		$stmt->close();
+		return $res;
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see DB_Adapter::get_user_name()
+	 */
 	public function get_user_name($user_id) {
 		
-		$stmt_select_user_name = $this->mysqli->prepare(
+		$stmt = $this->mysqli->prepare(
 				"select `name`
 				from `User`
 				where `id` = (?);");
 		
-		if (!$stmt_select_user_name) {
-			throw new DBRequestException("MySQL statement is not prepared");
-		}
+		if (!$stmt) self::request_exception("Statement not prepared", __LINE__);
 		
-		if (!$stmt_select_user_name->bind_param("i",
-				$user_id)) {
-			throw new DBRequestException("Could not bind parameters");
-		}
+		if (!$stmt->bind_param("i", $user_id))
+			self::request_exception("Parameters not bound", __LINE__);
 		
-		if (!$stmt_select_user_name->execute()) {
-			throw new DBRequestException("Could not execute statement");
-		}
+		if (!$stmt->execute())
+			self::request_exception("Request execution failed", __LINE__);
 		
-		if (!$stmt_select_user_name->bind_result($user_name)) {
-			throw new DBRequestException("Could not bind result");
-		}
+		if (!$stmt->bind_result($user_name))
+			self::request_exception("Could not bind result", __LINE__);
 		
-		$stmt_select_user_name->fetch();
-		$stmt_select_user_name->close();
+		$stmt->fetch();
+		$stmt->close();
 		
 		return $user_name;
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see DB_Adapter::get_user_groups()
+	 */
 	public function get_user_groups($user_id) {
 		
 		$stmt = $this->mysqli->prepare(
@@ -107,22 +139,16 @@ class MySQL_Adapter implements DB_Adapter {
 				from `User_has_Group`
 				where `User_id` = (?);");
 		
-		if (!$stmt) {
-			throw new DBRequestException("MySQL statement is not prepared");
-		}
-	
-		if (!$stmt->bind_param("i",
-				$user_id)) {
-			throw new DBRequestException("Could not bind parameters");
-		}
-	
-		if (!$stmt->execute()) {
-			throw new DBRequestException("Could not execute statement");
-		}
-	
-		if (!$stmt->bind_result($group_name)) {
-			throw new DBRequestException("Could not bind result");
-		}
+		if (!$stmt) self::request_exception("Statement not prepared", __LINE__);
+		
+		if (!$stmt->bind_param("i", $user_id))
+			self::request_exception("Parameters not bound", __LINE__);
+		
+		if (!$stmt->execute())
+			self::request_exception("Request execution failed", __LINE__);
+		
+		if (!$stmt->bind_result($group_name))
+			self::request_exception("Could not bind result", __LINE__);
 		
 		$result = array();
 		
@@ -135,6 +161,11 @@ class MySQL_Adapter implements DB_Adapter {
 		return $result;
 	}
 	
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see DB_Adapter::get_local_login_data()
+	 */
 	public function get_local_login_data($username) {
 		$stmt = $this->mysqli->prepare(
 				"select `User_id`, `salt`, `hash`, `email`
@@ -142,31 +173,29 @@ class MySQL_Adapter implements DB_Adapter {
 				where `username` = (?)
 				limit 1;");
 		
-		if (!$stmt) {
-			throw new DBRequestException("MySQL statement is not prepared");
-		}
+		if (!$stmt) self::request_exception("Statement not prepared", __LINE__);
 		
-		if (!$stmt->bind_param("s", $username)) {
-			throw new DBRequestException("Could not bind parameters");
-		}
+		if (!$stmt->bind_param("s", $username))
+			self::request_exception("Parameters not bound", __LINE__);
 		
-		if (!$stmt->execute()) {
-			throw new DBRequestException("Could not execute statement");
-		}
+		if (!$stmt->execute())
+			self::request_exception("Request execution failed", __LINE__);
 		
-		if (!$stmt->bind_result($user_id, $salt, $hash, $email)) {
-			throw new DBRequestException("Could not bind result");
-		}
+		if (!$stmt->bind_result($user_id, $salt, $hash, $email))
+			self::request_exception("Could not bind result", __LINE__);
 		
-		$stmt->fetch();
+		if($stmt->fetch()) {
+			$res = array(
+				"user_id" => $user_id,
+				"salt" => $salt,
+				"hash" => $hash,
+				"email" => $email
+			);
+		} else {
+			$res = NULL;
+		}
 		
 		$stmt->close();
-		
-		return array(
-			"user_id" => $user_id,
-			"salt" => $salt,
-			"hash" => $hash,
-			"email" => $email
-		);
+		return $res;
 	}
 }

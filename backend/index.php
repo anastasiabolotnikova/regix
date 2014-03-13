@@ -1,55 +1,88 @@
 <?php
 
 /**
- * This file contains Regix initial bootloader.
+ * @file index.php
+ * 
+ * This file contains Regix bootloader.
  */
+
+
+// Try to include all needed core components.
 
 require_once 'core/Config.php';
 require_once 'core/Session.php';
 require_once 'core/User.php';
 
+
 /**
  * Simple class loader
  * 
- * Checks if requested class is visible and requires file _$path_ if it is not.
+ * This loader checks if class _$class_ (extending class _$parent_) is available
+ * and tries to include file _$file_ if it is not.
  * 
- * Class is considered to be correct if it is visible and extends _$parent_.
+ * Class is considered to be available if **it is visible and extends
+ * _$parent_**. Note that if a class with name _$class_ is visible, but
+ * does not extend _$parent_, _$file_ **will be included**, which may cause
+ * shadowing (if file indeed contains a different definition of _$class_).
  * 
- * @param string $path Path to file fith class definition.
+ * **Note that all arguments are strings!**
+ * 
+ * @param string $path Path to file with class _$class_ definition.
  * @param string $class Class name.
  * @param string $parent Name of a parent the class must extend.
  * @return TRUE|FALSE TRUE if class is visible and correct, FALSE otherwise.
  */
 function loadClass($path, $class, $parent) {
-	if (class_exists($class) && in_array($parent, class_parents($class))) {
-		return TRUE;
-	}
-	
-	// Class is not yet loaded.
-	if (is_readable($path)) {
-		require_once $path;
-		if (class_exists($class) && in_array($parent, class_parents($class))) {
+	if (class_exists($class)) {
+		if(in_array($parent, class_parents($class))) {
+			// Requested class is visible and it extends appropriate class.
 			return TRUE;
-		} else { return FALSE; }
-	} else { return FALSE; }
+		} else {
+			// Requested class is visible, but does not extend $parent.
+			// Do not include file $path to avoid class shadowing, return FALSE
+			// instead. This situation should be avoided!
+			return FALSE;
+		}
+	} else {
+		// Class is not yet visible.
+		if (is_readable($path)) {
+			// File exists and is readable, include it (once).
+			require_once $path;
+			if (class_exists($class) &&
+					in_array($parent, class_parents($class))) {
+				// Now class is visible and correct.
+				return TRUE;
+			} else {
+				// Class is still either invisible or incorrect.
+				return FALSE;
+			}
+		} else {
+			// File is not accessible.
+			return FALSE;
+		}
+	}
 }
 
 // Configuration
-$config = new Config();
-
 try {
-	if ($config->get_value("debug_php")) {
-		error_reporting(E_ALL | E_STRICT);
-		ini_set('display_errors', 1);
-	}
-} catch (ConfigException $e) {
+	$config = new Config("config/regix.ini");
+} catch (Exception $e) {
+	exit("Could not load configuration (BL" . __LINE__. ")");
+}
+
+if ($config->debug_php) {
+	error_reporting(E_ALL | E_STRICT);
+	ini_set('display_errors', 1);
+} else {
 	// Assume production values.
+	error_reporting(0);
+	ini_set('display_errors', 0);
 }
 
 // DB
 
 try {
-	switch ($config->get_value("db_adapter")) {
+	switch ($config->db_adapter) {
 		case "mysql":
 		default:
 			include_once "core/adapters/MySQL_Adapter.php";
@@ -67,8 +100,9 @@ $db->connect();
 
 $session = new Session();
 if (!$user = $session->user) {
+	// There is no user stored in the session.
 	try {
-		$user = new User($config->get_value('default_user_id'), $db);
+		$user = new User($config->default_user_id, $db);
 	} catch (ConfigException $e) {
 		$db->close();
 		exit("Configuration error (BL" . __LINE__ . ").");
@@ -92,8 +126,8 @@ if (isset($controller_data['name'])) {
 } else {
 	// Load default controller.
 	try {
-		$controller_name = $config->get_value('default_controller_name');
-		$controller_path = $config->get_value('default_controller_file_path');
+		$controller_name = $config->default_controller_name;
+		$controller_path = $config->default_controller_file_path;
 	} catch (ConfigException $e) {
 		$db->close();
 		exit("Configuration error (BL" . __LINE__ . ").");

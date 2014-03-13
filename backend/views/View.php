@@ -1,5 +1,7 @@
 <?php
 /**
+ * @file View.php
+ * 
  * This file contains generic view and generic exceptions used by views.
  */
 

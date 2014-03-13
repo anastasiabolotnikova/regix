@@ -1,5 +1,7 @@
 <?php
 /**
+ * @file Model.php
+ * 
  * This file contains generic model class and generic exceptions.
  */
 
