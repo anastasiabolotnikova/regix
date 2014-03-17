@@ -51,7 +51,7 @@ class User {
 	 * Creates a new user object. Downloads data from the database.
 	 * 
 	 * @param int $id User id.
-	 * @param DB_Adapter $db Initialized and connected atabase adapter object.
+	 * @param DB_Adapter $db Initialized and connected database adapter object.
 	 * 
 	 * @todo Create Group objects automatically.
 	 */
