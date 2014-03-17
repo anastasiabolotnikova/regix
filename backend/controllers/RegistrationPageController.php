@@ -6,39 +6,31 @@ class RegistrationPageController extends Controller{
 	
 	public function run() {
 		if (loadClass(
-				REGIX_PATH."models/LoginPageModel.php",
-				"LoginPageModel",
+				REGIX_PATH."models/RegistrationPageModel.php",
+				"RegistrationPageModel",
 				"Model")) {
-			$model = new LoginPageModel($this->db, $this->session);
+			$model = new RegistrationPageModel($this->db, $this->session);
 		} else {
 			return FALSE;
 		}
 		
-		if ($this->args[0] == 'logout') {
-			// Log out
-			$model->logout();
-			$view_content = new View(
-					REGIX_PATH."views/layouts/LoginPage/content_logout.phtml");
-			$title = "Logged out :: Regix";
-			
-		} else if (isset($_POST['login_b']) && $_POST['login_b'] == "Log In") {
-			// Log in (form)
+		if (isset($_POST['reg_user']) && $_POST['reg_user'] == "Register") {
 			if ($model->auth_plain($_POST['login'], $_POST['password'])) {
-				// Logged in
+				// Registered
 				$view_content = new View(
-						REGIX_PATH."views/layouts/LoginPage/content_login_success.phtml");
-				$title = "Logged in :: Regix";
+						REGIX_PATH."views/layouts/RegistrationPage/content_registration_success.phtml");
+				$title = "Registered :: Regix";
 			} else {
-				// Log in failed
+				// Registration failed
 				$view_content = new View(
-						REGIX_PATH."views/layouts/LoginPage/content_login_failure.phtml");
-				$title = "Wrong login or password :: Regix";
+						REGIX_PATH."views/layouts/RegistrationPage/content_registration_failure.phtml");
+				$title = "Registration failed :: Regix";
 			}
 		} else {
 			// Show form
 			$view_content = new View(
-					REGIX_PATH."views/layouts/LoginPage/content_login_local.phtml");
-			$title = "Login :: Regix";
+					REGIX_PATH."views/layouts/RegistrationPage/content_registration_form.phtml");
+			$title = "Registration :: Regix";
 		}
 		
 		$view = new View(REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
