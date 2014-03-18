@@ -73,4 +73,7 @@ class User {
 	public function get_name() {
 		return $this->name;
 	}
+	public function get_group() {
+		return $this->groups;
+	}
 }
