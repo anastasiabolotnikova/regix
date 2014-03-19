@@ -126,4 +126,8 @@ abstract class DB_Adapter {
 	 * NULL is returned if user is not found.
 	 */
 	abstract public function get_local_login_data($username);
+	
+	abstract public function insert_local_login_data($username, $hashed_pass, $salt, $email);
+	
+	abstract public function insert_user_data($name);
 }

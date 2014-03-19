@@ -1,6 +1,7 @@
 <?php
 require_once REGIX_PATH.'models/Model.php';
 
+
 class RegistrationPageModel extends Model{
 	
 	static private function password_hash($password, $salt) {
@@ -19,15 +20,34 @@ class RegistrationPageModel extends Model{
 		return $result;
 	}
 	
-	private function plaintextCheck($username, $password, $repassword, $email) {
-		//check if username is unique and has more than 3 symbols
-		//check if password and repassword are the same
-		//check if email is email and there is no such email in database
+	public function plaintextCheck($name, $login, $password, $repassword, $email) {
+		$ll_data = $this->db->get_local_login_data($login);
+		$user_id = $ll_data['user_id'];
+		$username = $ll_data['username'];
+		$e_mail = $ll_data['email'];
+		if($user_id){
+			//If there already is this username
+			if($login == $username){
+				return False;
+			}
 		}
-	}
+		//Passwords aren't same
+		if($password != $repassword){
+			return False;
+		}
+		//User with this e-mail already exists
+		if($email == $e_mail){
+			return False;
+		}
+		return True;
+		}
 	
-	public function save_data($username, $password, $repassword, $email) {
-		//insert data from the form to the database
+	public function save_data($name, $username, $password, $email) {
+		$this->db->connect();
+		$salt = RegistrationPageModel::gen_salt("");
+		$hashed_pass = RegistrationPageModel::password_hash($password, $salt);
+		$this->db->insert_local_login_data($username, $hashed_pass, $salt, $email);
+		$this->db->insert_user_data($name);
 	}
 	
 }
