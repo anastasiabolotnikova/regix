@@ -113,6 +113,8 @@ abstract class DB_Adapter {
 	 */
 	abstract public function get_user_groups($user_id);
 	
+	abstract public function get_user_email($user_id);
+	
 	/**
 	 * Get array of information needed to perform local login.
 	 * 

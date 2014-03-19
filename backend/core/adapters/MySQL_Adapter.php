@@ -141,6 +141,32 @@ class MySQL_Adapter extends DB_Adapter {
 		return $result;
 	}
 	
+	public function get_user_email($user_id) {
+		
+		$stmt = $this->mysqli->prepare(
+				"select `email`
+				from `locallogin`
+				where `user_id` = (?);");
+		
+		if (!$stmt) self::request_exception("Statement not prepared", __LINE__);
+		
+		if (!$stmt->bind_param("i", $user_id))
+			self::request_exception("Parameters not bound", __LINE__);
+		
+		if (!$stmt->execute())
+			self::request_exception("Request execution failed", __LINE__);
+		
+		if (!$stmt->bind_result($email))
+			self::request_exception("Could not bind result", __LINE__);
+		
+		$stmt->fetch();
+		$stmt->close();
+		
+		
+		return $email;
+		
+	}
+	
 	public function get_local_login_data($username) {
 		$stmt = $this->mysqli->prepare(
 				"select `User_id`, `username`, `salt`, `hash`, `email`
@@ -156,7 +182,7 @@ class MySQL_Adapter extends DB_Adapter {
 		if (!$stmt->execute())
 			self::request_exception("Request execution failed", __LINE__);
 		
-		if (!$stmt->bind_result($user_id, $username, $salt, $hash, $email))
+		if (!$stmt->bind_result($user_id, $user_name, $salt, $hash, $email))
 			self::request_exception("Could not bind result", __LINE__);
 		
 		if($stmt->fetch()) {

@@ -33,6 +33,7 @@ class RegistrationPageModel extends Model{
 		}
 		//Passwords aren't same
 		if($password != $repassword){
+			//here we should control if password is strong enough
 			return False;
 		}
 		//User with this e-mail already exists

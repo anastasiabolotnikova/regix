@@ -47,6 +47,8 @@ class User {
 	 */
 	protected $groups;
 	
+	protected $email;
+	
 	/**
 	 * Creates a new user object. Downloads data from the database.
 	 * 
@@ -60,6 +62,7 @@ class User {
 		$this->id = $id;
 		$this->name = $this->db->get_user_name($id);
 		$this->groups = $this->db->get_user_groups($id);
+		$this->email = $this->db->get_user_email($id);
 	}
 	
 	/**
@@ -75,5 +78,13 @@ class User {
 	}
 	public function get_group() {
 		return $this->groups;
+	}
+	public function get_email() {
+		if($this->email){
+			return $this->email;
+		}
+		else {
+			return "User has nothing";
+		}
 	}
 }

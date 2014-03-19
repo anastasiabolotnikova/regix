@@ -7,10 +7,10 @@
 				<td>E-mail: <?php echo $this->user_email; ?></td>
 			</tr>
 			<tr>
-				<td>Group: <?php echo $this->user_group; ?></td>
+				<td>Group: <?php print_r($this->user_group); //show elements of array in a user-friendly way?></td>
 			</tr>
 			<tr>
-				<td colspan="2"><input name="main_page" type="button" value="Back to the main page"></td>
+				<td colspan="2"><a href='layout_placeholder_html.phtml'>Back to the main page</a></td>
 			</tr>
 		</table>
 </div>
