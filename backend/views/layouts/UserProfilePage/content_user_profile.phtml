@@ -1,16 +1,25 @@
+<div id="user_bar"><?php echo $this->user_name; ?></div>
 <div id="user_profile_container">
 		<table id="user_profile">
 			<tr>
-				<td>Name: <?php echo $this->user_name; ?></td>
+				<td>Name:</td><td><?php echo $this->user_name; ?></td>
 			</tr>
 			<tr>
-				<td>Login: <?php echo $this->user_login; ?></td>
+				<td>Login:</td><td><?php echo $this->user_login; ?></td>
 			</tr>
 			<tr>
-				<td>E-mail: <?php echo $this->user_email; ?></td>
+				<td>E-mail:</td><td><?php echo $this->user_email; ?></td>
 			</tr>
 			<tr>
-				<td>Group: <?php print_r($this->user_group); //show elements of array in a user-friendly way?></td>
+				<td>Groups:</td>
+				<td>
+					<?php
+					foreach ($this->user_group as $group_name) {
+						echo($group_name); //show elements of array in a user-friendly way
+						echo '<br />';
+					}
+					?>
+				</td>
 			</tr>
 			<tr>
 				<td colspan="2"><a href='layout_placeholder_html.phtml'>Back to the main page</a></td>

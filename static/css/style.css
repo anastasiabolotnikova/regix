@@ -52,3 +52,8 @@ body {
 	font-family: 'Helvetica', sans-serif;
 	font-size: 0.8em;
 }
+
+#user_profile {
+	border-spacing: 0.5em;
+	border-collapse: separate;
+}
