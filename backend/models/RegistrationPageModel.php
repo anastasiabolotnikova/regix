@@ -47,8 +47,9 @@ class RegistrationPageModel extends Model{
 		$this->db->connect();
 		$salt = RegistrationPageModel::gen_salt("");
 		$hashed_pass = RegistrationPageModel::password_hash($password, $salt);
-		$this->db->insert_local_login_data($username, $hashed_pass, $salt, $email);
 		$this->db->insert_user_data($name);
+		$id = $this->db->get_last_id();
+		$this->db->insert_local_login_data($id, $username, $hashed_pass, $salt, $email);
 	}
 	
 }

@@ -111,7 +111,9 @@ class MySQL_Adapter extends DB_Adapter {
 		
 		return $user_name;
 	}*/
-	
+	public function get_last_id(){
+		return $this->mysqli->insert_id;
+	}
 	public function get_user_groups($user_id) {
 		
 		$stmt = $this->mysqli->prepare(
@@ -200,9 +202,9 @@ class MySQL_Adapter extends DB_Adapter {
 		$stmt->close();
 		return $res;
 	}
-	public function insert_local_login_data($username, $hashed_pass, $salt, $email) {
-		$query = "INSERT INTO `locallogin` (`username`,`salt`,`hash`,`email`)
-				VALUES ('".$username."','".$salt."','".$hashed_pass."','".$email."');";
+	public function insert_local_login_data($id, $username, $hashed_pass, $salt, $email) {
+		$query = "INSERT INTO `locallogin` (`user_id`,`username`,`salt`,`hash`,`email`)
+				VALUES ('".$id."', '".$username."','".$salt."','".$hashed_pass."','".$email."');";
 		$result = $this->mysqli->query($query);
 		if (!$result) {
 			die('Insert local login data: ' . mysql_error());
