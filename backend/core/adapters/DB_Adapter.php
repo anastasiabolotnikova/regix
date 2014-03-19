@@ -103,7 +103,7 @@ abstract class DB_Adapter {
 	 * @param int $user_id User id in the _User_ table.
 	 * @return string User name.
 	 */
-	abstract public function get_user_name($user_id);
+	//abstract public function get_user_name($user_id);
 	
 	/**
 	 * Get array of user groups from DB by user id.
@@ -113,7 +113,9 @@ abstract class DB_Adapter {
 	 */
 	abstract public function get_user_groups($user_id);
 	
-	abstract public function get_user_email($user_id);
+	//abstract public function get_user_email($user_id);
+	
+	abstract public function get_profile_data($id);
 	
 	/**
 	 * Get array of information needed to perform local login.

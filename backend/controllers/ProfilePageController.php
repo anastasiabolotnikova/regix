@@ -22,6 +22,7 @@ class ProfilePageController extends Controller{
 		$view = new View(REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
 		
 		$view_content->user_name = $model->get_user_name();
+		$view_content->user_login = $model->get_user_login();
 		$view_content->user_email = $model->get_user_email();
 		$view_content->user_group = $model->get_user_groups();
 		
