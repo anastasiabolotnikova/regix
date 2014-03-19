@@ -47,6 +47,10 @@ class User {
 	 */
 	protected $groups;
 	
+	protected $email;
+	
+	protected $login;
+	
 	/**
 	 * Creates a new user object. Downloads data from the database.
 	 * 
@@ -58,7 +62,10 @@ class User {
 	public function __construct($id, $db) {
 		$this->db = $db;
 		$this->id = $id;
-		$this->name = $this->db->get_user_name($id);
+		$prof_data = $this->db->get_profile_data($id);
+		$this->name = $prof_data['username'];
+		$this->login = $prof_data['login'];
+		$this->email = $prof_data['email'];
 		$this->groups = $this->db->get_user_groups($id);
 	}
 	
@@ -72,5 +79,14 @@ class User {
 	 */
 	public function get_name() {
 		return $this->name;
+	}
+	public function get_group() {
+		return $this->groups;
+	}
+	public function get_email() {
+		return $this->email;
+	}
+	public function get_login() {
+		return $this->login;
 	}
 }

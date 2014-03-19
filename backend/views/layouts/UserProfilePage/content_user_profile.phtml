@@ -1,0 +1,19 @@
+<div id="user_profile_container">
+		<table id="user_profile">
+			<tr>
+				<td>Name: <?php echo $this->user_name; ?></td>
+			</tr>
+			<tr>
+				<td>Login: <?php echo $this->user_login; ?></td>
+			</tr>
+			<tr>
+				<td>E-mail: <?php echo $this->user_email; ?></td>
+			</tr>
+			<tr>
+				<td>Group: <?php print_r($this->user_group); //show elements of array in a user-friendly way?></td>
+			</tr>
+			<tr>
+				<td colspan="2"><a href='layout_placeholder_html.phtml'>Back to the main page</a></td>
+			</tr>
+		</table>
+</div>

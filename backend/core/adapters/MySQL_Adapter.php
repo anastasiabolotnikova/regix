@@ -89,7 +89,7 @@ class MySQL_Adapter extends DB_Adapter {
 		return $res;
 	}
 	
-	public function get_user_name($user_id) {
+	/*public function get_user_name($user_id) {
 		
 		$stmt = $this->mysqli->prepare(
 				"select `name`
@@ -111,7 +111,7 @@ class MySQL_Adapter extends DB_Adapter {
 		$stmt->close();
 		
 		return $user_name;
-	}
+	}*/
 	
 	public function get_user_groups($user_id) {
 		
@@ -142,9 +142,35 @@ class MySQL_Adapter extends DB_Adapter {
 		return $result;
 	}
 	
+	/*public function get_user_email($user_id) {
+		
+		$stmt = $this->mysqli->prepare(
+				"select `email`
+				from `locallogin`
+				where `user_id` = (?);");
+		
+		if (!$stmt) self::request_exception("Statement not prepared", __LINE__);
+		
+		if (!$stmt->bind_param("i", $user_id))
+			self::request_exception("Parameters not bound", __LINE__);
+		
+		if (!$stmt->execute())
+			self::request_exception("Request execution failed", __LINE__);
+		
+		if (!$stmt->bind_result($email))
+			self::request_exception("Could not bind result", __LINE__);
+		
+		$stmt->fetch();
+		$stmt->close();
+		
+		
+		return $email;
+		
+	}*/
+	
 	public function get_local_login_data($username) {
 		$stmt = $this->mysqli->prepare(
-				"select `User_id`, `salt`, `hash`, `email`
+				"select `User_id`, `username`, `salt`, `hash`, `email`
 				from `LocalLogin`
 				where `username` = (?)
 				limit 1;");
@@ -157,14 +183,61 @@ class MySQL_Adapter extends DB_Adapter {
 		if (!$stmt->execute())
 			self::request_exception("Request execution failed", __LINE__);
 		
-		if (!$stmt->bind_result($user_id, $salt, $hash, $email))
+		if (!$stmt->bind_result($user_id, $user_name, $salt, $hash, $email))
 			self::request_exception("Could not bind result", __LINE__);
 		
 		if($stmt->fetch()) {
 			$res = array(
 				"user_id" => $user_id,
+				"username" => $user_name,
 				"salt" => $salt,
 				"hash" => $hash,
+				"email" => $email
+			);
+		} else {
+			$res = NULL;
+		}
+		
+		$stmt->close();
+		return $res;
+	}
+	public function insert_local_login_data($username, $hashed_pass, $salt, $email) {
+		$query = "INSERT INTO `locallogin` (`username`,`salt`,`hash`,`email`)
+				VALUES ('".$username."','".$salt."','".$hashed_pass."','".$email."');";
+		$result = $this->mysqli->query($query);
+		if (!$result) {
+			die('Insert local login data: ' . mysql_error());
+		}
+	}
+	public function insert_user_data($name){
+		$query = "INSERT INTO `user` (`name`) VALUES ('".$name."');";
+		$result = $this->mysqli->query($query);
+		if (!$result) {
+			die('Insert user data into Users: ' . mysql_error());
+		}
+	}
+	public function get_profile_data($id) {
+		$stmt = $this->mysqli->prepare(
+				"SELECT name, username, email
+				FROM  `user` 
+				JOIN  `locallogin` ON user.id = locallogin.user_id
+				WHERE user.id = (?)");
+		
+		if (!$stmt) self::request_exception("Statement not prepared", __LINE__);
+		
+		if (!$stmt->bind_param("s", $id))
+			self::request_exception("Parameters not bound", __LINE__);
+		
+		if (!$stmt->execute())
+			self::request_exception("Request execution failed", __LINE__);
+		
+		if (!$stmt->bind_result($user_name, $user_login, $email))
+			self::request_exception("Could not bind result", __LINE__);
+		
+		if($stmt->fetch()) {
+			$res = array(
+				"username" => $user_name,
+				"login" => $user_login,
 				"email" => $email
 			);
 		} else {

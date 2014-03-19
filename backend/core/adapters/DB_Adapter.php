@@ -104,7 +104,7 @@ abstract class DB_Adapter {
 	 * @param int $user_id User id in the _User_ table.
 	 * @return string User name.
 	 */
-	abstract public function get_user_name($user_id);
+	//abstract public function get_user_name($user_id);
 	
 	/**
 	 * Get array of user groups from DB by user id.
@@ -113,6 +113,10 @@ abstract class DB_Adapter {
 	 * @return array List of strings with group names (may be empty).
 	 */
 	abstract public function get_user_groups($user_id);
+	
+	//abstract public function get_user_email($user_id);
+	
+	abstract public function get_profile_data($id);
 	
 	/**
 	 * Get array of information needed to perform local login.
@@ -127,4 +131,8 @@ abstract class DB_Adapter {
 	 * NULL is returned if user is not found.
 	 */
 	abstract public function get_local_login_data($username);
+	
+	abstract public function insert_local_login_data($username, $hashed_pass, $salt, $email);
+	
+	abstract public function insert_user_data($name);
 }
