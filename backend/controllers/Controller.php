@@ -32,8 +32,15 @@ abstract class Controller {
 	protected $args;
 	
 	/**
+	 * Controller id.
+	 * @var int
+	 */
+	protected $id;
+	
+	/**
 	 * Creates a new controller.
 	 * 
+	 * @param int id			controller id
 	 * @param DB_Adapter $db	fully initialized database adapter object.
 	 * @param Session $session	fully initialized session manager.
 	 * @param array|NULL $args	URL arguments.
@@ -65,7 +72,8 @@ abstract class Controller {
 	 *     }
 	 * 
 	 */
-	public function __construct($db, $session, $args) {
+	public function __construct($id, $db, $session, $args) {
+		$this->id = $id;
 		$this->db = $db;
 		$this->session = $session;
 		$this->args = $args;

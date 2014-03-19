@@ -55,10 +55,10 @@ class MySQL_Adapter extends DB_Adapter {
 		}
 	}
 	
-	public function get_controller($controller_uri_name) {
+	public function get_controller_by_uri($controller_uri_name) {
 		
 		$stmt = $this->mysqli->prepare(
-				"select `name`, `file_path`
+				"select `id`, `name`, `file_path`
 				from `Controller`
 				where `uri_name` = (?)
 				and `enabled` = true
@@ -72,11 +72,12 @@ class MySQL_Adapter extends DB_Adapter {
 		if (!$stmt->execute())
 			self::request_exception("Request execution failed", __LINE__);
 		
-		if (!$stmt->bind_result($name, $file_path))
+		if (!$stmt->bind_result($id, $name, $file_path))
 			self::request_exception("Could not bind result", __LINE__);
 		
 		if($stmt->fetch()) {
 			$res = array(
+				'id' => $id,
 				'name' => $name,
 				'file_path' => $file_path,
 			);

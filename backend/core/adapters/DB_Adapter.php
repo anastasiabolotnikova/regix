@@ -89,13 +89,14 @@ abstract class DB_Adapter {
 	 * database model for details)
 	 * 
 	 * @return array|NULL Array should contain the following:
+	 * * id - controller id;
 	 * * name - controller class name;
 	 * * file_path - path to controller implementation.
 	 * Returns NULL if such controller was not found.
 	 * 
 	 * @throws DBRequestException when request cannot be fulfilled.
 	 */
-	abstract public function get_controller($controller_uri_name);
+	abstract public function get_controller_by_uri($controller_uri_name);
 	
 	/**
 	 * Get user name from DB by user id.
