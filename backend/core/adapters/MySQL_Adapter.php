@@ -204,26 +204,39 @@ class MySQL_Adapter extends DB_Adapter {
 		return $res;
 	}
 	public function insert_local_login_data($id, $username, $hashed_pass, $salt, $email) {
-		$query = "INSERT INTO `locallogin` (`user_id`,`username`,`salt`,`hash`,`email`)
-				VALUES ('".$id."', '".$username."','".$salt."','".$hashed_pass."','".$email."');";
-		$result = $this->mysqli->query($query);
-		if (!$result) {
-			die('Insert local login data: ' . mysql_error());
-		}
+		$stmt = $this->mysqli->prepare(
+				"insert into `LocalLogin` (`user_id`,`username`,`salt`,`hash`,`email`)
+				values (?,?,?,?,?);");
+		
+		if (!$stmt) self::request_exception("Statement not prepared", __LINE__);
+		
+		if (!$stmt->bind_param("sssss", $id, $username, $salt, $hashed_pass, $email))
+			self::request_exception("Parameters not bound", __LINE__);
+		
+		if (!$stmt->execute())
+			self::request_exception("Request execution failed", __LINE__);
 	}
+	
 	public function insert_user_data($name){
-		$query = "INSERT INTO `user` (`name`) VALUES ('".$name."');";
-		$result = $this->mysqli->query($query);
-		if (!$result) {
-			die('Insert user data into Users: ' . mysql_error());
-		}
+		$stmt = $this->mysqli->prepare(
+				"insert into `User` (`name`)
+				values (?);");
+		
+		if (!$stmt) self::request_exception("Statement not prepared", __LINE__);
+		
+		if (!$stmt->bind_param("s", $name))
+			self::request_exception("Parameters not bound", __LINE__);
+		
+		if (!$stmt->execute())
+			self::request_exception("Request execution failed", __LINE__);
 	}
+	
 	public function get_profile_data($id) {
 		$stmt = $this->mysqli->prepare(
 				"SELECT name, username, email
-				FROM  `user` 
-				JOIN  `locallogin` ON user.id = locallogin.user_id
-				WHERE user.id = (?)");
+				FROM  `User` 
+				LEFT JOIN  `LocalLogin` ON User.id = LocalLogin.user_id
+				WHERE User.id = (?)");
 		
 		if (!$stmt) self::request_exception("Statement not prepared", __LINE__);
 		

@@ -31,17 +31,17 @@ class RegistrationPageModel extends Model{
 				return False;
 			}
 		}
-		//Passwords aren't same
-		if($password != $repassword){
+		//Passwords aren't same 
+		if(!$password || ($password != $repassword)) {
 			//here we should control if password is strong enough
-			return False;
+			return FALSE;
 		}
-		//User with this e-mail already exists
-		if($email == $e_mail){
-			return False;
+		
+		if (!ctype_alnum($login) or strlen($login) < 1) {
+			return FALSE;
 		}
-		return True;
-		}
+		return TRUE;
+	}
 	
 	public function save_data($name, $username, $password, $email) {
 		$this->db->connect();

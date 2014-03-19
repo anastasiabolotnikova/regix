@@ -81,6 +81,7 @@ define("REGIX", TRUE);
 try {
 	$config = new Config(REGIX_PATH."config/regix.ini");
 } catch (Exception $e) {
+	echo $e->getMessage();
 	exit("Could not load configuration (BL" . __LINE__. ")");
 }
 
