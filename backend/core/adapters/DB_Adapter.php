@@ -132,7 +132,9 @@ abstract class DB_Adapter {
 	 */
 	abstract public function get_local_login_data($username);
 	
-	abstract public function insert_local_login_data($username, $hashed_pass, $salt, $email);
+	abstract public function insert_local_login_data($id, $username, $hashed_pass, $salt, $email);
 	
 	abstract public function insert_user_data($name);
+	
+	abstract public function get_last_id();
 }
