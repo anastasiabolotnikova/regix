@@ -11,6 +11,37 @@ body {
 	width: 100%;
 }
 
+#footer {
+	width: 100%;
+	
+	position: absolute;
+	bottom: 0;
+	
+	padding: 0.5em;
+	
+	border-top: 1px solid #777;
+	
+	color: #777;
+	font-family: 'Helvetica', sans-serif;
+	font-size: 0.8em;
+}
+
+#footer a {
+	color:#777;
+	text-decoration: none;
+}
+
+#footer a:link {}
+#footer a:visited {}
+#footer a:hover {
+	color:#FFF;
+	text-decoration: underline;
+}
+#footer a:active {
+	color:#FFF;
+	text-decoration: underline;
+}
+
 .bl_center {
 	display: block;
 	width: 10em;

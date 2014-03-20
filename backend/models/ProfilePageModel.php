@@ -12,6 +12,13 @@ class ProfilePageModel extends Model {
 		return $this->session->user->get_email();
 	}
 	public function get_user_groups() {
-		return $this->session->user->get_group();
+		
+		$result = array();
+		
+		foreach ($this->session->user->get_groups() as $group) {
+			array_push($result, $group->get_name());
+		}
+			
+		return $result;
 	}
 }

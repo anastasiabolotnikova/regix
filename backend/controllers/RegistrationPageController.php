@@ -15,10 +15,22 @@ class RegistrationPageController extends Controller{
 		}
 		
 		if (isset($_POST['reg_user']) && $_POST['reg_user'] == "Register") {
-			if ($model->plaintextCheck($_POST['name'], $_POST['username'], $_POST['password'],$_POST['repassword'], $_POST['email'])) {
+			
+			if ($model->plaintextCheck(
+					$_POST['name'],
+					$_POST['username'],
+					$_POST['password'],
+					$_POST['repassword'],
+					$_POST['email'])) {
 				// Registered
 				//surround with try
-				$model->save_data($_POST['name'], $_POST['username'], $_POST['password'], $_POST['email']);
+				
+				$model->save_data(
+						$_POST['name'],
+						$_POST['username'],
+						$_POST['password'],
+						$_POST['email']);
+				
 				//and catch if needed
 				$view_content = new View(
 						REGIX_PATH."views/layouts/RegistrationPage/content_registration_success.phtml");

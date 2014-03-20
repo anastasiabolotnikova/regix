@@ -22,24 +22,27 @@ class RegistrationPageModel extends Model{
 	
 	public function plaintextCheck($name, $login, $password, $repassword, $email) {
 		$ll_data = $this->db->get_local_login_data($login);
-		$user_id = $ll_data['user_id'];
-		$username = $ll_data['username'];
-		$e_mail = $ll_data['email'];
-		if($user_id){
-			//If there already is this username
-			if($login == $username){
-				return False;
-			}
-		}
-		//Passwords aren't same 
-		if(!$password || ($password != $repassword)) {
-			//here we should control if password is strong enough
+		
+		if($ll_data){
+			//Login taken
 			return FALSE;
 		}
 		
-		if (!ctype_alnum($login) or strlen($login) < 1) {
+		if($password != $repassword) {
+			//Passwords aren't the same
 			return FALSE;
 		}
+		
+		if(strlen($password) < 1) {
+			//Password is empty
+			return FALSE;
+		}
+		
+		if (strlen($login) < 1 || !ctype_alnum($login)) {
+			// Not a valid login
+			return FALSE;
+		}
+		
 		return TRUE;
 	}
 	

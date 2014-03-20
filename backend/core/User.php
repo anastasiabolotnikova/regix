@@ -5,6 +5,8 @@
  * This file contains User class definition.
  */
 
+require_once REGIX_PATH.'core/Group.php';
+
 /**
  * Regix core user.
  * 
@@ -66,7 +68,11 @@ class User {
 		$this->name = $prof_data['username'];
 		$this->login = $prof_data['login'];
 		$this->email = $prof_data['email'];
-		$this->groups = $this->db->get_user_groups($id);
+		
+		$this->groups = array();
+		foreach ($this->db->get_user_groups($id) as $group_data) {
+			array_push($this->groups, new Group($group_data["Group_name"]));
+		}
 	}
 	
 	/**
@@ -80,7 +86,7 @@ class User {
 	public function get_name() {
 		return $this->name;
 	}
-	public function get_group() {
+	public function get_groups() {
 		return $this->groups;
 	}
 	public function get_email() {

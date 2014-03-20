@@ -21,7 +21,7 @@ class LoginPageModel extends Model{
 	
 	private function plaintextCheck($login, $password) {
 		$ll_data = $this->db->get_local_login_data($login);
-		$user_id = $ll_data['user_id'];
+		$user_id = $ll_data['User_id'];
 		if ($user_id) {
 			$salt = $ll_data['salt'];
 			$hash_real = $ll_data['hash'];
