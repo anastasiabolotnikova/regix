@@ -75,6 +75,16 @@ class MySQL_Adapter extends DB_Adapter {
 		return call_user_func_array(array($stmt, 'bind_result'), $params);
 	}
 	
+	private static function dereference_array($arr) {
+		$res = array();
+		
+		foreach ($arr as $key => $val) {
+			$res[$key] = $val;
+		}
+		
+		return $res;
+	}
+	
 	public function connect() {
 		$this->mysqli = new mysqli(
 				$this->config->db_host,
@@ -199,14 +209,13 @@ class MySQL_Adapter extends DB_Adapter {
 			self::request_exception("Request execution failed", __LINE__,
 					$this->mysqli->error);
 		
-		
-		if (!$this::bind_array($stmt, $result_row))
+		if (!self::bind_array($stmt, $result_row))
 			self::request_exception("Could not bind result", __LINE__,
 					$this->mysqli->error);
 		
 		$result = array();
 		while ($stmt->fetch()) {
-			array_push($result, $result_row);
+			array_push($result, self::dereference_array($result_row));
 		}
 		echo($this->mysqli->error);
 		

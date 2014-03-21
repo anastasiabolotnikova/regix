@@ -29,9 +29,7 @@ class LocalLoginModel extends Model{
 	}
 	
 	static public function password_hash($password, $salt) {
-		if (CRYPT_SHA512 == 1) {
-			return crypt($password, '$6$rounds=5000$' . $salt . '$');
-		}
+		return crypt($password, $salt);
 	}
 	
 	static public function gen_salt($algo) {

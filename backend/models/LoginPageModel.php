@@ -17,20 +17,20 @@ class LoginPageModel extends Model{
 				"local_login",
 				array("user_id", "login", "salt", "hash", "email"),
 				"issss",
-				array("login" => $login), 1)[0];
+				array("login" => $login), 1);
 		
 		if (!$ll_data) {
 			// Login not found
 			return FALSE;
 		}
 		
-		$salt = $ll_data['salt'];
-		$hash_real = $ll_data['hash'];
+		$salt = $ll_data[0]['salt'];
+		$hash_real = $ll_data[0]['hash'];
 		$hash_this = LocalLoginModel::password_hash($password, $salt);
 		
 		if ($hash_real == $hash_this) {
 			// Login OK
-			return $ll_data['user_id'];
+			return $ll_data[0]['user_id'];
 		} else {
 			// Wrong password.
 			return FALSE;
