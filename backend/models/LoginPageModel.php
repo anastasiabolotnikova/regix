@@ -1,39 +1,38 @@
 <?php
 require_once REGIX_PATH.'models/Model.php';
 
+try {
+	require_once REGIX_PATH.'models/LocalLoginModel.php';
+} catch (Exception $e) {
+	exit("LoginPage component requires LocalLogin component!");
+}
+
 class LoginPageModel extends Model{
 	
-	static private function password_hash($password, $salt) {
-		if (CRYPT_SHA512 == 1) {
-			return crypt($password, '$6$rounds=5000$' . $salt . '$');
-		}
-	}
-	
-	static private function gen_salt($algo) {
-		switch ($algo) {
-			case "SHA512":
-			default:
-				$tpl = '$6$rounds=5000$%s$';
-		}
-		$result = sprintf($tpl, base64_encode(uniqid(mt_rand(), TRUE)));
-		return $result;
-	}
+	protected $local_login_model;
 	
 	private function plaintextCheck($login, $password) {
-		$ll_data = $this->db->get_local_login_data($login);
-		$user_id = $ll_data['User_id'];
-		if ($user_id) {
-			$salt = $ll_data['salt'];
-			$hash_real = $ll_data['hash'];
-			$hash_this = LoginPageModel::password_hash($password, $salt);
-			if ($hash_real == $hash_this) {
-				return $user_id;
-			} else {
-				// Wrong password.
-				return FALSE;
-			}
+		
+		$ll_data = $this->db->select(
+				"LocalLogin",
+				array("User_id", "username", "salt", "hash", "email"),
+				"issss",
+				array("username" => $login), 1)[0];
+		
+		if (!$ll_data) {
+			// Login not found
+			return FALSE;
+		}
+		
+		$salt = $ll_data['salt'];
+		$hash_real = $ll_data['hash'];
+		$hash_this = LocalLoginModel::password_hash($password, $salt);
+		
+		if ($hash_real == $hash_this) {
+			// Login OK
+			return $ll_data['User_id'];
 		} else {
-			// User not in the database.
+			// Wrong password.
 			return FALSE;
 		}
 	}

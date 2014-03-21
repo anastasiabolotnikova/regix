@@ -1,30 +1,57 @@
 <?php
 require_once REGIX_PATH.'models/Model.php';
 
+try {
+	require_once REGIX_PATH.'models/LocalLoginModel.php';
+} catch (Exception $e) {
+	exit("RegistrationPage component requires LocalLogin component!");
+}
+
 
 class RegistrationPageModel extends Model{
 	
-	static private function password_hash($password, $salt) {
-		if (CRYPT_SHA512 == 1) {
-			return crypt($password, '$6$rounds=5000$' . $salt . '$');
-		}
-	}
+	protected $local_login_model;
 	
-	static private function gen_salt($algo) {
-		switch ($algo) {
-			case "SHA512":
-			default:
-				$tpl = '$6$rounds=5000$%s$';
-		}
-		$result = sprintf($tpl, base64_encode(uniqid(mt_rand(), TRUE)));
-		return $result;
-	}
-	
-	public function plaintextCheck($name, $login, $password, $repassword, $email) {
-		$ll_data = $this->db->get_local_login_data($login);
+	public function plaintextCheck(
+			$name,
+			$login,
+			$password,
+			$repassword,
+			$email) {
 		
-		if($ll_data){
-			//Login taken
+		// Check login
+		
+		if (strlen($login) < 1 || !ctype_alnum($login)) {
+			// Not a valid login
+			return FALSE;
+		}
+		
+		$login_in_db = $this->db->select(
+				"LocalLogin",
+				array("User_id"),
+				"i",
+				array("username" => $login), 1);
+		
+		if ($login_in_db) {
+			return FALSE;
+		}
+		
+		// Check email
+		
+		$email_in_db = $this->db->select(
+				"LocalLogin",
+				array("User_id"),
+				"i",
+				array("email" => $email), 1);
+		
+		if ($email_in_db) {
+			return FALSE;
+		}
+		
+		// Check passwords
+		
+		if(strlen($password) < 1) {
+			//Password is empty
 			return FALSE;
 		}
 		
@@ -33,26 +60,23 @@ class RegistrationPageModel extends Model{
 			return FALSE;
 		}
 		
-		if(strlen($password) < 1) {
-			//Password is empty
-			return FALSE;
-		}
-		
-		if (strlen($login) < 1 || !ctype_alnum($login)) {
-			// Not a valid login
-			return FALSE;
-		}
-		
 		return TRUE;
 	}
 	
 	public function save_data($name, $username, $password, $email) {
-		$this->db->connect();
-		$salt = RegistrationPageModel::gen_salt("");
-		$hashed_pass = RegistrationPageModel::password_hash($password, $salt);
-		$this->db->insert_user_data($name);
-		$id = $this->db->get_last_id();
-		$this->db->insert_local_login_data($id, $username, $hashed_pass, $salt, $email);
+		
+		$salt = LocalLoginModel::gen_salt("SHA512");
+		$hashed_pass = LocalLoginModel::password_hash($password, $salt);
+		
+		$this->db->insert("User", array("name" => $name));
+		$this->db->insert("LocalLogin",
+				array(
+						"user_id" 	=> $this->db->get_last_id(),
+						"username" 	=> $username,
+						"salt" 		=> $salt,
+						"hash"		=> $hashed_pass,
+						"email"		=> $email,
+				));
 	}
 	
 }

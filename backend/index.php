@@ -133,13 +133,20 @@ $parts = explode("/", $_GET['uri'], 2);
 $controller_uri_name = $parts[0];
 $controller_args = isset($parts[1]) ? explode("/", $parts[1]) : NULL;
 
-$controller_data = $db->get_controller_by_uri($controller_uri_name);
+$controller_data = $db->select(
+		"Controller",
+		array("id", "name", "file_path"),
+		"iss",
+		array(
+				"uri_name" => $controller_uri_name,
+				"enabled" => 1,
+		), 1);
 
-if (isset($controller_data['name'])) {
+if ($controller_data) {
 	// Controller found in the DB.
-	$controller_name = $controller_data['name'];
-	$controller_path = REGIX_PATH.$controller_data['file_path'];
-	$controller_id = $controller_data['id'];
+	$controller_name = $controller_data[0]["name"];
+	$controller_path = REGIX_PATH.$controller_data[0]["file_path"];
+	$controller_id = $controller_data[0]["id"];
 } else {
 	// Load default controller.
 	try {

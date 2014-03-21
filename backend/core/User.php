@@ -49,10 +49,6 @@ class User {
 	 */
 	protected $groups;
 	
-	protected $email;
-	
-	protected $login;
-	
 	/**
 	 * Creates a new user object. Downloads data from the database.
 	 * 
@@ -66,14 +62,24 @@ class User {
 		$this->id = $id;
 		$prof_data = $this->db->get_profile_data($id);
 		$this->name = $prof_data['username'];
-		$this->login = $prof_data['login'];
-		$this->email = $prof_data['email'];
+		
+		$groups_data = $result_rows = $this->db->select(
+				"User_has_Group",
+				array("Group_name"),
+				"issss",
+				array("User_id" => $id), 1000);
 		
 		$this->groups = array();
-		foreach ($this->db->get_user_groups($id) as $group_data) {
+		foreach ($groups_data as $group_data) {
 			array_push($this->groups, new Group($group_data["Group_name"]));
 		}
 	}
+	
+	
+	public function get_id() {
+		return $this->id;
+	}
+	
 	
 	/**
 	 * Returns user name.
@@ -86,13 +92,8 @@ class User {
 	public function get_name() {
 		return $this->name;
 	}
+	
 	public function get_groups() {
 		return $this->groups;
-	}
-	public function get_email() {
-		return $this->email;
-	}
-	public function get_login() {
-		return $this->login;
 	}
 }
