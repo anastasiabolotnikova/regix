@@ -5,7 +5,7 @@ class LocalLoginModel extends Model{
 	
 	protected $initialized = FALSE;
 	
-	protected $username;
+	protected $login;
 	protected $salt;
 	protected $hash;
 	protected $email;
@@ -16,12 +16,14 @@ class LocalLoginModel extends Model{
 					"local_login",
 					array("user_id", "login", "salt", "hash", "email"),
 					"issss",
-					array("user_id" => $this->session->user->get_id()), 1)[0];
+					array("user_id" => $this->session->user->get_id()), 1);
 			
-			$this->login = $user_data["login"];
-			$this->salt = $user_data["salt"];
-			$this->hash = $user_data["hash"];
-			$this->email = $user_data["email"];
+			if ($user_data) {
+				$this->login = $user_data[0]["login"];
+				$this->salt = $user_data[0]["salt"];
+				$this->hash = $user_data[0]["hash"];
+				$this->email = $user_data[0]["email"];
+			}
 			$this->initialized = TRUE;
 		}
 	}
