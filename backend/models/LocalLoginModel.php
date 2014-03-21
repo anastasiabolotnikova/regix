@@ -13,12 +13,12 @@ class LocalLoginModel extends Model{
 	protected function init() {
 		if (!$this->initialized) {
 			$user_data = $this->db->select(
-					"LocalLogin",
-					array("User_id", "username", "salt", "hash", "email"),
+					"local_login",
+					array("user_id", "login", "salt", "hash", "email"),
 					"issss",
-					array("User_id" => $this->session->user->get_id()), 1)[0];
+					array("user_id" => $this->session->user->get_id()), 1)[0];
 			
-			$this->username = $user_data["username"];
+			$this->login = $user_data["login"];
 			$this->salt = $user_data["salt"];
 			$this->hash = $user_data["hash"];
 			$this->email = $user_data["email"];
@@ -44,7 +44,7 @@ class LocalLoginModel extends Model{
 	
 	public function get_user_login() {
 		$this->init();
-		return $this->username;
+		return $this->login;
 	}
 	
 	public function get_user_email() {

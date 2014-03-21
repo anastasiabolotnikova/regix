@@ -27,10 +27,10 @@ class RegistrationPageModel extends Model{
 		}
 		
 		$login_in_db = $this->db->select(
-				"LocalLogin",
-				array("User_id"),
+				"local_login",
+				array("user_id"),
 				"i",
-				array("username" => $login), 1);
+				array("login" => $login), 1);
 		
 		if ($login_in_db) {
 			return FALSE;
@@ -39,8 +39,8 @@ class RegistrationPageModel extends Model{
 		// Check email
 		
 		$email_in_db = $this->db->select(
-				"LocalLogin",
-				array("User_id"),
+				"local_login",
+				array("user_id"),
 				"i",
 				array("email" => $email), 1);
 		
@@ -63,16 +63,16 @@ class RegistrationPageModel extends Model{
 		return TRUE;
 	}
 	
-	public function save_data($name, $username, $password, $email) {
+	public function save_data($name, $login, $password, $email) {
 		
 		$salt = LocalLoginModel::gen_salt("SHA512");
 		$hashed_pass = LocalLoginModel::password_hash($password, $salt);
 		
-		$this->db->insert("User", array("name" => $name));
-		$this->db->insert("LocalLogin",
+		$this->db->insert("user", array("name" => $name));
+		$this->db->insert("local_login",
 				array(
 						"user_id" 	=> $this->db->get_last_id(),
-						"username" 	=> $username,
+						"login" 	=> $login,
 						"salt" 		=> $salt,
 						"hash"		=> $hashed_pass,
 						"email"		=> $email,

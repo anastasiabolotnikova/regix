@@ -11,13 +11,13 @@ class LoginPageModel extends Model{
 	
 	protected $local_login_model;
 	
-	private function plaintextCheck($login, $password) {
+	private function plaintext_check($login, $password) {
 		
 		$ll_data = $this->db->select(
-				"LocalLogin",
-				array("User_id", "username", "salt", "hash", "email"),
+				"local_login",
+				array("user_id", "login", "salt", "hash", "email"),
 				"issss",
-				array("username" => $login), 1)[0];
+				array("login" => $login), 1)[0];
 		
 		if (!$ll_data) {
 			// Login not found
@@ -30,7 +30,7 @@ class LoginPageModel extends Model{
 		
 		if ($hash_real == $hash_this) {
 			// Login OK
-			return $ll_data['User_id'];
+			return $ll_data['user_id'];
 		} else {
 			// Wrong password.
 			return FALSE;
@@ -38,7 +38,7 @@ class LoginPageModel extends Model{
 	}
 	
 	public function auth_plain($login, $password) {
-		if ($user_id = $this->plaintextCheck($login, $password)) {
+		if ($user_id = $this->plaintext_check($login, $password)) {
 			$this->session->user = new User($user_id, $this->db);
 			return TRUE;
 		} else {

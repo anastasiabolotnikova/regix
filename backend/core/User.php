@@ -64,14 +64,14 @@ class User {
 		$this->name = $prof_data['username'];
 		
 		$groups_data = $result_rows = $this->db->select(
-				"User_has_Group",
-				array("Group_name"),
+				"user_has_group",
+				array("group_name"),
 				"issss",
-				array("User_id" => $id), 1000);
+				array("user_id" => $id), 1000);
 		
 		$this->groups = array();
 		foreach ($groups_data as $group_data) {
-			array_push($this->groups, new Group($group_data["Group_name"]));
+			array_push($this->groups, new Group($group_data["group_name"]));
 		}
 	}
 	

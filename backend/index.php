@@ -134,7 +134,7 @@ $controller_uri_name = $parts[0];
 $controller_args = isset($parts[1]) ? explode("/", $parts[1]) : NULL;
 
 $controller_data = $db->select(
-		"Controller",
+		"controller",
 		array("id", "name", "file_path"),
 		"iss",
 		array(

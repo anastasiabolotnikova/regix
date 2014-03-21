@@ -101,10 +101,10 @@ class MySQL_Adapter extends DB_Adapter {
 	
 	public function get_profile_data($id) {
 		$stmt = $this->mysqli->prepare(
-				"SELECT name, username, email
-				FROM  `User` 
-				LEFT JOIN  `LocalLogin` ON User.id = LocalLogin.user_id
-				WHERE User.id = (?)");
+				"SELECT name, login, email
+				FROM  `user` 
+				LEFT JOIN  `local_login` ON user.id = local_login.user_id
+				WHERE user.id = (?)");
 		
 		if (!$stmt) self::request_exception("Statement not prepared", __LINE__);
 		
