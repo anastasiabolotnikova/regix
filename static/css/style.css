@@ -1,20 +1,100 @@
+/* Generic styles */
+
 body {
 	margin: 0;
 	padding: 0;
 	border: 0;
+	
 	background-color: black;
 	color: white;
+	
+	font-family: 'Helvetica', sans-serif;
 }
+
+table {
+	margin: 0.5em;
+	
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+table td, table th {
+	padding: 0.5em;
+	
+	border: 0;
+}
+
+.table_borders td, th {
+	border: 1px solid #777
+}
+
+input {
+	padding: 0.5em;
+	border: 1px solid black;
+	border-radius: 5px;
+	
+	background-color: #eeeeec;
+}
+
+input[type="submit"]{
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	padding-left: 1em;
+	padding-right: 1em;
+	border: 1px solid black;
+	border-radius: 5px;
+}
+
+input[type="submit"]:HOVER{
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	padding-left: 1em;
+	padding-right: 1em;
+	border: 1px solid black;
+	border-radius: 5px;
+	
+	background-color: #babdb6;
+	
+	cursor: pointer;
+}
+
+
+/* Containers */
 
 .container {
 	height: 100%;
 	width: 100%;
 }
 
-#footer {
+
+
+/* Header styles */
+
+.header {
 	width: 100%;
 	
-	position: absolute;
+	position: relative;
+	top: 0;
+	
+	padding: 0.5em;
+	
+	border-bottom: 1px solid #777;
+	
+	color: #777;
+	font-size: 0.8em;
+}
+
+.warning_dark {
+	background-color: #a40000;
+	color: #fff;
+}
+
+/* Footer styles */
+
+.footer {
+	width: 100%;
+	
+	position: fixed;
 	bottom: 0;
 	
 	padding: 0.5em;
@@ -22,36 +102,38 @@ body {
 	border-top: 1px solid #777;
 	
 	color: #777;
-	font-family: 'Helvetica', sans-serif;
 	font-size: 0.8em;
 }
 
-#footer a {
+.footer a {
 	color:#777;
 	text-decoration: none;
 }
 
-#footer a:link {}
-#footer a:visited {}
-#footer a:hover {
+.footer a:link {}
+.footer a:visited {}
+.footer a:hover {
 	color:#FFF;
 	text-decoration: underline;
 }
-#footer a:active {
+.footer a:active {
 	color:#FFF;
 	text-decoration: underline;
 }
 
+
+
+/* Main page styles */
 .bl_center {
 	display: block;
 	width: 10em;
-	height: 1.4em;
+	height: 1em;
 	
 	position: relative;
 	margin: 0 auto;
-	margin-top: 30px;
-	padding-top: 1em;
-	padding-bottom: 1em;
+	margin-top: 0.5em;
+	padding-top: 0.4em;
+	padding-bottom: 0.8em;
 	
 	text-align: center;
 	font-family: 'Roboto', 'Helvetica', sans-serif;
@@ -80,11 +162,5 @@ body {
 	border-bottom: 1px solid #777;
 	
 	color: #777;
-	font-family: 'Helvetica', sans-serif;
 	font-size: 0.8em;
-}
-
-#user_profile {
-	border-spacing: 0.5em;
-	border-collapse: separate;
 }

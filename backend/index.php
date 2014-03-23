@@ -172,6 +172,9 @@ try {
 		exit("Controller not loaded (BL" . __LINE__ . ").");
 	}
 } catch (Exception $e) {
+	if ($config->debug_db) {
+		echo($e->getMessage());
+	}
 	$db->close();
 	exit("Controller error (BL" . __LINE__ . ").");
 }

@@ -132,4 +132,12 @@ abstract class DB_Adapter {
 	 * and underscores).
 	 */
 	abstract public function insert($table, $data);
+	
+	
+	
+	abstract public function query($query, $params=NULL, $param_types=NULL);
+	
+	// User manager
+	
+	abstract public function select_all_users_with_local_login();
 }

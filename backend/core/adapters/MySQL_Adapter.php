@@ -139,8 +139,7 @@ class MySQL_Adapter extends DB_Adapter {
 		
 		$stmt->close();
 		return $res;
-	}
-	
+	}	
 	
 	public function select($table, $fields, $types, $filters, $limit = 0) {
 		
@@ -291,5 +290,66 @@ class MySQL_Adapter extends DB_Adapter {
 					$this->mysqli->error);
 		
 		$stmt->close();
+	}
+	
+	public function query($query, $params=NULL, $param_types=NULL) {
+		
+		$stmt = $this->mysqli->prepare($query);
+		
+		if (!$stmt) self::request_exception("Statement not prepared", __LINE__);
+		
+		if ($params) {
+			array_unshift($params, $param_types);
+			
+			$bind_res = call_user_func_array(array($stmt, 'bind_param'),
+					$this::make_refs($params));
+			
+			if (!$bind_res)
+				self::request_exception("Parameters not bound", __LINE__);
+		}
+		
+		if (!$stmt->execute())
+			self::request_exception("Request execution failed", __LINE__,
+					$this->mysqli->error);
+		
+		if (!self::bind_array($stmt, $result_row))
+			self::request_exception("Could not bind result", __LINE__,
+					$this->mysqli->error);
+		
+		$result = array();
+		while ($stmt->fetch()) {
+			array_push($result, self::dereference_array($result_row));
+		}
+		echo($this->mysqli->error);
+		
+		$stmt->close();
+		return $result;
+	}
+	
+	
+	// User manager
+	
+	public function select_all_users_with_local_login() {
+		$query = "select id, name, login, email
+				from  `user`
+				left join  `local_login`
+				on `user`.`id` = `local_login`.`user_id`";
+	
+		return $this->query($query);
+	}
+	
+	public function select_all_groups_with_user_mark($user_id) {
+		$query = "
+				select distinct
+					`group`.`name` as `group_name`,
+					max(`user_has_group`.`user_id` = ?) as `user_registered`
+				from `group`
+				join `user_has_group`
+				on `group`.`name` = `user_has_group`.`group_name`
+				group by `group_name`
+				order by `group_name`;
+				";
+		
+		return $this->query($query, array($user_id), "i");
 	}
 }
