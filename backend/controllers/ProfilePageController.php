@@ -19,17 +19,19 @@ class ProfilePageController extends Controller{
 					REGIX_PATH."views/layouts/UserProfilePage/content_user_profile.phtml");
 		$title = "Registration :: Regix";
 		
-		$view = new View(REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
+		$view_outer = new View(REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
+		
 		
 		$view_content->user_name = $model->get_user_name();
 		$view_content->user_login = $model->get_user_login();
 		$view_content->user_email = $model->get_user_email();
 		$view_content->user_group = $model->get_user_groups();
 		
-		$view->title = $title;
-		$view->content = $view_content->render(FALSE);
+		$view_outer->user_name = $model->get_user_name();
+		$view_outer->title = $title;
+		$view_outer->content = $view_content->render(FALSE);
 		
-		$view->render(TRUE);
+		$view_outer->render(TRUE);
 		return TRUE;
 	}
 }

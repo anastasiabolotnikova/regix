@@ -25,7 +25,7 @@ class UserManagerController extends Controller {
 		$model = new UserManagerModel($this->db, $this->session);
 		
 		$view_outer = new View(
-				REGIX_PATH."views/layouts/layout_admin_xhtml.phtml");
+				REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
 		
 		if ($this->args[0] && $this->args[0] == "edit" && $this->args[1]) {
 			
@@ -47,7 +47,8 @@ class UserManagerController extends Controller {
 			$view_outer->title = "User Account Control - Regix";
 			$view_outer->content = "<span>NOT IMPLEMENTED</span>";
 		
-		} else if ($this->args[0] && $this->args[0] == "save") {
+		} else if ($this->args[0] && $this->args[0] == "save"
+			&& isset($_POST["submit"])) {
 			
 			// Save user
 				
@@ -67,7 +68,8 @@ class UserManagerController extends Controller {
 			$view_outer->title = "User Account Control - Regix";
 			$view_outer->content = $view_inner->render(FALSE);
 		}
-			
+		
+		$view_outer->user_name = $model->get_user_name();
 		$view_outer->render(TRUE);
 		
 		return TRUE;

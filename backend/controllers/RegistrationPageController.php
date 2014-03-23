@@ -35,6 +35,7 @@ class RegistrationPageController extends Controller{
 				$view_content = new View(
 						REGIX_PATH."views/layouts/RegistrationPage/content_registration_success.phtml");
 				$title = "Registered :: Regix";
+				$view_content->user_name = $_POST['name'];
 			} else {
 				// Registration failed
 				$view_content = new View(
@@ -48,11 +49,12 @@ class RegistrationPageController extends Controller{
 			$title = "Registration :: Regix";
 		}
 		
-		$view = new View(REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
-		$view->title = $title;
-		$view->content = $view_content->render(FALSE);
+		$view_outer = new View(REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
+		$view_outer->title = $title;
+		$view_outer->user_name = $model->get_user_name();
+		$view_outer->content = $view_content->render(FALSE);
 		
-		$view->render(TRUE);
+		$view_outer->render(TRUE);
 		return TRUE;
 	}
 }

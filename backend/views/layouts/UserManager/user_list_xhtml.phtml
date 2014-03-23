@@ -1,35 +1,32 @@
-<table class="table_borders">
-	<thead>
-		<tr><th>ID</th><th>Name</th><th>Login</th><th>Email</th></tr>
-	</thead>
-	<tbody>
-<?php
-	if ($this->users){
-		foreach ($this->users as $user) {
-?>
-			<tr>
-				<td>
-					<a href="/
-						<?php echo $this->editor_uri; ?>
-						/edit/
+<div id="user_manager_list_container" class="table_container">
+	<div class="title_block">Users</div>
+	<table class="table_borders highlight_row cursor_pointer">
+		<thead>
+			<tr><th>ID</th><th>Name</th><th>Login</th><th>Email</th></tr>
+		</thead>
+		<tbody>
+	<?php
+		if ($this->users){
+			foreach ($this->users as $user) {
+	?>
+				<tr onclick="location.href='/<?php echo $this->editor_uri; ?>/edit/<?php echo $user['id']; ?>'">
+					<td>
 						<?php echo $user['id']; ?>
-					">
-						<?php echo $user['id']; ?>
-					</a>
-				</td>
-				<td>
-					<?php echo $user['name']; ?>
-				</td>
-				<td>
-					<?php echo $user['login']; ?>
-				</td>
-				<td>
-					<?php echo $user['email']; ?>
-				</td>
-			</tr>
-<?php
-		} 
-	}
-?>
-	</tbody>
-</table>
+					</td>
+					<td>
+						<?php echo $user['name']; ?>
+					</td>
+					<td>
+						<?php echo $user['login']; ?>
+					</td>
+					<td>
+						<?php echo $user['email']; ?>
+					</td>
+				</tr>
+	<?php
+			} 
+		}
+	?>
+		</tbody>
+	</table>
+</div>

@@ -1,17 +1,18 @@
-<div id="user_bar"><?php echo $this->user_name; ?></div>
-<div id="user_profile_container">
-		<table id="user_profile">
+<div id="user_profile_container" class="table_container">
+	<div class="title_block"><?php echo $this->user_name; ?></div>
+	<table id="user_profile" class="table_borders">
+		<tbody>
 			<tr>
-				<td>Name:</td><td><?php echo $this->user_name; ?></td>
+				<th>Name:</th><td><?php echo $this->user_name; ?></td>
 			</tr>
 			<tr>
-				<td>Login:</td><td><?php echo $this->user_login; ?></td>
+				<th>Login:</th><td><?php echo $this->user_login; ?></td>
 			</tr>
 			<tr>
-				<td>E-mail:</td><td><?php echo $this->user_email; ?></td>
+				<th>E-mail:</th><td><?php echo $this->user_email; ?></td>
 			</tr>
 			<tr>
-				<td>Groups:</td>
+				<th>Groups:</th>
 				<td>
 					<?php
 					foreach ($this->user_group as $group_name) {
@@ -21,5 +22,6 @@
 					?>
 				</td>
 			</tr>
-		</table>
+		</tbody>
+	</table>
 </div>

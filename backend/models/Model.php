@@ -23,4 +23,8 @@ class Model {
 		$this->db = $db;
 		$this->session = $session;
 	}
+	
+	public function get_user_name() {
+		return $this->session->user->get_name();
+	}
 }

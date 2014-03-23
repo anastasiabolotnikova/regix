@@ -12,9 +12,18 @@
 	
 	<div id="container">
 		
-		<?php echo $this->content; ?>
+		<div id="header"><div id="header_user">Signed in as <a href="/prof"><?php echo $this->user_name; ?></a> <a href="/login/logout" class="no_deco">&times;</a></div></div>
 		
-		<div class="footer"><a href="/">&lt;&lt; Back to the main page</a></div>
+		<div id="content">
+			<?php echo $this->content; ?>
+			<div class="push"></div>
+		</div>
+		
+		<div id="footer">
+			<div id="footer_content">
+				<a href="/">&lt;&lt; Back to the main page</a>
+			</div>
+		</div>
 		
 	</div>
 

@@ -140,4 +140,6 @@ abstract class DB_Adapter {
 	// User manager
 	
 	abstract public function select_all_users_with_local_login();
+	
+	abstract public function select_all_groups_with_user_mark($user_id);
 }

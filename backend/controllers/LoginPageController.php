@@ -21,7 +21,7 @@ class LoginPageController extends Controller{
 					REGIX_PATH."views/layouts/LoginPage/content_logout.phtml");
 			$title = "Logged out :: Regix";
 			
-		} else if (isset($_POST['login_b']) && $_POST['login_b'] == "Log In") {
+		} else if (isset($_POST['login_b'])) {
 			// Log in (form)
 			if ($model->auth_plain($_POST['login'], $_POST['password'])) {
 				// Logged in
@@ -41,11 +41,12 @@ class LoginPageController extends Controller{
 			$title = "Login :: Regix";
 		}
 		
-		$view = new View(REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
-		$view->title = $title;
-		$view->content = $view_content->render(FALSE);
+		$view_outer = new View(REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
+		$view_outer->title = $title;
+		$view_outer->user_name = $model->get_user_name();
+		$view_outer->content = $view_content->render(FALSE);
 		
-		$view->render(TRUE);
+		$view_outer->render(TRUE);
 		return TRUE;
 	}
 }

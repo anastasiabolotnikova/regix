@@ -17,9 +17,7 @@ class ProfilePageModel extends Model {
 		$this->local_login_model = new LocalLoginModel($db, $session);
 	}
 	
-	public function get_user_name() {
-		return $this->session->user->get_name();
-	}
+	
 	public function get_user_login() {
 		return $this->local_login_model->get_user_login();
 	}
