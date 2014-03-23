@@ -4,12 +4,13 @@ require_once REGIX_PATH.'models/Model.php';
 class UserManagerModel extends Model{
 	
 	public function get_editor_uri($id) {
-		return $this->db->select(
+		$res = $this->db->select(
 				"controller",
 				array("uri_name"),
 				"s",
 				array("id" => $id),
-				1)[0]["uri_name"];
+				1);
+		return $res[0]["uri_name"];
 	}
 	
 	public function get_user_array() {
