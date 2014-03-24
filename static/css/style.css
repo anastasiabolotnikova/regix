@@ -57,7 +57,7 @@ table td, table th {
 }
 
 table.table_borders td, table.table_borders th {
-	border: 1px solid #777
+	border: 1px solid #777;
 }
 
 table.highlight_row tr:HOVER td{
@@ -263,7 +263,7 @@ button {
 	
 	text-align: center;
 	font-family: 'Roboto', 'Helvetica', sans-serif;
-	font-size: 3em;
+	font-size: 2.3em;
 	text-decoration:none;
 	color: white;
 	
@@ -282,6 +282,11 @@ button {
 	outline-style: solid;
 }
 
+/* LoginPage */
+
+#login_form_container th {
+	width: 5em;
+}
 
 /* User profile */
 
@@ -314,6 +319,44 @@ button {
 }
 
 #user_manager_editor_container table th.table_section_header {
+	text-align: center;
+	font-family: 'Roboto', 'Helvetica', sans-serif;
+	font-size: 2em;
+}
+
+/* ControllerManager */
+
+#controller_manager_list_container {
+	width: 90%;
+}
+
+#controller_manager_list_add_container {
+	text-align: center;
+}
+
+#controller_manager_list_add_container button {
+	padding-left: 3em;
+	padding-right: 3em;
+}
+
+#controller_manager_editor_container {
+	width: 40em;
+}
+
+#controller_manager_editor_container th, #controller_manager_editor_container td {
+	/*border: 1px solid #777;*/
+}
+
+#controller_manager_editor_container th {
+	width: 8em;
+	text-align: left;
+}
+
+#controller_manager_editor_container input[type="submit"] {
+	width: 49.5%;
+}
+
+#controller_manager_editor_container table th.table_section_header {
 	text-align: center;
 	font-family: 'Roboto', 'Helvetica', sans-serif;
 	font-size: 2em;

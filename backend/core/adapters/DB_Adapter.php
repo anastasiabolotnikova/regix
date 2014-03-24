@@ -158,4 +158,13 @@ abstract class DB_Adapter {
 	abstract public function delete_all_user_groups($id);
 	
 	abstract public function insert_user_group($user_id, $group_name);
+	
+	// Controller manager
+	
+	abstract public function select_all_controllers();
+	
+	abstract public function select_controller($controller_id);
+	
+	abstract public function update_controller($id, $name, $description,
+			$enabled, $uri_name, $file_path);
 }

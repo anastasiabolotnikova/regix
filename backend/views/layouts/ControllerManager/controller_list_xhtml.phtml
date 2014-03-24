@@ -1,0 +1,43 @@
+<div id="controller_manager_list_container" class="table_container">
+	<div class="title_block">Controllers</div>
+	<table class="table_borders highlight_row cursor_pointer">
+		<thead>
+			<tr><th>ID</th><th>Name</th><th>Description</th><th>Status</th><th>URL</th><th>Path</th></tr>
+		</thead>
+		<tbody>
+	<?php
+		if ($this->controllers){
+			foreach ($this->controllers as $controller) {
+	?>
+				<tr onclick="location.href='/<?php echo $this->editor_uri; ?>/edit/<?php echo $controller['id']; ?>'">
+					<td>
+						<?php echo $controller['id']; ?>
+					</td>
+					<td>
+						<?php echo $controller['name']; ?>
+					</td>
+					<td>
+						<?php echo $controller['description']; ?>
+					</td>
+					<td>
+						<?php if($controller['enabled']) {
+							echo "enabled";
+						} else {
+							echo "disabled";
+						}; ?>
+					</td>
+					<td>
+						<?php echo $controller['uri_name']; ?>
+					</td>
+					<td>
+						<?php echo $controller['file_path']; ?>
+					</td>
+				</tr>
+	<?php
+			} 
+		}
+	?>
+		</tbody>
+	</table>
+	<div id="controller_manager_list_add_container"><button onclick="location.href='/<?php echo $this->editor_uri; ?>/add'">Add controller</button></div>
+</div>

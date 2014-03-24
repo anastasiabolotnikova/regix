@@ -434,4 +434,43 @@ class MySQL_Adapter extends DB_Adapter {
 	
 		return $this->query($query, array($user_id, $group_name), "is", FALSE);
 	}
+	
+	// Controller manager
+	
+	public function select_all_controllers() {
+		$query = "
+				select `id`,`name`,`description`,`enabled`,`uri_name`,`file_path`
+				from  `controller`;
+				";
+	
+		return $this->query($query);
+	}
+	
+	public function select_controller($controller_id) {
+		$query = "
+				select `id`,`name`,`description`,`enabled`,`uri_name`,`file_path`
+				from  `controller`
+				where `id` = ?;
+				";
+	
+		return $this->query($query, array($controller_id), "i");
+	}
+	
+	public function update_controller($id, $name, $description, $enabled, 
+			$uri_name, $file_path) {
+		
+		$query = "
+				update `controller`
+				set
+					`name` = ?,
+					`description` = ?,
+					`enabled` = ?,
+					`uri_name` = ?,
+					`file_path` = ?
+				where `id`=?;
+				";
+		
+		return $this->query($query, array($name, $description, $enabled,
+				$uri_name, $file_path, $id), "ssissi", FALSE);
+	}
 }
