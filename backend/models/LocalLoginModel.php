@@ -32,6 +32,10 @@ class LocalLoginModel extends Model{
 		return crypt($password, $salt);
 	}
 	
+	static public function is_password_good($password) {
+		return strlen($password) > 1;
+	}
+	
 	static public function gen_salt($algo) {
 		switch ($algo) {
 			case "SHA512":

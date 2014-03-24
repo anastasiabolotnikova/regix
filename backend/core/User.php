@@ -61,6 +61,11 @@ class User {
 		$this->db = $db;
 		$this->id = $id;
 		$prof_data = $this->db->get_profile_data($id);
+		
+		if (!$prof_data) {
+			throw new Exception("User does not exist");
+		}
+		
 		$this->name = $prof_data['username'];
 		
 		$groups_data = $result_rows = $this->db->select(

@@ -115,16 +115,23 @@ $db->connect();
 // UAC
 
 $session = new Session();
-if (!$user = $session->user) {
+if (!$session->user) {
 	// There is no user stored in the session.
 	try {
-		$user = new User($config->default_user_id, $db);
+		//$session->user_id = $config->default_user_id;
+		$session->user = new User(1, $db);
 	} catch (ConfigException $e) {
 		$db->close();
 		exit("Configuration error (BL" . __LINE__ . ").");
 	}
-	
-	$session->user = $user;
+} else {
+	// Reload user data
+	try {
+		$session->user = new User($session->user->get_id(), $db);
+	} catch (Exception $e) {
+		// User was removed
+		$session->user = new User(1, $db);
+	}
 }
 
 // Launch

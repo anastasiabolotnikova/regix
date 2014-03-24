@@ -27,6 +27,8 @@ class UserManagerController extends Controller {
 		$view_outer = new View(
 				REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
 		
+		$view_outer->title = "User Account Control - Regix";
+		
 		if ($this->args[0] && $this->args[0] == "edit" && $this->args[1]) {
 			
 			// User editor
@@ -39,22 +41,74 @@ class UserManagerController extends Controller {
 			
 			$view_outer->title = "Edit User - Regix";
 			$view_outer->content = $view_inner->render(FALSE);
-			
-		} else if ($this->args[0] && $this->args[0] == "new") {
-			
-			// New user editor
-			
-			$view_outer->title = "User Account Control - Regix";
-			$view_outer->content = "<span>NOT IMPLEMENTED</span>";
 		
 		} else if ($this->args[0] && $this->args[0] == "save"
-			&& isset($_POST["submit"])) {
+			&& isset($this->args[1]) && isset($_POST["submit"])) {
 			
 			// Save user
-				
-			$view_outer->title = "User Account Control - Regix";
-			$view_outer->content = "<span>NOT IMPLEMENTED</span>";
 			
+			$user_data_in = array(
+					"name" => $_POST["name"],
+					"login" => $_POST["login"],
+					"email" => $_POST["email"],
+					"password" => $_POST["password"],
+					"groups" => $_POST["user_groups"],
+					
+			);
+			
+			try {
+				$model->set_user_data($this->args[1], $user_data_in);
+				
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/UserManager/user_manager_success_generic_xhtml.phtml");
+				$view_inner->message = "User modified";
+				
+				$view_outer->content = $view_inner->render(FALSE);
+				
+			} catch (Exception $e) {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/UserManager/user_manager_failure_generic_xhtml.phtml");
+				
+				$view_inner->message = "Cannot modify user: " . $e->getMessage();
+				
+				$view_outer->title = "User Account Control - Regix";
+				$view_outer->content = $view_inner->render(FALSE);
+			}
+			
+			
+			
+		} else if ($this->args[0] && $this->args[0] == "delete"
+				&& isset($this->args[1])) {
+			
+			// Delete user
+			
+			if ($this->args[1] == 1) {
+				// Do not remove guest
+				
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/UserManager/user_manager_failure_generic_xhtml.phtml");
+				$view_inner->message = "Cannot remove default user";
+				
+				$view_outer->title = "User Deleted - Regix";
+				$view_outer->content = $view_inner->render(FALSE);
+				
+			} else {
+			
+				$model->delete_user($this->args[1]);
+				
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/UserManager/user_manager_success_generic_xhtml.phtml");
+				$view_inner->message = "User deleted";
+				
+				$view_outer->title = "User Deleted - Regix";
+				$view_outer->content = $view_inner->render(FALSE);
+				
+			}
+		} else if ($this->args[0] && $this->args[0] == "add") {
+				
+			// Add user
+			header("Location: /reg");
+		
 		} else {
 			
 			// User list

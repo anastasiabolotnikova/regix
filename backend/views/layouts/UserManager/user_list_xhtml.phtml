@@ -2,7 +2,7 @@
 	<div class="title_block">Users</div>
 	<table class="table_borders highlight_row cursor_pointer">
 		<thead>
-			<tr><th>ID</th><th>Name</th><th>Login</th><th>Email</th></tr>
+			<tr><th>ID</th><th>Name</th><th>Login</th><th>Email</th><th>Remove</th></tr>
 		</thead>
 		<tbody>
 	<?php
@@ -22,6 +22,11 @@
 					<td>
 						<?php echo $user['email']; ?>
 					</td>
+					<td>
+						<?php if ($user['id'] != 1) { ?>
+						<a href="/<?php echo $this->editor_uri; ?>/delete/<?php echo $user['id']; ?>">remove</a>
+						<?php }; ?>
+					</td>
 				</tr>
 	<?php
 			} 
@@ -29,4 +34,5 @@
 	?>
 		</tbody>
 	</table>
+	<div id="user_manager_list_add_container"><button onclick="location.href='/<?php echo $this->editor_uri; ?>/add'">Add user</button></div>
 </div>

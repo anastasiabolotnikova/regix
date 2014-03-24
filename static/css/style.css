@@ -91,6 +91,14 @@ input[type="submit"]:HOVER {
 	cursor: pointer;
 }
 
+button {
+	padding: 0.7em;
+	border: 1px solid #2e3436;
+	border-radius: 0.5em;
+	
+	background-color: #eeeeec;
+}
+
 
 /* Containers */
 
@@ -286,6 +294,15 @@ input[type="submit"]:HOVER {
 
 #user_manager_list_container {
 	width: 90%;
+}
+
+#user_manager_list_add_container {
+	text-align: center;
+}
+
+#user_manager_list_add_container button {
+	padding-left: 3em;
+	padding-right: 3em;
 }
 
 #user_manager_editor_container th {

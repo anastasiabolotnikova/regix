@@ -50,8 +50,8 @@ class RegistrationPageModel extends Model{
 		
 		// Check passwords
 		
-		if(strlen($password) < 1) {
-			//Password is empty
+		if(!LocalLoginModel::is_password_good($password)) {
+			//Password is bad
 			return FALSE;
 		}
 		

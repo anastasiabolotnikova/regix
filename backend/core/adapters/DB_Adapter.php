@@ -135,11 +135,22 @@ abstract class DB_Adapter {
 	
 	
 	
-	abstract public function query($query, $params=NULL, $param_types=NULL);
+	abstract public function query($query, $params=NULL, $param_types=NULL,
+			$bind_result=TRUE);
 	
 	// User manager
 	
 	abstract public function select_all_users_with_local_login();
 	
 	abstract public function select_all_groups_with_user_mark($user_id);
+	
+	abstract public function select_local_login($user_id);
+	
+	abstract public function update_user($id, $name);
+	
+	abstract public function update_local_login($user_id, $login, $salt, 
+			$hash, $email);
+	
+	abstract public function delete_local_login($user_id);
+	abstract public function delete_user($id);
 }

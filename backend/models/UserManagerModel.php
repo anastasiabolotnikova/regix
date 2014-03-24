@@ -25,4 +25,43 @@ class UserManagerModel extends Model{
 	
 		return $user;
 	}
+	
+	public function set_user_data($id, $data) {
+		if (loadClass(
+				REGIX_PATH."models/LocalLoginModel.php",
+				"LocalLoginModel",
+				"Model")) {
+				
+			$data_old = $this->db->select_local_login($id)[0];
+			
+			$ll_model = new LocalLoginModel($this->db, $this->session);
+			
+			if ($data["password"]) {
+				if (!LocalLoginModel::is_password_good($data["password"])) {
+					throw new Exception(
+							"Password is too weak.");
+				}
+				$new_salt = $ll_model::gen_salt(NULL);
+				$new_hash = $ll_model::password_hash($data["password"], $new_salt);
+			} else {
+				$new_salt = $data_old["salt"];
+				$new_hash = $data_old["hash"];
+			}
+			
+			
+			$this->db->update_user($id, $data["name"]);
+			$this->db->update_local_login($id, $data["login"], $new_salt,
+					$new_hash, $data["email"]);
+		} else {
+			throw new Exception(
+					"LocalLoginModel is needed for this functionality.");
+		}
+	
+		return TRUE;
+	}
+	
+	public function delete_user($id) {
+		$this->db->delete_local_login($id);
+		$this->db->delete_user($id);
+	}
 }

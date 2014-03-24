@@ -292,11 +292,14 @@ class MySQL_Adapter extends DB_Adapter {
 		$stmt->close();
 	}
 	
-	public function query($query, $params=NULL, $param_types=NULL) {
+	public function query($query, $params=NULL, $param_types=NULL,
+			$bind_result=TRUE) {
 		
 		$stmt = $this->mysqli->prepare($query);
 		
-		if (!$stmt) self::request_exception("Statement not prepared", __LINE__);
+		if (!$stmt) 
+			self::request_exception("Statement not prepared", __LINE__,
+					$this->mysqli->error);
 		
 		if ($params) {
 			array_unshift($params, $param_types);
@@ -305,35 +308,43 @@ class MySQL_Adapter extends DB_Adapter {
 					$this::make_refs($params));
 			
 			if (!$bind_res)
-				self::request_exception("Parameters not bound", __LINE__);
+				self::request_exception("Parameters not bound", __LINE__,
+					$this->mysqli->error);
 		}
 		
 		if (!$stmt->execute())
 			self::request_exception("Request execution failed", __LINE__,
 					$this->mysqli->error);
 		
-		if (!self::bind_array($stmt, $result_row))
-			self::request_exception("Could not bind result", __LINE__,
-					$this->mysqli->error);
-		
-		$result = array();
-		while ($stmt->fetch()) {
-			array_push($result, self::dereference_array($result_row));
+		if ($bind_result) {
+			if (!self::bind_array($stmt, $result_row))
+				self::request_exception("Could not bind result", __LINE__,
+						$this->mysqli->error);
+			
+			$result = array();
+			while ($stmt->fetch()) {
+				array_push($result, self::dereference_array($result_row));
+			}
+			echo($this->mysqli->error);
+			
+			$stmt->close();
+			return $result;
+		} else {
+			$stmt->close();
+			return TRUE;
 		}
-		echo($this->mysqli->error);
-		
-		$stmt->close();
-		return $result;
 	}
 	
 	
 	// User manager
 	
 	public function select_all_users_with_local_login() {
-		$query = "select id, name, login, email
+		$query = "
+				select id, name, login, email
 				from  `user`
 				left join  `local_login`
-				on `user`.`id` = `local_login`.`user_id`";
+				on `user`.`id` = `local_login`.`user_id`
+				";
 	
 		return $this->query($query);
 	}
@@ -351,5 +362,58 @@ class MySQL_Adapter extends DB_Adapter {
 				";
 		
 		return $this->query($query, array($user_id), "i");
+	}
+	
+	public function select_local_login($user_id) {
+		$query = "
+				select login, salt, hash, email
+				from  `local_login`
+				where `user_id`=?;
+				";
+	
+		return $this->query($query, array($user_id), "i");
+	}
+	
+	public function update_user($id, $name) {
+		$query = "
+				update `user`
+				set `name`=(?)
+				where `id`=?;
+				";
+	
+		return $this->query($query, array($name, $id), "si", FALSE);
+	}
+	
+	public function update_local_login($user_id, $login, $salt, $hash, $email) {
+		$query = "
+				insert into `local_login` (`user_id`, `login`,`salt`,`hash`,`email`)
+				values(?,?,?,?,?)
+				on duplicate key update
+				`login`=?,`salt`=?,`hash`=?,`email`=?;
+				";
+	
+		return $this->query($query,
+				array(	$user_id, $login, $salt, $hash, $email,
+						$login, $salt, $hash, $email,
+						), "issssssss", FALSE);
+	}
+	
+	public function delete_local_login($user_id) {
+		$query = "
+				delete from `local_login`
+				where `user_id`=?
+				limit 1;
+				";
+	
+		return $this->query($query, array($user_id), "i", FALSE);
+	}
+	
+	public function delete_user($id) {
+		$query = "
+				delete from `user`
+				where `id`=?
+				limit 1;
+				";
+		return $this->query($query, array($id), "i", FALSE);
 	}
 }
