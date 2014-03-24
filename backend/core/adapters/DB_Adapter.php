@@ -152,5 +152,10 @@ abstract class DB_Adapter {
 			$hash, $email);
 	
 	abstract public function delete_local_login($user_id);
+	
 	abstract public function delete_user($id);
+	
+	abstract public function delete_all_user_groups($id);
+	
+	abstract public function insert_user_group($user_id, $group_name);
 }

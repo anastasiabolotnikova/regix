@@ -32,7 +32,7 @@ class UserManagerModel extends Model{
 				"LocalLoginModel",
 				"Model")) {
 				
-			$data_old = $this->db->select_local_login($id)[0];
+			$data_old = $this->db->select_local_login($id);
 			
 			$ll_model = new LocalLoginModel($this->db, $this->session);
 			
@@ -43,15 +43,25 @@ class UserManagerModel extends Model{
 				}
 				$new_salt = $ll_model::gen_salt(NULL);
 				$new_hash = $ll_model::password_hash($data["password"], $new_salt);
+			} else if ($data_old) {
+				$new_salt = $data_old[0]["salt"];
+				$new_hash = $data_old[0]["hash"];
 			} else {
-				$new_salt = $data_old["salt"];
-				$new_hash = $data_old["hash"];
+				$new_salt = "";
+				$new_hash = "";
 			}
 			
 			
 			$this->db->update_user($id, $data["name"]);
 			$this->db->update_local_login($id, $data["login"], $new_salt,
 					$new_hash, $data["email"]);
+			
+			$this->db->delete_all_user_groups($id);
+			
+			foreach ($data["groups"] as $group_name) {
+				$this->db->insert_user_group($id, $group_name);
+			}
+			
 		} else {
 			throw new Exception(
 					"LocalLoginModel is needed for this functionality.");

@@ -52,7 +52,7 @@ class UserManagerController extends Controller {
 					"login" => $_POST["login"],
 					"email" => $_POST["email"],
 					"password" => $_POST["password"],
-					"groups" => $_POST["user_groups"],
+					"groups" => (isset($_POST["user_groups"])?$_POST["user_groups"]:array()),
 					
 			);
 			

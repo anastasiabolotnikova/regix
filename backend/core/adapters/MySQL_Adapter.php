@@ -416,4 +416,22 @@ class MySQL_Adapter extends DB_Adapter {
 				";
 		return $this->query($query, array($id), "i", FALSE);
 	}
+	
+	public function delete_all_user_groups($id) {
+		$query = "
+				delete from `user_has_group`
+				where `user_id`=?;
+				";
+		
+		return $this->query($query, array($id), "i", FALSE);
+	}
+	
+	public function insert_user_group($user_id, $group_name) {
+		$query = "
+				insert into `user_has_group` (`user_id`,`group_name`)
+				values (?,?);
+				";
+	
+		return $this->query($query, array($user_id, $group_name), "is", FALSE);
+	}
 }
