@@ -473,4 +473,32 @@ class MySQL_Adapter extends DB_Adapter {
 		return $this->query($query, array($name, $description, $enabled,
 				$uri_name, $file_path, $id), "ssissi", FALSE);
 	}
+	
+	public function insert_controller($name, $description, $enabled,
+			$uri_name, $file_path) {
+	
+		$query = "
+				insert into `controller`
+				(
+					`name`,
+					`description`,
+					`enabled`,
+					`uri_name`,
+					`file_path`
+				)
+				values (?, ?, ?, ?, ?);
+				";
+	
+		return $this->query($query, array($name, $description, $enabled,
+				$uri_name, $file_path), "ssiss", FALSE);
+	}
+	
+	public function remove_controller($id) {
+		$query = "
+				delete from `controller`
+				where id = ?;
+				";
+	
+		return $this->query($query, array($id), "i", FALSE);
+	}
 }

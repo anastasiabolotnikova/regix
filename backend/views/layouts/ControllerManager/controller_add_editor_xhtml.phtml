@@ -1,0 +1,36 @@
+<div id="controller_manager_editor_container" class="table_container">
+	<div class="title_block">New Controller</div>
+	<form action="/<?php echo $this->editor_uri; ?>/save_new" method="post">
+		<table>
+			<tbody>
+				<tr>
+					<th>Name</th>
+					<td><input name="name" type="text" value="" /></td>
+				</tr>
+				<tr>
+					<th>Description</th>
+					<td><input name="description" type="text" value="" /></td>
+				</tr>
+				<tr>
+					<th>Enabled</th>
+					<td><input name="enabled" type="checkbox" />
+					</td>
+				</tr>
+				<tr>
+					<th>URL</th>
+					<td><input name="uri_name" type="text" value="" /></td>
+				</tr>
+				<tr>
+					<th>Path</th>
+					<td><input name="file_path" type="text" value="" /></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input name="submit" type="submit" value="Save" />
+						<input name="cancel" type="submit" value="Cancel" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</div>

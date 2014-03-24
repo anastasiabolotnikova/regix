@@ -20,7 +20,7 @@ class ControllerManagerController extends Controller {
 				REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
 		$view_outer->title = "Controllers - Regix";
 		
-		if ($this->args[0] && $this->args[0] == "edit" && $this->args[1]) {
+		if ($this->args[0] && $this->args[0] == "edit" && isset($this->args[1])) {
 			
 			// Controller editor
 			
@@ -73,7 +73,59 @@ class ControllerManagerController extends Controller {
 				$view_inner->message = "Cannot modify controller: " . $e->getMessage();
 			}
 			
+		} else if ($this->args[0] && $this->args[0] == "save_new"
+				&& isset($_POST["submit"])) {
+				
+			// Save new controller data
+				
+			$controller_data_in = array(
+					"name" => $_POST["name"],
+					"description" => $_POST["description"],
+					"enabled" => isset($_POST["enabled"]),
+					"uri_name" => $_POST["uri_name"],
+					"file_path" => $_POST["file_path"]
+			);
 		
+			try {
+				$model->add_controller($controller_data_in);
+					
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/success_generic_xhtml.phtml");
+				$view_inner->message = "Controller added";
+					
+			} catch (Exception $e) {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+					
+				$view_inner->message = "Cannot add controller<br />(name must be unique)";
+			}
+			
+		} else if ($this->args[0] && $this->args[0] == "delete" && isset($this->args[1])) {
+		
+			// Delete controller
+		
+			try {
+				$model->delete_controller($this->args[1]);
+					
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/success_generic_xhtml.phtml");
+				$view_inner->message = "Controller deleted";
+					
+			} catch (Exception $e) {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+					
+				$view_inner->message = "Cannot remove controller";
+			}
+			
+		} else if ($this->args[0] && $this->args[0] == "add") {
+				
+			// New controller editor
+				
+			$view_inner = new View(REGIX_PATH.
+					"views/layouts/ControllerManager/controller_add_editor_xhtml.phtml");
+			
+			$view_inner->editor_uri = $editor_uri;		
 		} else {
 			
 			// Controller list

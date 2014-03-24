@@ -167,4 +167,6 @@ abstract class DB_Adapter {
 	
 	abstract public function update_controller($id, $name, $description,
 			$enabled, $uri_name, $file_path);
+	
+	abstract public function remove_controller($id);
 }

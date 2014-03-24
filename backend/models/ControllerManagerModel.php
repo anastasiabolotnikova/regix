@@ -22,11 +22,21 @@ class ControllerManagerModel extends Model{
 	}
 	
 	public function set_controller_data($id, $data) {
-			
-			
-		$this->db->update_controller($id, $data["name"], $data["description"], 
-				$data["enabled"], $data["uri_name"], $data["file_path"]);
+		return $this->db->update_controller(
+				$id,
+				$data["name"],
+				$data["description"],
+				$data["enabled"],
+				$data["uri_name"],
+				$data["file_path"]);
+	}
 	
-		return TRUE;
+	public function add_controller($data) {
+		return $this->db->insert_controller($data["name"], $data["description"],
+				$data["enabled"], $data["uri_name"], $data["file_path"]);
+	}
+	
+	public function delete_controller($id) {
+		return $this->db->remove_controller($id);
 	}
 }
