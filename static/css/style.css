@@ -68,6 +68,13 @@ table.cursor_pointer tr td {
 	cursor: pointer;
 }
 
+h3.table_section_header {
+    text-align: center;
+	font-family: 'Roboto', 'Helvetica', sans-serif;
+	font-size: 2em;
+    
+}
+
 
 /* Forms */
 
@@ -99,7 +106,6 @@ button {
 	background-color: #eeeeec;
 	cursor: pointer;
 }
-
 
 /* Containers */
 
@@ -306,15 +312,6 @@ button {
 	width: 90%;
 }
 
-#user_manager_list_add_container {
-	text-align: center;
-}
-
-#user_manager_list_add_container button {
-	padding-left: 3em;
-	padding-right: 3em;
-}
-
 #user_manager_editor_container th {
 	text-align: left;
 }
@@ -323,25 +320,10 @@ button {
 	width: 49%;
 }
 
-#user_manager_editor_container table th.table_section_header {
-	text-align: center;
-	font-family: 'Roboto', 'Helvetica', sans-serif;
-	font-size: 2em;
-}
-
 /* ControllerManager */
 
 #controller_manager_list_container {
 	width: 90%;
-}
-
-#controller_manager_list_add_container {
-	text-align: center;
-}
-
-#controller_manager_list_add_container button {
-	padding-left: 3em;
-	padding-right: 3em;
 }
 
 #controller_manager_editor_container {
@@ -361,17 +343,15 @@ button {
 	width: 49.5%;
 }
 
-#controller_manager_editor_container table th.table_section_header {
-	text-align: center;
-	font-family: 'Roboto', 'Helvetica', sans-serif;
-	font-size: 2em;
-}
-
-#controller_manager_editor_container button {
-	padding-left: 3em;
+#single_button_container{
+    text-align: center;
+    padding-left: 3em;
 	padding-right: 3em;
 }
 
+th.table_row_header{
+   /* Test: color:white; */
+}
 /* Fonts */
 
 @font-face {

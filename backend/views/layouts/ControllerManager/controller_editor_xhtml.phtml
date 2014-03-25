@@ -4,28 +4,28 @@
 		<table>
 			<tbody>
 				<tr>
-					<th>ID</th>
+					<th class="table_row_header">ID</th>
 					<td><?php echo $this->controller_data['id']; ?></td>
 				</tr>
 				<tr>
-					<th>Name</th>
+					<th class="table_row_header">Name</th>
 					<td><input name="name" type="text" value="<?php echo $this->controller_data['name']; ?>" /></td>
 				</tr>
 				<tr>
-					<th>Description</th>
+					<th class="table_row_header">Description</th>
 					<td><input name="description" type="text" value="<?php echo $this->controller_data['description']; ?>" /></td>
 				</tr>
 				<tr>
-					<th>Enabled</th>
+					<th class="table_row_header">Enabled</th>
 					<td><input name="enabled" type="checkbox"<?php if ($this->controller_data['enabled']) { echo(' checked="checked"'); } ; ?>/>
 					</td>
 				</tr>
 				<tr>
-					<th>URL</th>
+					<th class="table_row_header">URL</th>
 					<td><input name="uri_name" type="text" value="<?php echo $this->controller_data['uri_name']; ?>" /></td>
 				</tr>
 				<tr>
-					<th>Path</th>
+					<th class="table_row_header">Path</th>
 					<td><input name="file_path" type="text" value="<?php echo $this->controller_data['file_path']; ?>" /></td>
 				</tr>
 				<tr>
@@ -34,12 +34,10 @@
 						<input name="cancel" type="submit" value="Cancel" />
 					</td>
 				</tr>
-				<tr>
-					<td colspan="2" class="center">
-						<button type="button" onclick="location.href='/<?php echo $this->editor_uri; ?>/delete/<?php echo $this->controller_data['id']; ?>'">Delete controller</button>
-					</td>
-				</tr>
-			</tbody>
+                    			</tbody>
 		</table>
+
+						<div id="single_button_container"><button onclick="location.href='/<?php echo $this->editor_uri; ?>/delete/<?php echo $this->controller_data['id']; ?>'">Delete controller</button></div>
+
 	</form>
 </div>
