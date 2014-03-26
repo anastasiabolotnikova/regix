@@ -48,14 +48,8 @@ COMMENT = 'Values of controller properties (settings).';
 DROP TABLE IF EXISTS `permission` ;
 
 CREATE TABLE IF NOT EXISTS `permission` (
-  `controller_id` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`controller_id`, `name`),
-  CONSTRAINT `fk_permission_controller1`
-    FOREIGN KEY (`controller_id`)
-    REFERENCES `controller` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`name`))
 ENGINE = InnoDB
 COMMENT = 'Describes permission required by the controller to perform s' /* comment truncated */ /*pecific activity.*/;
 
@@ -117,10 +111,9 @@ DROP TABLE IF EXISTS `group_has_permission` ;
 
 CREATE TABLE IF NOT EXISTS `group_has_permission` (
   `group_name` VARCHAR(45) NOT NULL,
-  `permission_controller_id` INT NOT NULL,
   `permission_name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`group_name`, `permission_controller_id`, `permission_name`),
-  INDEX `fk_group_has_permission_permission1_idx` (`permission_controller_id` ASC, `permission_name` ASC),
+  PRIMARY KEY (`group_name`, `permission_name`),
+  INDEX `fk_group_has_permission_permission1_idx` (`permission_name` ASC),
   INDEX `fk_group_has_permission_group1_idx` (`group_name` ASC),
   CONSTRAINT `fk_group_has_permission_group1`
     FOREIGN KEY (`group_name`)
@@ -128,8 +121,8 @@ CREATE TABLE IF NOT EXISTS `group_has_permission` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_group_has_permission_permission1`
-    FOREIGN KEY (`permission_controller_id` , `permission_name`)
-    REFERENCES `permission` (`controller_id` , `name`)
+    FOREIGN KEY (`permission_name`)
+    REFERENCES `permission` (`name`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
