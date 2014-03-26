@@ -1,13 +1,7 @@
- <form action="" method="post" class="regix-form">
-        <h1>Sign in</h1>
-
-        <input type="text" name="login" class="regix-form-input" placeholder="Login">
-
-        <input type="password" name="password" class="regix-form-input" placeholder="Password">
-        <div class="buttonHolder">
-            <input type="submit" value="Login" class="default-button-single">
-
-            <input type="submit" value="Register" class="secondary-button-single" onclick="location.href='/<?php echo $this->editor_uri; ?>/add'"> 
-     </div>
-
-    </form>
+<form action="" method="post" class="regix-form">
+	<h1>Sign in</h1>
+	<input type="text" name="login" class="regix-form-input" placeholder="Login">
+	<input type="password" name="password" class="regix-form-input" placeholder="Password">
+	<a href=""><button type="button" class="default-button-single">Login</button></a>
+	<a href="/reg"><button type="button" class="secondary-button-single" >Register</button></a>
+</form>

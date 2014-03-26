@@ -1,32 +1,9 @@
-<div id="registration_form_container" class="table_container">
-	<div class="title_block">Registration</div>
-	<form action="" method="post">
-		<table id="registration_table">
-			<tbody>
-				<tr>
-					<th class="table_row_header">Your Name:</th>
-					<td><input name="name" type="text" /></td>
-				</tr>
-				<tr>
-					<th class="table_row_header">Username:</th>
-					<td><input name="username" type="text" /></td>
-				</tr>
-				<tr>
-					<th class="table_row_header">Password:</th>
-					<td><input name="password" type="password" /></td>
-				</tr>
-				<tr>
-					<th class="table_row_header">Retype password:</th>
-					<td><input name="repassword" type="password" /></td>
-				</tr>
-				<tr>
-					<th class="table_row_header">E-mail:</th>
-					<td><input name="email" type="text" /></td>
-				</tr>
-				<tr>
-					<td colspan="2"><input name="reg_user" type="submit" value="Register" /></td>
-				</tr>
-			</tbody>
-		</table>
+<form action="" method="post" class="regix-form">
+	<h1>Registration</h1>
+	<input type="text" name="name" class="regix-form-input" placeholder="Your Name">
+	<input type="text" name="username" class="regix-form-input" placeholder="Username">
+	<input type="password" name="password" class="regix-form-input" placeholder="Password">	
+	<input type="password" name="password2" class="regix-form-input" placeholder="Retype password">	
+	<input type="text" name="email" class="regix-form-input" placeholder="Email">	
+	<button type="button" class="secondary-button-single" >Register</button>
 	</form>
-</div>

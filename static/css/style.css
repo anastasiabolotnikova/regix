@@ -100,14 +100,14 @@ input[type="submit"]:HOVER {
 }
 */
 
-button {
+/*button {
 	padding: 0.7em;
 	border: 1px solid #2e3436;
 	border-radius: 0.5em;
 	
 	background-color: #eeeeec;
 	cursor: pointer;
-}
+}*/
 
 /* Containers */
 
@@ -423,8 +423,8 @@ input{
 }
 
 .default-button-single {
-    width: 100%;
-  height: 37px;
+	width: 100%;
+	height: 37px;
   font-size: 14px;
   font-weight: bold;
   margin-bottom:10px;
@@ -460,8 +460,8 @@ input{
   font-weight: bold;
   margin-bottom:10px;
   color: white;
-  background: #44db61;
-  border: 1px solid #0d9b08;
+  background: #56db6f;
+	border: 1px solid #0d9b08;
 }
 
 .secondary-button-single:active {
