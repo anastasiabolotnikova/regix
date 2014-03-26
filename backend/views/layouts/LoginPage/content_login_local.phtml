@@ -1,18 +1,13 @@
-<div id="login_form_container" class="table_container">
-	<div class="title_block">Sign in to Regix</div>
-	<form action="" method="post">
-		<table id="login_table">
-			<tr>
-				<th>Login:</th>
-				<td><input name="login" type="text" /></td>
-			</tr>
-			<tr>
-				<th>Password:</th>
-				<td><input name="password" type="password" /></td>
-			</tr>
-			<tr>
-				<td colspan="2"><input name="login_b" type="submit" value="Sign In" /></td>
-			</tr>
-		</table>
-	</form>
-</div>
+ <form action="" method="post" class="regix-form">
+        <h1>Sign in</h1>
+
+        <input type="text" name="login" class="regix-form-input" placeholder="Login">
+
+        <input type="password" name="password" class="regix-form-input" placeholder="Password">
+        <div class="buttonHolder">
+            <input type="submit" value="Login" class="default-button-single">
+
+            <input type="submit" value="Register" class="secondary-button-single" onclick="location.href='/<?php echo $this->editor_uri; ?>/add'"> 
+     </div>
+
+    </form>
