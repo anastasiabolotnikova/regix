@@ -169,4 +169,14 @@ abstract class DB_Adapter {
 			$enabled, $uri_name, $file_path);
 	
 	abstract public function remove_controller($id);
+	
+	// Group manager
+	
+	abstract public function select_all_groups();
+	
+	abstract public function select_group($group_name);
+	
+	abstract public function select_group_users($group_name);
+	
+	abstract public function select_group_permissions($group_name);
 }

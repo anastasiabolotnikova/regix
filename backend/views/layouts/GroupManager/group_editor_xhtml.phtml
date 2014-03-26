@@ -1,0 +1,56 @@
+<div id="group_manager_editor_container" class="table_container">
+	<div class="title_block"><?php echo $this->group_data['name']; ?></div>
+	<form action="/<?php echo $this->editor_uri; ?>/save/<?php echo urlencode($this->group_data['name']); ?>" method="post">
+		<table>
+			<tbody>
+				<tr>
+					<th>Name</th>
+					<td><input name="name" type="text" value="<?php echo $this->group_data['name']; ?>" /></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<h3 class="editor_section_header">Users</h3>
+		
+		<table>
+			<tbody>
+<?php
+	foreach ($this->group_users as $group_user) {
+?>
+				<tr>
+					<td colspan="2"><?php echo($group_user["name"]); ?></td>
+				</tr>
+<?php
+	}
+?>
+			</tbody>
+		</table>
+		
+		<h3 class="editor_section_header">Permissions</h3>
+		
+		<table>
+			<tbody>			
+<?php
+	foreach ($this->group_permissions as $group_permission) {
+?>
+				<tr>
+					<td>
+						<?php echo($group_permission["permission_name"]); ?>	
+					</td>
+					<td>
+						<?php echo($group_permission["permission_granted"]); ?>	
+					</td>
+				</tr>
+<?php
+	}
+?>
+			</tbody>
+		</table>
+		<div class="form_controls">
+			<input name="submit" type="submit" value="Save" /> <input name="cancel" type="submit" value="Cancel" />
+		</div>
+	</form>
+	<div class="single_button_container">
+		<button type="button" onclick="location.href='/<?php echo $this->editor_uri; ?>/delete/<?php echo urlencode($this->group_data['name']); ?>'">Delete group</button>
+	</div>
+</div>

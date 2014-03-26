@@ -34,10 +34,10 @@
 						<input name="cancel" type="submit" value="Cancel" />
 					</td>
 				</tr>
-                    			</tbody>
+			</tbody>
 		</table>
-
-						<div id="single_button_container"><button onclick="location.href='/<?php echo $this->editor_uri; ?>/delete/<?php echo $this->controller_data['id']; ?>'">Delete controller</button></div>
-
 	</form>
+	<div id="single_button_container">
+		<button onclick="location.href='/<?php echo $this->editor_uri; ?>/delete/<?php echo $this->controller_data['id']; ?>'">Delete controller</button>
+	</div>
 </div>

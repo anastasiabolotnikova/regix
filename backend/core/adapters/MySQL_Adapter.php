@@ -501,4 +501,50 @@ class MySQL_Adapter extends DB_Adapter {
 	
 		return $this->query($query, array($id), "i", FALSE);
 	}
+	
+	// Group manager
+	
+	public function select_all_groups() {
+		$query = "
+				select `name`
+				from  `group`;
+				";
+	
+		return $this->query($query);
+	}
+	
+	public function select_group($group_name) {
+		$query = "
+				select `name`
+				from `group`
+				where `name` = ?;
+				";
+	
+		return $this->query($query, array($group_name), "s");
+	}
+	
+	public function select_group_users($group_name) {
+		$query = "
+				select `user`.`id` as `id`, `user`.`name` as `name`
+				from  `group`
+				join `user_has_group` on `user_has_group`.`group_name` = `name`
+				join `user` on `user`.`id` = `user_has_group`.`user_id`
+				where `group`.`name` = ?;
+				";
+	
+		return $this->query($query, array($group_name), "s");
+	}
+	
+	public function select_group_permissions($group_name) {
+		$query = "
+				select distinct
+					`permission_name`,
+					max(`group_name` = ?) as `permission_granted`
+				from  `group_has_permission`
+				group by `permission_name`;
+				";
+	
+		return $this->query($query, array($group_name), "s");
+	}
+	
 }
