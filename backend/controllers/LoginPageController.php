@@ -21,7 +21,7 @@ class LoginPageController extends Controller{
 					REGIX_PATH."views/layouts/LoginPage/content_logout.phtml");
 			$title = "Logged out :: Regix";
 			
-		} else if (isset($_POST['login_b'])) {
+		} else if (isset($_POST['login'])) {
 			// Log in (form)
 			if ($model->auth_plain($_POST['login'], $_POST['password'])) {
 				// Logged in

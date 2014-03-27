@@ -372,6 +372,14 @@ input{
   box-sizing: border-box;
 }
 
+.regix-form-container {
+  margin: 50px auto;
+  padding: 18px 20px;
+  width: 300px;
+  background: #f4f4f4;
+  border-bottom-color: #142647;
+}
+/*
 .regix-form {
   margin: 50px auto;
   padding: 18px 20px;
@@ -379,8 +387,8 @@ input{
   background: #f4f4f4;
   border-bottom-color: #142647;
 }
-
-.regix-form > h1 {
+*/
+.regix-form h1 {
   margin-bottom: 30px;
   font-size: 30px;
   font-weight: bold;

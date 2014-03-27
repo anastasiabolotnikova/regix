@@ -14,7 +14,7 @@ class RegistrationPageController extends Controller{
 			return FALSE;
 		}
 		
-		if (isset($_POST['reg_user']) && $_POST['reg_user'] == "Register") {
+		if (isset($_POST['name'])) {
 			
 			if ($model->plaintextCheck(
 					$_POST['name'],
