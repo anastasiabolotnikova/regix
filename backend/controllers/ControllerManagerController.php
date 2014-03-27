@@ -14,7 +14,7 @@ class ControllerManagerController extends Controller {
 		
 		$model = new ControllerManagerModel($this->db, $this->session);
 		
-		$editor_uri = $model->get_editor_uri($this->id);
+		$editor_uri = $this->get_controller_uri_name();
 		
 		$view_outer = new View(
 				REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");

@@ -60,19 +60,15 @@ class User {
 	public function __construct($id, $db) {
 		$this->db = $db;
 		$this->id = $id;
-		$prof_data = $this->db->get_profile_data($id);
+		$prof_data = $this->db->select_user($id);
 		
 		if (!$prof_data) {
 			throw new Exception("User does not exist");
 		}
 		
-		$this->name = $prof_data['username'];
+		$this->name = $prof_data[0]['name'];
 		
-		$groups_data = $result_rows = $this->db->select(
-				"user_has_group",
-				array("group_name"),
-				"issss",
-				array("user_id" => $id), 1000);
+		$groups_data = $result_rows = $this->db->select_user_has_group($id);
 		
 		$this->groups = array();
 		foreach ($groups_data as $group_data) {

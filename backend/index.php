@@ -140,14 +140,7 @@ $parts = explode("/", $_GET['uri'], 2);
 $controller_uri_name = $parts[0];
 $controller_args = isset($parts[1]) ? explode("/", $parts[1]) : NULL;
 
-$controller_data = $db->select(
-		"controller",
-		array("id", "name", "file_path"),
-		"iss",
-		array(
-				"uri_name" => $controller_uri_name,
-				"enabled" => 1,
-		), 1);
+$controller_data = $db->select_controller_by_uri_name_if_enabled($controller_uri_name);
 
 if ($controller_data) {
 	// Controller found in the DB.

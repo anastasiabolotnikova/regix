@@ -12,11 +12,8 @@ class LocalLoginModel extends Model{
 	
 	protected function init() {
 		if (!$this->initialized) {
-			$user_data = $this->db->select(
-					"local_login",
-					array("user_id", "login", "salt", "hash", "email"),
-					"issss",
-					array("user_id" => $this->session->user->get_id()), 1);
+			$user_data = $this->db->select_local_login(
+					$this->session->user->get_id());
 			
 			if ($user_data) {
 				$this->login = $user_data[0]["login"];
