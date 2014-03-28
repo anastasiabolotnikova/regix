@@ -43,13 +43,35 @@ COMMENT = 'Values of controller properties (settings).';
 
 
 -- -----------------------------------------------------
+-- Table `permission_category`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `permission_category` ;
+
+CREATE TABLE IF NOT EXISTS `permission_category` (
+  `id` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
+ENGINE = InnoDB
+COMMENT = 'Permission categories (replace links with controllers to all' /* comment truncated */ /*ow more flexible permission management).*/;
+
+
+-- -----------------------------------------------------
 -- Table `permission`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `permission` ;
 
 CREATE TABLE IF NOT EXISTS `permission` (
-  `name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`name`))
+  `name` VARCHAR(200) NOT NULL,
+  `description` TEXT NULL,
+  `permission_category_id` INT NULL,
+  PRIMARY KEY (`name`),
+  INDEX `fk_permission_permission_category1_idx` (`permission_category_id` ASC),
+  CONSTRAINT `fk_permission_permission_category1`
+    FOREIGN KEY (`permission_category_id`)
+    REFERENCES `permission_category` (`id`)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 COMMENT = 'Describes permission required by the controller to perform s' /* comment truncated */ /*pecific activity.*/;
 
