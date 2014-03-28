@@ -10,3 +10,4 @@ INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_p
 INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (5,'ProfilePageController','Profile page',1,'prof','controllers/ProfilePageController.php');
 INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (7,'LoginPageController','Login page',1,'login','controllers/LoginPageController.php');
 INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (8,'UserManagerController','Management of user accounts and groups.',1,'uac','controllers/UserManagerController.php');
+INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (9,'CalendarPageController','Calendar page.',1,'calendar','controllers/CalendarPageController.php');
