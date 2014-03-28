@@ -1,5 +1,5 @@
 <div id="user_manager_editor_container" class="table_container">
-	<h1 class="title_block"><?php echo $this->edit_user['username']; ?></h1>
+	<h1 class="title_block"><?php echo $this->edit_user['name']; ?></h1>
 	<form
 		action="/<?php echo $this->editor_uri; ?>/save/<?php echo $this->edit_user_id; ?>"
 		method="post">
@@ -8,7 +8,7 @@
 				<tr>
 					<th class="table_row_header">Name</th>
 					<td><input name="name" type="text"
-						value="<?php echo $this->edit_user['username']; ?>" /></td>
+						value="<?php echo $this->edit_user['name']; ?>" /></td>
 				</tr>
 				<tr>
 					<th class="table_row_header">Login</th>

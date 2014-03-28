@@ -107,11 +107,13 @@ class MySQL_Adapter extends DB_Adapter {
 		}
 	}
 	
+	public function error() {
+		return $this->mysqli->error;
+	}
+	
 	public function get_last_id(){
 		return $this->mysqli->insert_id;
 	}
-	
-	
 	
 	public function query($query, $params=NULL, $param_types=NULL,
 			$bind_result=TRUE) {
@@ -125,17 +127,16 @@ class MySQL_Adapter extends DB_Adapter {
 		if ($params) {
 			array_unshift($params, $param_types);
 			
-			$bind_res = call_user_func_array(array($stmt, 'bind_param'),
+			$bind_done = call_user_func_array(array($stmt, 'bind_param'),
 					$this::make_refs($params));
 			
-			if (!$bind_res)
+			if (!$bind_done)
 				self::request_exception("Parameters not bound", __LINE__,
 					$this->mysqli->error);
 		}
 		
 		if (!$stmt->execute())
-			self::request_exception("Request execution failed", __LINE__,
-					$this->mysqli->error);
+			return FALSE;
 		
 		if ($bind_result) {
 			if (!self::bind_array($stmt, $result_row))
@@ -151,16 +152,9 @@ class MySQL_Adapter extends DB_Adapter {
 			$stmt->close();
 			return $result;
 		} else {
-			var_dump($stmt);
-			$result_meta = array(
-					"affected_rows" => $stmt->affected_rows,
-					"insert_id" => $stmt->insert_id,
-					"num_rows" => $stmt->num_rows,
-					"error_list" => $stmt->error_list,
-					
-			);
+			$res = $stmt->affected_rows;
 			$stmt->close();
-			return TRUE;
+			return $res;
 		}
 	}
 	
@@ -418,9 +412,26 @@ class MySQL_Adapter extends DB_Adapter {
 		$query = "
 				select `user`.`id` as `id`, `user`.`name` as `name`
 				from  `group`
-				join `user_has_group` on `user_has_group`.`group_name` = `name`
+				join `user_has_group`
+				on `user_has_group`.`group_name` = `group`.`name`
 				join `user` on `user`.`id` = `user_has_group`.`user_id`
 				where `group`.`name` = ?;
+				";
+	
+		return $this->query($query, array($group_name), "s");
+	}
+	
+	public function select_group_non_users($group_name) {
+		$query = "
+				select `id`, `name`
+				from  `user`
+				where not exists (
+					select *
+					from `user_has_group`
+					where `user_has_group`.`user_id` = `user`.`id`
+					and `user_has_group`.`group_name` = ?
+				)
+				order by `name`;
 				";
 	
 		return $this->query($query, array($group_name), "s");
@@ -437,6 +448,39 @@ class MySQL_Adapter extends DB_Adapter {
 	
 		return $this->query($query, array($group_name), "s");
 	}
+	
+	public function delete_group($group_name) {
+		$query = "
+				delete
+				from  `group`
+				where `name` = ?
+				limit 1;
+				";
+	
+		return $this->query($query, array($group_name), "s", FALSE);
+	}
+	
+	public function delete_user_has_group($user_id, $group_name) {
+		$query = "
+				delete
+				from  `user_has_group`
+				where `user_id` = ?
+				and `group_name` = ?
+				limit 1;
+				";
+	
+		return $this->query($query, array($user_id, $group_name), "is", FALSE);
+	}
+	
+	public function insert_user_has_group($user_id, $group_name) {
+		$query = "
+				insert into `user_has_group` (`user_id`, `group_name`)
+				values (?, ?);
+				";
+	
+		return $this->query($query, array($user_id, $group_name), "is", FALSE);
+	}
+	
 	
 	// TestDB
 	

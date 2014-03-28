@@ -10,9 +10,16 @@ class UserManagerModel extends Model{
 	}
 	
 	public function get_user_data($id) {
-		$user = array_merge(
-				$this->db->select_user($id)[0],
-				$this->db->select_local_login($id)[0]);
+		if ($ll_data = $this->db->select_local_login($id)) {
+			$user = array_merge(
+					$this->db->select_user($id)[0],
+					$ll_data[0]);
+		} else {
+			$user = $this->db->select_user($id)[0];
+			$user["email"] = "";
+			$user["login"] = "";
+		}
+		
 		$user["group_data"] = $this->db->select_all_groups_with_user_mark($id);
 	
 		return $user;

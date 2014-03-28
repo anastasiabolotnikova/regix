@@ -14,17 +14,27 @@ class GroupManagerController extends Controller {
 		
 		$model = new GroupManagerModel($this->db, $this->session);
 		
-		$editor_uri = $this->get_controller_uri_name();
-		
 		$view_outer = new View(
 				REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
 		
 		$view_outer->title = "Groups and Permissions - Regix";
 		$view_outer->user_name = $model->get_user_name();
 		
-		if ($this->args[0] && $this->args[0] == "edit" && isset($this->args[1])) {
+		if (!$this->args[0]) {
+			// Group list
+			// /
+			
+			$view_inner = new View(REGIX_PATH.
+					"views/layouts/GroupManager/group_list_xhtml.phtml");
+			
+			$view_inner->controller_uri_name =
+					$this->get_controller_uri_name();
+			$view_inner->groups = $model->get_group_array();
+			
+		} else if ($this->args[0] == "edit" && isset($this->args[1])) {
 			
 			// Group editor
+			// /edit/group_name
 			
 			$group_data = $model->get_group_data(urldecode($this->args[1]));
 			
@@ -41,11 +51,11 @@ class GroupManagerController extends Controller {
 				$view_inner = new View(REGIX_PATH.
 						"views/layouts/GroupManager/group_editor_xhtml.phtml");
 				
+				$view_inner->controller_uri_name = 
+						$this->get_controller_uri_name();
 				$view_inner->group_data = $group_data[0];
 				$view_inner->group_users = $group_users;
 				$view_inner->group_permissions = $group_permissions;
-				
-				$view_inner->editor_uri = $editor_uri;
 				
 			} else {
 				
@@ -57,15 +67,86 @@ class GroupManagerController extends Controller {
 				$view_inner->message = "Group does not exist.";
 			}
 			
+		} else if ($this->args[0] == "delete" && isset($this->args[1])) {
+			
+			// Delete group
+			// /delete/group_name
+			
+			if ($model->delete_group($this->args[1])) {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/success_generic_xhtml.phtml");
+				
+				$view_inner->message = "Group deleted";
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+				
+				$view_inner->message = "Group does not exist";
+			}
+			
+		} else if ($this->args[0] == "delete_user" &&
+				isset($this->args[1]) && isset($this->args[2])) {
+				
+			// Delete group user
+			// /delete_user/group_name/user_id
+				
+			if ($model->delete_group_user(
+					urldecode($this->args[1]),
+					$this->args[2])) {
+				
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/success_generic_xhtml.phtml");
+		
+				$view_inner->message = "User removed from group";
+				
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+		
+				$view_inner->message = "User does not belong to this group";
+			}
+		
+		} else if ($this->args[0] == "add_user" && isset($this->args[1])) {
+		
+			// Add user interface
+			// /add_user/group_name
+		
+			$view_inner = new View(REGIX_PATH.
+					"views/layouts/GroupManager/group_add_user_xhtml.phtml");
+				
+			$view_inner->controller_uri_name = $this->get_controller_uri_name();
+			$view_inner->group_name = urldecode($this->args[1]);
+			$view_inner->users_not_in_group = $model->get_users_not_in_group(
+						urldecode($this->args[1]));
+			$view_inner->groups = $model->get_group_array();
+			
+		} else if ($this->args[0] == "add_user_by_id" &&
+				isset($this->args[1]) && isset($this->args[2])) {
+		
+			// Add group user by id
+			// /add_user_by_id/group_name/user_id
+		
+			if ($model->add_group_user_by_id(urldecode($this->args[1]),
+					$this->args[2])) {
+		
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/success_generic_xhtml.phtml");
+		
+				$view_inner->message = "User added to group";
+		
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+		
+				$view_inner->message = "User could not be added";
+			}
+			
 		} else {
 			
-			// Group list
-			
 			$view_inner = new View(REGIX_PATH.
-					"views/layouts/GroupManager/group_list_xhtml.phtml");
-			
-			$view_inner->groups = $model->get_group_array();
-			$view_inner->editor_uri = $editor_uri;
+					"views/layouts/generic/failure_generic_xhtml.phtml");
+				
+			$view_inner->message = "Invalid request.";
 		}
 		
 		$view_outer->content = $view_inner->render(FALSE);

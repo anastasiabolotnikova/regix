@@ -15,7 +15,23 @@ class GroupManagerModel extends Model{
 		return $this->db->select_group_users($group_name);
 	}
 	
+	public function get_users_not_in_group($group_name) {
+		return $this->db->select_group_non_users($group_name);
+	}
+	
 	public function get_group_permissions($group_name) {
 		return $this->db->select_group_permissions($group_name);
+	}
+	
+	public function delete_group($group_name) {
+		return $this->db->delete_group($group_name);
+	}
+	
+	public function delete_group_user($group_name, $user_id) {
+		return $this->db->delete_user_has_group($user_id, $group_name);
+	}
+	
+	public function add_group_user_by_id($group_name, $user_id) {
+		return $this->db->insert_user_has_group($user_id, $group_name);
 	}
 }
