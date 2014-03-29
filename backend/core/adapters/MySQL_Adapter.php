@@ -502,3 +502,32 @@ class MySQL_Adapter extends DB_Adapter {
 		return $this->query($query, array($id), "i", FALSE);
 	}
 }
+// Object of a Calendar
+public function get_cal_data($id) {
+		$stmt = $this->mysqli->prepare(
+				"SELECT name
+				FROM  `calendar` 
+				WHERE user.id = (?)");
+		
+		if (!$stmt) self::request_exception("Statement not prepared", __LINE__);
+		
+		if (!$stmt->bind_param("s", $id))
+			self::request_exception("Parameters not bound", __LINE__);
+		
+		if (!$stmt->execute())
+			self::request_exception("Request execution failed", __LINE__);
+		
+		if (!$stmt->bind_result($cal_name)
+			self::request_exception("Could not bind result", __LINE__);
+		
+		if($stmt->fetch()) {
+			$res = array(
+				"cal_name" => $cal_name
+			);
+		} else {
+			$res = NULL;
+		}
+		
+		$stmt->close();
+		return $res;
+	}	
