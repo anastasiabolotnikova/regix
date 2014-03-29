@@ -501,9 +501,9 @@ class MySQL_Adapter extends DB_Adapter {
 	
 		return $this->query($query, array($id), "i", FALSE);
 	}
-}
-// Object of a Calendar
-public function get_cal_data($id) {
+	// Object of Calendar
+	
+	/*public function get_cal_data($id) {
 		$stmt = $this->mysqli->prepare(
 				"SELECT name
 				FROM  `calendar` 
@@ -530,4 +530,42 @@ public function get_cal_data($id) {
 		
 		$stmt->close();
 		return $res;
-	}	
+	}*/
+	
+	// Object of Event
+
+	public function get_event_data($id) {
+		$stmt = $this->mysqli->prepare(
+				"SELECT calendar_id, name, description, assigned_user, assigned_group, from, to
+				FROM  `event` 
+				WHERE event.id = (?)");
+		
+		if (!$stmt) self::request_exception("Statement not prepared", __LINE__);
+		
+		if (!$stmt->bind_param("s", $id))
+			self::request_exception("Parameters not bound", __LINE__);
+		
+		if (!$stmt->execute())
+			self::request_exception("Request execution failed", __LINE__);
+		
+		if (!$stmt->bind_result($id_cal, $event_name, $desc, $assigned_user, $assigned_group, $from, $to))
+			self::request_exception("Could not bind result", __LINE__);
+		
+		if($stmt->fetch()) {
+			$res = array(
+				"id_cal" => $id_cal,
+				"event_name" => $event_name,
+				"desc" => $desc,
+				"assigned_user" => $assigned_user,
+				"assigned_group" => $assigned_group,
+				"from" => $from,
+				"to" => $to
+			);
+		} else {
+			$res = NULL;
+		}
+		
+		$stmt->close();
+		return $res;
+	}
+}

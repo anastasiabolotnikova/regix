@@ -201,10 +201,12 @@ CREATE TABLE IF NOT EXISTS `event` (
   `assigned_group` VARCHAR(45) NULL,
   `from` TIMESTAMP NULL,
   `to` TIMESTAMP NULL,
+  `user_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_event_calendar1_idx` (`calendar_id` ASC),
   INDEX `fk_event_assigned_user1_idx` (`assigned_user` ASC),
   INDEX `fk_event_assigned_group1_idx` (`assigned_group` ASC),
+  INDEX `fk_event_user2_idx` (`user_id` ASC),
   CONSTRAINT `fk_evant_calendar1`
     FOREIGN KEY (`calendar_id`)
     REFERENCES `calendar` (`id`)
@@ -218,6 +220,11 @@ CREATE TABLE IF NOT EXISTS `event` (
   CONSTRAINT `fk_event_group1`
     FOREIGN KEY (`assigned_group`)
     REFERENCES `group` (`name`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_event_user2`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

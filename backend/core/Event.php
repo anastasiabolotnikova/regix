@@ -5,8 +5,6 @@
  * This file contains Event class definition.
  */
 
-require_once REGIX_PATH.'core/Calendar.php';
-
 /**
  * Regix core event.
  * 
@@ -31,57 +29,85 @@ class Event {
 	protected $id;
 	
 	/**
+	 * Calendar id.
+	 * @var int
+	 */
+	protected $id_cal;	
+	/**
 	 * Event name
-	 * 
-	 * Note that this is the name from _User_ table, even though other variants
-	 * may be available via additional modules.
 	 * 
 	 * @var unknown
 	 */
-	protected $name;
+	protected $event_name;
 	
 	/**
-	 * Array of user groups.
-	 * @var array
-	 * 
-	 * @todo Create Group objects automatically.
+	 * Event description
+	 *
+	 * @var unknown
 	 */
-	protected $groups;
+	protected $desc;
 	
 	/**
-	 * Creates a new user object. Downloads data from the database.
+	 * User assigned to event
+	 *
+	 * @var unknown
+	 */
+	protected $assigned_user;
+	
+	/**
+	 * User group assigned to event
+	 *
+	 * @var unknown
+	 */
+	protected $assigned_group;
+	
+	/**
+	 * Time when event starts
+	 *
+	 * @var timestamp
+	 */
+	protected $from;
+	
+	/**
+	 * Time when event ends
+	 *
+	 * @var timestamp
+	 */
+	protected $to;
+	
+	/**
+	 * Creates a new event object. Downloads data from the database.
 	 * 
-	 * @param int $id User id.
+	 * @param int $id Event id.
 	 * @param DB_Adapter $db Initialized and connected database adapter object.
 	 * 
-	 * @todo Create Group objects automatically.
 	 */
 	public function __construct($id, $db) {
 		$this->db = $db;
 		$this->id = $id;
-		$prof_data = $this->db->get_profile_data($id);
+		$event_data = $this->db->get_event_data($id);
 		
 		if (!$prof_data) {
-			throw new Exception("User does not exist");
+			throw new Exception("Event does not exist");
 		}
 		
-		$this->name = $prof_data['username'];
+		$this->id_cal = $event_data['id_cal'];
+		$this->event_name = $event_data['event_name'];
+		$this->desc = $event_data['desc'];
+		$this->assigned_user = $event_data['assigned_user'];
+		$this->assigned_group = $event_data['assigned_group'];
+		$this->from = $event_data['from'];
+		$this->to = $event_data['to'];
 		
-		$groups_data = $result_rows = $this->db->select(
-				"user_has_group",
-				array("group_name"),
-				"issss",
-				array("user_id" => $id), 1000);
-		
-		$this->groups = array();
-		foreach ($groups_data as $group_data) {
-			array_push($this->groups, new Group($group_data["group_name"]));
-		}
 	}
 	
 	
 	public function get_id() {
 		return $this->id;
+	}
+	
+	public function get_cal_id() {
+		return $this->id_cal;
 	}
 	
 	
@@ -93,11 +119,27 @@ class Event {
 	 * 
 	 * @return string
 	 */
-	public function get_name() {
-		return $this->name;
+	public function get_event_name() {
+		return $this->event_name;
 	}
 	
-	public function get_groups() {
-		return $this->groups;
+	public function get_desc() {
+		return $this->desc;
+	}
+	
+	public function get_assigned_user() {
+		return $this->assigned_user;
+	}
+	
+	public function get_assigned_group() {
+		return $this->assigned_group;
+	}
+	
+	public function get_start_time() {
+		return $this->from;
+	}
+	
+	public function get_end_time() {
+		return $this->to;
 	}
 }

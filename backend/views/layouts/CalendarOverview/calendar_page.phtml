@@ -1,8 +1,23 @@
 <div id="calendar_page" class="table_container">
-	<div class="title_block">Calendar</div>
+	<div class="title_block">Calendar <? echo date('n'); ?> <? echo date('o'); ?></div>
 		<table id="calendar">
+			<tr><td>Monday</td><td>Tuesday</td><td>Wednesday</td><td>Thursday</td><td>Friday</td><td>Saturday</td><td>Sunday</td>
 			<?
+			$month_stamp=mktime(0,0,0,$this->month,1,$this->year);
+			$day_count=date("t",$month_stamp);
+			$i=0;
 			
+			  for($d=1;$d<=30;$d++) { 
+				if (!($i++ % 7)) echo " <tr>\n";
+				echo '  <td align="center">';
+				if ($d < 1 OR $d > $day_count) {
+				  echo $d;
+				} else {
+					echo $d;
+				} 
+				echo "</td>\n";
+				if (!($i % 7))  echo " </tr>\n";
+			  } 
 			?>
 		</table>
 </div>
