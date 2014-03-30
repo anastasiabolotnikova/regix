@@ -439,11 +439,9 @@ class MySQL_Adapter extends DB_Adapter {
 	
 	public function select_group_permissions($group_name) {
 		$query = "
-				select distinct
-					`permission_name`,
-					max(`group_name` = ?) as `permission_granted`
+				select `permission_name`
 				from  `group_has_permission`
-				group by `permission_name`;
+				where `group_name` = ?;
 				";
 	
 		return $this->query($query, array($group_name), "s");
@@ -481,6 +479,45 @@ class MySQL_Adapter extends DB_Adapter {
 		return $this->query($query, array($user_id, $group_name), "is", FALSE);
 	}
 	
+	public function insert_group_has_permission($group_name, $permission_name) {
+		$query = "
+				insert into `group_has_permission` (
+					`group_name`,
+					`permission_name`)
+				values (?, ?);
+				";
+	
+		return $this->query($query, array($group_name, $permission_name),
+				"ss", FALSE);
+	}
+	
+	public function delete_group_has_permission($group_name, $permission_name) {
+		$query = "
+				delete from `group_has_permission` 
+				where `group_name` = ?
+				and `permission_name` = ?;
+				";
+	
+		return $this->query($query, array($group_name, $permission_name),
+				"ss", FALSE);
+	}
+	
+	public function select_group_non_permissions($group_name) {
+		$query = "
+				select `name`
+				from  `permission`
+				where not exists (
+					select *
+					from `group_has_permission`
+					where `group_has_permission`.`permission_name` = 
+						`permission`.`name`
+					and `group_has_permission`.`group_name` = ?
+				)
+				order by `name`;
+				";
+		
+		return $this->query($query, array($group_name), "s");
+	}
 	
 	// TestDB
 	

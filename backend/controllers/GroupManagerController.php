@@ -118,7 +118,6 @@ class GroupManagerController extends Controller {
 			$view_inner->group_name = urldecode($this->args[1]);
 			$view_inner->users_not_in_group = $model->get_users_not_in_group(
 						urldecode($this->args[1]));
-			$view_inner->groups = $model->get_group_array();
 			
 		} else if ($this->args[0] == "add_user_by_id" &&
 				isset($this->args[1]) && isset($this->args[2])) {
@@ -139,6 +138,63 @@ class GroupManagerController extends Controller {
 						"views/layouts/generic/failure_generic_xhtml.phtml");
 		
 				$view_inner->message = "User could not be added";
+			}
+			
+		} else if ($this->args[0] == "add_permission" &&
+		isset($this->args[1]) && isset($this->args[2])) {
+		
+			// Add group permission
+			// /add_permission/group_name/prmission_name
+		
+			if ($model->add_group_permission(urldecode($this->args[1]),
+					urldecode($this->args[2]))) {
+		
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/success_generic_xhtml.phtml");
+		
+				$view_inner->message = "Permission granted to group";
+		
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+		
+				$view_inner->message = "Permission could not be granted";
+			}
+		
+		} else if ($this->args[0] == "add_permission" &&
+		isset($this->args[1])) {
+		
+			// Add group permission interface
+			// /add_permission/group_name
+		
+			$view_inner = new View(REGIX_PATH.
+					"views/layouts/GroupManager/group_add_permission_xhtml.phtml");
+				
+			$view_inner->controller_uri_name = $this->get_controller_uri_name();
+			$view_inner->group_name = urldecode($this->args[1]);
+			$view_inner->permissions_not_granted =
+			$model->get_permissions_not_granted(
+					urldecode($this->args[1]));
+		
+		} else if ($this->args[0] == "delete_permission" &&
+		isset($this->args[1]) && isset($this->args[2])) {
+		
+			// Delete (revoke) group permission
+			// /delete_permission/group_name/prmission_name
+		
+			if ($model->delete_group_permission(urldecode($this->args[1]),
+					urldecode($this->args[2]))) {
+		
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/success_generic_xhtml.phtml");
+		
+				$view_inner->message = "Permission revoked from group";
+		
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+		
+				$view_inner->message = "Permission could not be revoked";
 			}
 			
 		} else {

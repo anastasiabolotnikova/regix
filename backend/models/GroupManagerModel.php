@@ -34,4 +34,18 @@ class GroupManagerModel extends Model{
 	public function add_group_user_by_id($group_name, $user_id) {
 		return $this->db->insert_user_has_group($user_id, $group_name);
 	}
+	
+	public function add_group_permission($group_name, $permission_name) {
+		return $this->db->insert_group_has_permission($group_name,
+				$permission_name);
+	}
+	
+	public function delete_group_permission($group_name, $permission_name) {
+		return $this->db->delete_group_has_permission($group_name,
+				$permission_name);
+	}
+	
+	public function get_permissions_not_granted($group_name) {
+		return $this->db->select_group_non_permissions($group_name);
+	}
 }
