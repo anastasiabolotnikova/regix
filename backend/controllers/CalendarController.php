@@ -13,11 +13,36 @@ class CalendarController extends Controller{
 		} else {
 			return FALSE;
 		}
-		
-		$view_content = new View(
-					REGIX_PATH."views/layouts/CalendarOverview/calendar_page.phtml");
-		$title = "Calendar :: Regix";
-		
+
+		if (//Day is selected){
+			$view_content = new View(
+					REGIX_PATH."views/layouts/CalendarOverview/time_selection_form.phtml");
+			$title = "Time Selection :: Regix";
+		}
+		else if (//Day and time are selected){
+			if (//Registration is correct){
+				$view_content = new View(
+						REGIX_PATH."views/layouts/CalendarOverview/event_registration_success.phtml");
+				$title = "Event Registered :: Regix";	
+			}
+			else if	(//Registration is not correct){
+				$view_content = new View(
+						REGIX_PATH."views/layouts/CalendarOverview/event_registration_failure.phtml");
+				$title = "Registration Error :: Regix";	
+			}
+			//Begin registration
+			else{
+				$view_content = new View(
+						REGIX_PATH."views/layouts/CalendarOverview/event_registration_form.phtml");
+				$title = "Event Registration Form :: Regix";
+			}
+		}
+		else{
+			$view_content = new View(
+						REGIX_PATH."views/layouts/CalendarOverview/calendar_page.phtml");
+			$title = "Calendar :: Regix";
+		}
+
 		$view_content->day = $model->get_day();
 		$view_content->month = $model->get_month();
 		$view_content->year = $model->get_year();
