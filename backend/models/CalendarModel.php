@@ -79,4 +79,20 @@ class CalendarModel extends Model{
 		}
 		return $this->wd;
 	}
+
+	public function create_from($from_and_to) {
+		$array = explode("-",$from_and_to);
+		$from_almost = explode(":",$array[0]);
+		return $from = "TIMESTAMP '2014-3-14 ".$from_almost[0].":00:00'";
+	}
+
+	public function create_to($from_and_to) {
+		$array = explode("-",$from_and_to);
+		$to_almost = explode(":",$array[1]);
+		return $to = "TIMESTAMP '2014-3-14 ".$to_almost[0].":00:00'";
+	}
+
+	public function save_data($event_name, $description, $assigned_user, $from, $to) {
+		return $this->db->insert_new_event($event_name, $description, $assigned_user, $from, $to);
+	}
 }

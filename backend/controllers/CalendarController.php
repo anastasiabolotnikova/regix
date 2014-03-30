@@ -28,7 +28,17 @@ class CalendarController extends Controller{
 			//Get here from time selection
 			} else if (count($this->args)==3){
 				//Registration is correct
-				if (1==2){
+				if (isset($_POST['reg_event']) && $_POST['reg_event'] == "Register") {
+
+					$model->save_data(
+						$_POST['event_name'],
+						$_POST['comment'],
+						2,
+						$model->create_from($_POST['time']),
+						$model->create_to($_POST['time'])			
+						);
+
+
 					$view_content = new View(
 							REGIX_PATH."views/layouts/CalendarOverview/event_registration_success.phtml");
 					$title = "Event Registered :: Regix";	

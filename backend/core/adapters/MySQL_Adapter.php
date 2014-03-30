@@ -548,6 +548,16 @@ class MySQL_Adapter extends DB_Adapter {
 		
 		return $this->query($query, array($group_name), "s");
 	}
+
+	public function insert_new_event($event_name, $description, $assigned_user, $from, $to) {
+
+		$query = "
+				INSERT INTO `event`(`calendar_id`, `name`, `description`, `assigned_user`, `from`, `to`) 
+				VALUES (1,?,?,?,?,?);
+				";
+	
+		return $this->query($query, array($event_name, $description, $assigned_user, $from, $to), "ssiss", FALSE);
+	}
 	
 	// Object of Calendar
 	
