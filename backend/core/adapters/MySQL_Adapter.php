@@ -113,38 +113,6 @@ class MySQL_Adapter extends DB_Adapter {
 		return $this->mysqli->insert_id;
 	}
 	
-	public function get_profile_data($id) {
-		$stmt = $this->mysqli->prepare(
-				"SELECT name, login, email
-				FROM  `user` 
-				LEFT JOIN  `local_login` ON user.id = local_login.user_id
-				WHERE user.id = (?)");
-		
-		if (!$stmt) self::request_exception("Statement not prepared", __LINE__);
-		
-		if (!$stmt->bind_param("s", $id))
-			self::request_exception("Parameters not bound", __LINE__);
-		
-		if (!$stmt->execute())
-			self::request_exception("Request execution failed", __LINE__);
-		
-		if (!$stmt->bind_result($user_name, $user_login, $email))
-			self::request_exception("Could not bind result", __LINE__);
-		
-		if($stmt->fetch()) {
-			$res = array(
-				"username" => $user_name,
-				"login" => $user_login,
-				"email" => $email
-			);
-		} else {
-			$res = NULL;
-		}
-		
-		$stmt->close();
-		return $res;
-	}	
-	
 	public function query($query, $params=NULL, $param_types=NULL,
 			$bind_result=TRUE) {
 		
