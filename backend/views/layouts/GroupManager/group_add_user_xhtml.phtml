@@ -1,0 +1,24 @@
+<div id="group_manager_add_user_container" class="table_container">
+	<div class="title_block"><?php echo $this->group_name; ?></div>
+	
+	<h3 class="editor_section_header">Users not in group</h3>
+	
+	<table>
+		<tbody>
+<?php
+	foreach ($this->users_not_in_group as $user) {
+?>
+			<tr>
+				<td>
+					<?php echo($user["name"]); ?>
+				</td>
+				<td>
+					<a href="/<?php echo($this->controller_uri_name . "/add_user_by_id/" . urlencode($this->group_name) . '/' . $user["id"]); ?>">add to group</a>
+				</td>
+			</tr>
+<?php
+	}
+?>
+		</tbody>
+	</table>
+</div>

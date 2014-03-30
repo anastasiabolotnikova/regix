@@ -105,6 +105,10 @@ class MySQL_Adapter extends DB_Adapter {
 		}
 	}
 	
+	public function error() {
+		return $this->mysqli->error;
+	}
+	
 	public function get_last_id(){
 		return $this->mysqli->insert_id;
 	}
@@ -141,157 +145,6 @@ class MySQL_Adapter extends DB_Adapter {
 		return $res;
 	}	
 	
-	public function select($table, $fields, $types, $filters, $limit = 0) {
-		
-		// Filter table names (should not be needed, but in case...)
-		if (!preg_match('/^[A-Za-z0-9_]+$/',$table)) {
-			self::request_exception(
-					"Table name contains non-alphanumeric symbols", __LINE__);
-		}
-		
-		// Filter limit
-		if (!is_int($limit)) {
-			self::request_exception(
-					"Limit should be an integer", __LINE__);
-		}
-		
-		$s_fields = "`" . implode("`,`", $fields) . "`";
-		
-		$s_filter_types = "";
-		$s_filters = "";
-		
-		$is_first = TRUE;
-		
-		foreach($filters as $filter => $value) {
-			
-			// Filter column names
-			if (!preg_match('/^[A-Za-z0-9_]+$/',$filter)) {
-				self::request_exception(
-						"Column names contain non-alphanumeric symbols",
-						__LINE__);
-			}
-			
-			if (is_int($value)) {
-				$s_filter_types .= 'i';
-			} else if (is_double($value)) {
-				$s_filter_types .= 'd';
-			} else if (is_string($value)) {
-				$s_filter_types .= 's';
-			} else {
-				$s_filter_types .= 'b';
-			}
-				
-			if(!$is_first) {
-				$s_filters .= ' and ';
-			}
-				
-			$s_filters .= '`' . $filter . '` = (?)';
-			$is_first = FALSE;
-		}
-		
-		$stmt = $this->mysqli->prepare(
-				"select " . $s_fields . "
-				from `" . $table . "`
-				where " . $s_filters . "
-				limit " . $limit . ";");
-		
-		if (!$stmt) self::request_exception("Statement not prepared", __LINE__,
-					$this->mysqli->error);
-		
-		$bind_params = array_values($filters);
-		array_unshift($bind_params, $s_filter_types);
-		
-		$bind_res = call_user_func_array(array($stmt, 'bind_param'),
-				$this::make_refs($bind_params));
-		
-		if (!$stmt->execute())
-			self::request_exception("Request execution failed", __LINE__,
-					$this->mysqli->error);
-		
-		if (!self::bind_array($stmt, $result_row))
-			self::request_exception("Could not bind result", __LINE__,
-					$this->mysqli->error);
-		
-		$result = array();
-		while ($stmt->fetch()) {
-			array_push($result, self::dereference_array($result_row));
-		}
-		echo($this->mysqli->error);
-		
-		$stmt->close();
-		return $result;
-	}
-	
-	public function insert($table, $data) {
-		
-		// Filter table names (should not be needed, but in case...)
-		if (!preg_match('/^[A-Za-z0-9_]+$/',$table)) {
-			self::request_exception(
-					"Table name contains non-alphanumeric symbols", __LINE__);
-		}
-		
-		$s_types = ""; // Types for bind_param
-		$s_fields = "";	// Field names
-		$s_placeholders = "";
-		
-		$bind_params = array_values($data);
-		
-		$is_first = TRUE;
-		
-		foreach($data as $field => $value) {
-			// Filter column names
-			if (!preg_match('/^[A-Za-z0-9_]+$/',$field)) {
-				self::request_exception(
-						"Column names contain non-alphanumeric symbols",
-						__LINE__);
-			}
-			
-			if (is_int($value)) {
-				$s_types .= 'i';
-			} else if (is_double($value)) {
-				$s_types .= 'd';
-			} else if (is_string($value)) {
-				$s_types .= 's';
-			} else {
-				$s_types .= 'b';
-			}
-			
-			if(!$is_first) {
-				$s_fields .= ',';
-				$s_placeholders .= ",";
-			}
-			
-			$s_fields .= '`' . $field . '`';
-			$s_placeholders .= "?";
-			
-			$is_first = FALSE;
-		}
-		
-		$stmt = $this->mysqli->prepare(
-				"insert into `" . $table . "` (" . $s_fields . ")
-				values (" . $s_placeholders . ");");
-		
-		if (!$stmt) {
-			self::request_exception("Statement not prepared", __LINE__,
-					$this->mysqli->error);
-		}
-		
-		array_unshift($bind_params, $s_types);
-		
-		$bind_res = call_user_func_array(array($stmt, 'bind_param'),
-				$this::make_refs($bind_params));
-		
-		if (!$bind_res)
-			self::request_exception("Parameters not bound", __LINE__,
-					$this->mysqli->error);
-		
-		if (!$stmt->execute())
-			self::request_exception("Request execution failed", __LINE__,
-					$this->mysqli->error);
-		
-		$stmt->close();
-	}
-	
 	public function query($query, $params=NULL, $param_types=NULL,
 			$bind_result=TRUE) {
 		
@@ -304,17 +157,16 @@ class MySQL_Adapter extends DB_Adapter {
 		if ($params) {
 			array_unshift($params, $param_types);
 			
-			$bind_res = call_user_func_array(array($stmt, 'bind_param'),
+			$bind_done = call_user_func_array(array($stmt, 'bind_param'),
 					$this::make_refs($params));
 			
-			if (!$bind_res)
+			if (!$bind_done)
 				self::request_exception("Parameters not bound", __LINE__,
 					$this->mysqli->error);
 		}
 		
 		if (!$stmt->execute())
-			self::request_exception("Request execution failed", __LINE__,
-					$this->mysqli->error);
+			return FALSE;
 		
 		if ($bind_result) {
 			if (!self::bind_array($stmt, $result_row))
@@ -330,11 +182,84 @@ class MySQL_Adapter extends DB_Adapter {
 			$stmt->close();
 			return $result;
 		} else {
+			$res = $stmt->affected_rows;
 			$stmt->close();
-			return TRUE;
+			return $res;
 		}
 	}
 	
+	// Bootloader
+	
+	public function select_controller_by_uri_name_if_enabled($uri_name) {
+		$query = "
+				select `id`,`name`,`description`,`enabled`,`uri_name`,`file_path`
+				from  `controller`
+				where `enabled` = 1
+				and `uri_name` = ?
+				limit 1;
+				";
+	
+		return $this->query($query, array($uri_name), "s");
+	}
+	
+	// User
+	
+	public function select_user($user_id) {
+		$query = "
+				select `name`
+				from  `user`
+				where `id` = (?);
+				";
+	
+		return $this->query($query, array($user_id), 'i');
+	}
+	
+	public function select_user_has_group($user_id) {
+		$query = "
+				select `group_name`
+				from  `user_has_group`
+				where `user_id` = ?;
+				";
+		
+		return $this->query($query, array($user_id), "i");
+	}
+	
+	
+	// Controller
+	
+	public function select_controller($controller_id) {
+		$query = "
+				select `id`,`name`,`description`,`enabled`,`uri_name`,`file_path`
+				from  `controller`
+				where `id` = ?;
+				";
+	
+		return $this->query($query, array($controller_id), "i");
+	}
+	
+	// LocalLogin
+	
+	public function select_local_login_by_login($login) {
+		$query = "
+				select `user_id`, `login`, `salt`, `hash`, `email`
+				from  `local_login`
+				where `login`=?;
+				";
+	
+		return $this->query($query, array($login), "s");
+	}
+	
+	// RegistrationPage
+	
+	public function select_local_login_by_email($email) {
+		$query = "
+				select `user_id`, `login`, `salt`, `hash`, `email`
+				from  `local_login`
+				where `email`=?;
+				";
+	
+		return $this->query($query, array($email), "s");
+	}
 	
 	// User manager
 	
@@ -378,7 +303,7 @@ class MySQL_Adapter extends DB_Adapter {
 	
 	public function select_local_login($user_id) {
 		$query = "
-				select login, salt, hash, email
+				select `user_id`, `login`, `salt`, `hash`, `email`
 				from  `local_login`
 				where `user_id`=?;
 				";
@@ -458,16 +383,6 @@ class MySQL_Adapter extends DB_Adapter {
 		return $this->query($query);
 	}
 	
-	public function select_controller($controller_id) {
-		$query = "
-				select `id`,`name`,`description`,`enabled`,`uri_name`,`file_path`
-				from  `controller`
-				where `id` = ?;
-				";
-	
-		return $this->query($query, array($controller_id), "i");
-	}
-	
 	public function update_controller($id, $name, $description, $enabled, 
 			$uri_name, $file_path) {
 		
@@ -513,6 +428,139 @@ class MySQL_Adapter extends DB_Adapter {
 	
 		return $this->query($query, array($id), "i", FALSE);
 	}
+	
+	// Group manager
+	
+	public function select_all_groups() {
+		$query = "
+				select `name`
+				from  `group`;
+				";
+	
+		return $this->query($query);
+	}
+	
+	public function select_group($group_name) {
+		$query = "
+				select `name`
+				from `group`
+				where `name` = ?;
+				";
+	
+		return $this->query($query, array($group_name), "s");
+	}
+	
+	public function select_group_users($group_name) {
+		$query = "
+				select `user`.`id` as `id`, `user`.`name` as `name`
+				from  `group`
+				join `user_has_group`
+				on `user_has_group`.`group_name` = `group`.`name`
+				join `user` on `user`.`id` = `user_has_group`.`user_id`
+				where `group`.`name` = ?;
+				";
+	
+		return $this->query($query, array($group_name), "s");
+	}
+	
+	public function select_group_non_users($group_name) {
+		$query = "
+				select `id`, `name`
+				from  `user`
+				where not exists (
+					select *
+					from `user_has_group`
+					where `user_has_group`.`user_id` = `user`.`id`
+					and `user_has_group`.`group_name` = ?
+				)
+				order by `name`;
+				";
+	
+		return $this->query($query, array($group_name), "s");
+	}
+	
+	public function select_group_permissions($group_name) {
+		$query = "
+				select `permission_name`
+				from  `group_has_permission`
+				where `group_name` = ?;
+				";
+	
+		return $this->query($query, array($group_name), "s");
+	}
+	
+	public function delete_group($group_name) {
+		$query = "
+				delete
+				from  `group`
+				where `name` = ?
+				limit 1;
+				";
+	
+		return $this->query($query, array($group_name), "s", FALSE);
+	}
+	
+	public function delete_user_has_group($user_id, $group_name) {
+		$query = "
+				delete
+				from  `user_has_group`
+				where `user_id` = ?
+				and `group_name` = ?
+				limit 1;
+				";
+	
+		return $this->query($query, array($user_id, $group_name), "is", FALSE);
+	}
+	
+	public function insert_user_has_group($user_id, $group_name) {
+		$query = "
+				insert into `user_has_group` (`user_id`, `group_name`)
+				values (?, ?);
+				";
+	
+		return $this->query($query, array($user_id, $group_name), "is", FALSE);
+	}
+	
+	public function insert_group_has_permission($group_name, $permission_name) {
+		$query = "
+				insert into `group_has_permission` (
+					`group_name`,
+					`permission_name`)
+				values (?, ?);
+				";
+	
+		return $this->query($query, array($group_name, $permission_name),
+				"ss", FALSE);
+	}
+	
+	public function delete_group_has_permission($group_name, $permission_name) {
+		$query = "
+				delete from `group_has_permission` 
+				where `group_name` = ?
+				and `permission_name` = ?;
+				";
+	
+		return $this->query($query, array($group_name, $permission_name),
+				"ss", FALSE);
+	}
+	
+	public function select_group_non_permissions($group_name) {
+		$query = "
+				select `name`
+				from  `permission`
+				where not exists (
+					select *
+					from `group_has_permission`
+					where `group_has_permission`.`permission_name` = 
+						`permission`.`name`
+					and `group_has_permission`.`group_name` = ?
+				)
+				order by `name`;
+				";
+		
+		return $this->query($query, array($group_name), "s");
+	}
+	
 	// Object of Calendar
 	
 	/*public function get_cal_data($id) {

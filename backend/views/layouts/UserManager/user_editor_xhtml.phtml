@@ -1,15 +1,19 @@
 <div id="user_manager_editor_container" class="table_container">
-	<div class="title_block"><?php echo $this->edit_user['username']; ?></div>
-	<form action="/<?php echo $this->editor_uri; ?>/save/<?php echo $this->edit_user_id; ?>" method="post">
+	<h1 class="title_block"><?php echo $this->edit_user['name']; ?></h1>
+	<form
+		action="/<?php echo $this->editor_uri; ?>/save/<?php echo $this->edit_user_id; ?>"
+		method="post">
 		<table>
 			<tbody>
 				<tr>
 					<th class="table_row_header">Name</th>
-					<td><input name="name" type="text" value="<?php echo $this->edit_user['username']; ?>" /></td>
+					<td><input name="name" type="text"
+						value="<?php echo $this->edit_user['name']; ?>" /></td>
 				</tr>
 				<tr>
 					<th class="table_row_header">Login</th>
-					<td><input name="login" type="text" value="<?php echo $this->edit_user['login']; ?>" /></td>
+					<td><input name="login" type="text"
+						value="<?php echo $this->edit_user['login']; ?>" /></td>
 				</tr>
 				<tr>
 					<th class="table_row_header">Password</th>
@@ -17,33 +21,36 @@
 				</tr>
 				<tr>
 					<th class="table_row_header">Email</th>
-					<td><input name="email" type="text" value="<?php echo $this->edit_user['email']; ?>" /></td>
+					<td><input name="email" type="text"
+						value="<?php echo $this->edit_user['email']; ?>" /></td>
 				</tr>
-				</tbody>
-            </table>
-        
-
-				<h3 colspan="2" class="table_section_header">Groups</h3>
-        <table>
-            <tbody>
-<?php
-				foreach ($this->edit_user["group_data"] as $group) {
-?>
-
-					<tr><td><?php echo($group["group_name"]); ?>
-                    
-                    						<input name="user_groups[]" value="<?php echo($group["group_name"]); ?>" type="checkbox"<?php if ($group["user_registered"]) echo(' checked="checked"');?> /></td></tr>
-
-
-<?php
-				}
-?>
-                			</tbody>
+			</tbody>
 		</table>
 
-						<input name="submit" type="submit" value="Save" />
-						<input name="cancel" type="submit" value="Cancel" />
 
+		<h3 class="editor_section_header">Groups</h3>
+		
+		<table>
+			<tbody>
+<?php
+	foreach ( $this->edit_user ["group_data"] as $group ) {
+?>
+				<tr>
+					<td>
+						<?php echo($group["group_name"]); ?>
+					</td>
+					<td>
+						<input name="user_groups[]" value="<?php echo($group["group_name"]); ?>" type="checkbox"<?php if ($group["user_registered"]) echo(' checked="checked"');?> />
+					</td>
+				</tr>
+<?php
+	}
+?>
+			</tbody>
+		</table>
 
+		<div class="form_controls">
+			<input name="submit" type="submit" value="Save" /> <input name="cancel" type="submit" value="Cancel" />
+		</div>
 	</form>
 </div>

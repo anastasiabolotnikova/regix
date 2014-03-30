@@ -83,7 +83,13 @@ abstract class DB_Adapter {
 	 */
 	abstract public function close();
 	
-	abstract public function get_profile_data($id);
+	/**
+	 * Get last error.
+	 * 
+	 * @return string Last error encountered when executing last query.
+	 */
+	
+	abstract public function error();
 	
 	abstract public function get_event_data($id);
 	
@@ -92,55 +98,32 @@ abstract class DB_Adapter {
 	 */
 	abstract public function get_last_id();
 	
-	/**
-	 * Select values from DB table with conditions.
-	 * 
-	 * @param string $table Table to use for data selection.
-	 * 
-	 * @param array $fields Array of field (column) names to be selected.
-	 * 
-	 * @param string $types Types of fields to be selected.
-	 * String should contain only the following letters:
-	 * * 's' for string;
-	 * * 'i' for integer;
-	 * * 'd' for double;
-	 * * 'b' for binary.
-	 * Number of letters *MUST EXACTLY MATCH* number of fields to be seledted.
-	 * @example If you want to select 4 fields - an integer, two strings and
-	 * a double, for @a $types use string "issd".
-	 * 
-	 * @param array $filters Array containing select query criteria.
-	 * This should be an associative array, where keys (strings) are field
-	 * (column) names and values (strings, integers, doubles or other) are
-	 * expected values.
-	 * 
-	 * @param number $limit How many rows should be maximally selected. 0 by
-	 * default.
-	 */
-	abstract public function select($table, $fields, $types, $filters,
-			$limit = 0);
-	
-	/**
-	 * Insert data into table.
-	 * 
-	 * @param string $table Table to use for data insertion.
-	 * @param array $data Array with field-value pairs to be inserted.
-	 * {
-	 *     "field1" => "value1",
-	 *     ...
-	 * }
-	 * 
-	 * Table and field names should be alphanumerical strings (can contain dots
-	 * and underscores).
-	 */
-	abstract public function insert($table, $data);
-	
-	
-	
 	abstract public function query($query, $params=NULL, $param_types=NULL,
 			$bind_result=TRUE);
 	
-	// User manager
+	// Bootloader
+	
+	abstract public function select_controller_by_uri_name_if_enabled($uri_name);
+	
+	// User
+	
+	abstract public function select_user($user_id);
+	
+	abstract public function select_user_has_group($user_id);
+	
+	// Controller
+	
+	abstract public function select_controller($controller_id);
+	
+	// LocalLogin
+	
+	abstract public function select_local_login_by_login($login);
+	
+	// RegistrationPage
+	
+	abstract public function select_local_login_by_email($email);
+	
+	// UserManager
 	
 	abstract public function select_all_users_with_local_login();
 	
@@ -165,10 +148,32 @@ abstract class DB_Adapter {
 	
 	abstract public function select_all_controllers();
 	
-	abstract public function select_controller($controller_id);
-	
 	abstract public function update_controller($id, $name, $description,
 			$enabled, $uri_name, $file_path);
 	
 	abstract public function remove_controller($id);
+	
+	// Group manager
+	
+	abstract public function select_all_groups();
+	
+	abstract public function select_group($group_name);
+	
+	abstract public function select_group_users($group_name);
+	
+	abstract public function select_group_non_users($group_name);
+	
+	abstract public function select_group_permissions($group_name);
+	
+	abstract public function delete_group($group_name);
+	
+	abstract public function delete_user_has_group($user_id, $group_name);
+	
+	abstract public function insert_group_has_permission($group_name,
+			$permission_name);
+	
+	abstract public function delete_group_has_permission($group_name,
+			$permission_name);
+	
+	abstract public function select_group_non_permissions($group_name);
 }

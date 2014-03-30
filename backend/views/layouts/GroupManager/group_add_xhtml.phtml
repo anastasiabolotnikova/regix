@@ -1,0 +1,50 @@
+<div id="group_manager_editor_container" class="table_container">
+	<div class="title_block">Add group</div>
+	
+	<h3 class="editor_section_header">Users</h3>
+	
+	<table>
+		<tbody>
+<?php
+	foreach ($this->group_users as $group_user) {
+?>
+			<tr>
+				<td colspan="2">
+					<?php echo($group_user["name"]); ?> (<a href="/<?php echo($this->controller_uri_name . "/delete_user/" . urlencode($this->group_data['name']) . '/' . $group_user["id"]); ?>">remove from group</a>)
+				</td>
+			</tr>
+<?php
+	}
+?>
+		</tbody>
+	</table>
+	
+	<div class="single_button_container">
+		<button type="button" onclick="location.href='/<?php echo ($this->controller_uri_name . "/add_user/" . urlencode($this->group_data['name'])); ?>'">Add user</button>
+	</div>
+	
+	
+	<h3 class="editor_section_header">Permissions</h3>
+	
+	<table>
+		<tbody>			
+<?php
+	foreach ($this->group_permissions as $group_permission) {
+?>
+			<tr>
+				<td>
+					<?php echo($group_permission["permission_name"]); ?>	
+				</td>
+				<td>
+					<?php echo($group_permission["permission_granted"]); ?>	
+				</td>
+			</tr>
+<?php
+	}
+?>
+		</tbody>
+	</table>
+	<div class="single_button_container">
+		<button type="button" onclick="location.href='/<?php echo ($this->controller_uri_name . "/delete/" . urlencode($this->group_data['name'])); ?>'">Delete group</button>
+	</div>
+</div>

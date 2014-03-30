@@ -44,11 +44,7 @@ class RegistrationPageModel extends Model{
 			return FALSE;
 		}
 		
-		$login_in_db = $this->db->select(
-				"local_login",
-				array("user_id"),
-				"i",
-				array("login" => $login), 1);
+		$login_in_db = $this->db->select_local_login_by_login($login);
 		
 		if ($login_in_db) {
 			return FALSE;
@@ -56,11 +52,7 @@ class RegistrationPageModel extends Model{
 		
 		// Check email
 		
-		$email_in_db = $this->db->select(
-				"local_login",
-				array("user_id"),
-				"i",
-				array("email" => $email), 1);
+		$email_in_db = $this->db->select_local_login_by_email($email);
 		
 		if ($email_in_db) {
 			return FALSE;

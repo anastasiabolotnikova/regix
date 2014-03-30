@@ -35,7 +35,7 @@ class UserManagerController extends Controller {
 			
 			$view_inner = new View(REGIX_PATH.
 					"views/layouts/UserManager/user_editor_xhtml.phtml");
-			$view_inner->editor_uri = $model->get_editor_uri($this->id);
+			$view_inner->editor_uri = $this->get_controller_uri_name();
 			$view_inner->edit_user = $model->get_user_data($this->args[1]);
 			$view_inner->edit_user_id = $this->args[1];
 			
@@ -117,7 +117,7 @@ class UserManagerController extends Controller {
 					"views/layouts/UserManager/user_list_xhtml.phtml");
 			
 			$view_inner->users = $model->get_user_array();
-			$view_inner->editor_uri = $model->get_editor_uri($this->id);
+			$view_inner->editor_uri = $this->get_controller_uri_name();
 			
 			$view_outer->title = "User Account Control - Regix";
 			$view_outer->content = $view_inner->render(FALSE);

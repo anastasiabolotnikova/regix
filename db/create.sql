@@ -36,10 +36,24 @@ CREATE TABLE IF NOT EXISTS `controller_property` (
   CONSTRAINT `fk_controller_property_controller`
     FOREIGN KEY (`controller_id`)
     REFERENCES `controller` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 COMMENT = 'Values of controller properties (settings).';
+
+
+-- -----------------------------------------------------
+-- Table `permission_category`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `permission_category` ;
+
+CREATE TABLE IF NOT EXISTS `permission_category` (
+  `id` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
+ENGINE = InnoDB
+COMMENT = 'Permission categories (replace links with controllers to all' /* comment truncated */ /*ow more flexible permission management).*/;
 
 
 -- -----------------------------------------------------
@@ -48,8 +62,16 @@ COMMENT = 'Values of controller properties (settings).';
 DROP TABLE IF EXISTS `permission` ;
 
 CREATE TABLE IF NOT EXISTS `permission` (
-  `name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`name`))
+  `name` VARCHAR(200) NOT NULL,
+  `description` TEXT NULL,
+  `permission_category_id` INT NULL,
+  PRIMARY KEY (`name`),
+  INDEX `fk_permission_permission_category1_idx` (`permission_category_id` ASC),
+  CONSTRAINT `fk_permission_permission_category1`
+    FOREIGN KEY (`permission_category_id`)
+    REFERENCES `permission_category` (`id`)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 COMMENT = 'Describes permission required by the controller to perform s' /* comment truncated */ /*pecific activity.*/;
 
@@ -93,13 +115,13 @@ CREATE TABLE IF NOT EXISTS `user_has_group` (
   CONSTRAINT `fk_user_has_group_user1`
     FOREIGN KEY (`user_id`)
     REFERENCES `user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_user_has_group_group1`
     FOREIGN KEY (`group_name`)
     REFERENCES `group` (`name`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 COMMENT = 'Aggregates users into groups. Groups are used primarily for ' /* comment truncated */ /*permission assignment.*/;
 
@@ -118,13 +140,13 @@ CREATE TABLE IF NOT EXISTS `group_has_permission` (
   CONSTRAINT `fk_group_has_permission_group1`
     FOREIGN KEY (`group_name`)
     REFERENCES `group` (`name`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_group_has_permission_permission1`
     FOREIGN KEY (`permission_name`)
     REFERENCES `permission` (`name`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 COMMENT = 'Permissions granted to groups.';
 
@@ -145,8 +167,8 @@ CREATE TABLE IF NOT EXISTS `local_login` (
   CONSTRAINT `fk_local_login_user1`
     FOREIGN KEY (`user_id`)
     REFERENCES `user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 COMMENT = 'Table of LocalLogin component.';
 
@@ -167,8 +189,8 @@ CREATE TABLE IF NOT EXISTS `facebook_login` (
   CONSTRAINT `fk_faceboo_login_user1`
     FOREIGN KEY (`user_id`)
     REFERENCES `user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 COMMENT = 'Table of FacebookLogin component.';
 
@@ -195,13 +217,13 @@ DROP TABLE IF EXISTS `event` ;
 CREATE TABLE IF NOT EXISTS `event` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `calendar_id` INT NOT NULL,
+  `user_id` INT NULL,
   `name` VARCHAR(200) NULL,
   `description` VARCHAR(200) NULL,
   `assigned_user` INT NULL,
   `assigned_group` VARCHAR(45) NULL,
   `from` TIMESTAMP NULL,
-  `to` TIMESTAMP NULL,
-  `user_id` INT NOT NULL,
+  `to` TIMESTAMP NULL COMMENT 'ID of user who created the event.',
   PRIMARY KEY (`id`),
   INDEX `fk_event_calendar1_idx` (`calendar_id` ASC),
   INDEX `fk_event_assigned_user1_idx` (`assigned_user` ASC),
@@ -210,23 +232,23 @@ CREATE TABLE IF NOT EXISTS `event` (
   CONSTRAINT `fk_evant_calendar1`
     FOREIGN KEY (`calendar_id`)
     REFERENCES `calendar` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_event_user1`
     FOREIGN KEY (`assigned_user`)
     REFERENCES `user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE SET NULL
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_event_group1`
     FOREIGN KEY (`assigned_group`)
     REFERENCES `group` (`name`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE SET NULL
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_event_user2`
     FOREIGN KEY (`user_id`)
     REFERENCES `user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 COMMENT = 'Calendar events';
 
@@ -258,8 +280,8 @@ CREATE TABLE IF NOT EXISTS `event_constraint` (
   CONSTRAINT `fk_event_constraint_event_constraint_group1`
     FOREIGN KEY (`event_constraint_group_id`)
     REFERENCES `event_constraint_group` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 COMMENT = 'Settings limiting addition of events to the calendar.';
 
@@ -278,13 +300,13 @@ CREATE TABLE IF NOT EXISTS `calendar_has_event_constraint_group` (
   CONSTRAINT `fk_checg_calendar1`
     FOREIGN KEY (`calendar_id`)
     REFERENCES `calendar` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_checg_event_constraint_group1`
     FOREIGN KEY (`event_constraint_group_id`)
     REFERENCES `event_constraint_group` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 COMMENT = 'Assigns group of event constrants to a calendar.';
 
