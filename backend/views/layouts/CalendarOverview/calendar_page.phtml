@@ -1,22 +1,29 @@
 <div id="calendar_page" class="table_container">
-	<div class="title_block">Calendar <?php echo date('n'); ?> <?php echo date('o'); ?></div>
+	<div class="title_block"><a href=''><< </a><?php echo date("F"); ?> <?php echo $this->year; ?><a href=''> >> </a></div>
 		<table id="calendar">
-			<tr><td>Monday</td><td>Tuesday</td><td>Wednesday</td><td>Thursday</td><td>Friday</td><td>Saturday</td><td>Sunday</td>
+			<tr><td>Monday</td><td>Tuesday</td><td>Wednesday</td><td>Thursday</td><td>Friday</td><td>Saturday</td><td>Sunday</td></tr>
 			<?php
-			$month_stamp=mktime(0,0,0,$this->month,1,$this->year);
+			$month_stamp=mktime(0,0,0,$this->month,$this->day,$this->year);
 			$day_count=date("t",$month_stamp);
-			$i=0;
+			$i=$this->wd;
 			
-			  for($d=1;$d<=30;$d++) { 
-				if (!($i++ % 7)) echo " <tr>\n";
-				echo '  <td align="center">';
-				if ($d < 1 OR $d > $day_count) {
-				  echo $d;
-				} else {
-					echo $d;
-				} 
+			echo "<tr>\n";
+			if($this->wd!=1){
+					for($cell=1;$cell<$this->wd;$cell++){
+						echo "<td align='center'></td>";
+					}
+				}
+			 for($d=1;$d<=$day_count;$d++) { 
+				//echo $i;
+				if ($i-1 == 7){
+					echo " <tr>\n";
+					$i=1;
+				}
+				echo "<td align='center'>";
+				echo $d;
 				echo "</td>\n";
-				if (!($i % 7))  echo " </tr>\n";
+				$i++;
+				if (!($i % 8))  echo " </tr>\n";
 			  } 
 			?>
 		</table>

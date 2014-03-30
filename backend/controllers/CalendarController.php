@@ -21,6 +21,9 @@ class CalendarController extends Controller{
 		$view_content->day = $model->get_day();
 		$view_content->month = $model->get_month();
 		$view_content->year = $model->get_year();
+		$view_content->wd = $model->get_wd();
+		
+		//echo $view_content->wd;
 		
 		$view_outer = new View(REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
 		$view_outer->user_name = $model->get_user_name();
