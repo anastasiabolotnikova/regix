@@ -364,6 +364,18 @@ class MySQL_Adapter extends DB_Adapter {
 		return $this->query($query, array($user_id), "i");
 	}
 	
+	 public function select_all_users_with_group_mark($group_name) {
+		  $query = "
+			select `name`
+			from `user`
+			join `user_has_group`
+			on `user`.`id` = `user_has_group`.`user_id`
+			where `group_name`=?
+			group by `name`;";
+		  
+		  return $this->query($query, array($group_name), "i");
+	}
+	
 	public function select_local_login($user_id) {
 		$query = "
 				select login, salt, hash, email
@@ -567,5 +579,15 @@ class MySQL_Adapter extends DB_Adapter {
 		
 		$stmt->close();
 		return $res;
+	}
+		public function select_hours_booked_with_user_mark($assigned_user_id,$day) {
+		$query = "
+				SELECT HOUR( `from` ) as booked_hours
+				FROM `event`
+				WHERE assigned_user =?
+				AND DAY( `from` ) =?
+				";
+		
+		return $this->query($query, array($assigned_user_id, $day), "ii");
 	}
 }

@@ -40,12 +40,21 @@ class CalendarModel extends Model{
 	}
 	
 	//Next Month
-	public function next_month() {
+	public function next_month($curr_mont) {
 		return $this->month+1;
 	}
 	//Previous month
 	public function prev_manth() {
 		return $this->month+1;
+	}
+	
+	public function get_workers_to_assign(){
+		$workers_to_assign = $this->db->select_all_users_with_group_mark("Test Group 2");
+		return $workers_to_assign;
+	}
+	
+	public function get_booked_hours($assigned_user,$day){
+		return $this->db->select_hours_booked_with_user_mark($assigned_user, $day);
 	}
 	//Create calendar
 	

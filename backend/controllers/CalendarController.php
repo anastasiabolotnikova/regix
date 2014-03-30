@@ -13,19 +13,58 @@ class CalendarController extends Controller{
 		} else {
 			return FALSE;
 		}
-
-		if (//Day is selected){
-			$view_content = new View(
-					REGIX_PATH."views/layouts/CalendarOverview/time_selection_form.phtml");
-			$title = "Time Selection :: Regix";
+		//Day is selected
+		if (count($this->args)==2 or count($this->args)==3){
+			//Get here from Calendar date
+			if(count($this->args)==2){
+				$view_content = new View(
+						REGIX_PATH."views/layouts/CalendarOverview/time_selection_form.phtml");
+				$title = "Time Selection :: Regix";
+				$view_content->month = $this->args[0];
+				$view_content->day = $this->args[1];
+				$view_content->year = $model->get_year();
+				$view_content->booked_hours = $model->get_booked_hours(2,$view_content->day);
+				
+			//Get here from time selection
+			} else if (count($this->args)==3){
+				//Registration is correct
+				if (1==2){
+					$view_content = new View(
+							REGIX_PATH."views/layouts/CalendarOverview/event_registration_success.phtml");
+					$title = "Event Registered :: Regix";	
+				}
+				//Registration is not correct
+				else if(1==2){
+					$view_content = new View(
+							REGIX_PATH."views/layouts/CalendarOverview/event_registration_failure.phtml");
+					$title = "Registration Error :: Regix";	
+				}
+				//Begin registration
+				else{
+					$view_content = new View(
+							REGIX_PATH."views/layouts/CalendarOverview/event_registration_form.phtml");
+					$title = "Event Registration Form :: Regix";
+					
+					$view_content->month = $this->args[0];
+					$view_content->day = $this->args[1];
+					$view_content->from = $this->args[2];
+					$view_content->year = $model->get_year();
+					$view_content->workers_to_assign = $model->get_workers_to_assign();
+					$view_content->booked_hours = $model->get_booked_hours(3,$view_content->day);
+				}
+			}
+			
 		}
-		else if (//Day and time are selected){
-			if (//Registration is correct){
+		//Day and time are selected. Get here from Calendar with small times
+		/*else if ($this->args[0]!=null and $this->args[1]!=null and count($this->args)==3){
+		//Registration is correct
+			if (1==2){
 				$view_content = new View(
 						REGIX_PATH."views/layouts/CalendarOverview/event_registration_success.phtml");
 				$title = "Event Registered :: Regix";	
 			}
-			else if	(//Registration is not correct){
+			//Registration is not correct
+			else if(1==2){
 				$view_content = new View(
 						REGIX_PATH."views/layouts/CalendarOverview/event_registration_failure.phtml");
 				$title = "Registration Error :: Regix";	
@@ -35,20 +74,22 @@ class CalendarController extends Controller{
 				$view_content = new View(
 						REGIX_PATH."views/layouts/CalendarOverview/event_registration_form.phtml");
 				$title = "Event Registration Form :: Regix";
+				
+				$view_content->day = $this->args[0];
+				$view_content->from = $this->args[1];
 			}
-		}
+		}*/
 		else{
 			$view_content = new View(
 						REGIX_PATH."views/layouts/CalendarOverview/calendar_page.phtml");
 			$title = "Calendar :: Regix";
+			
+			$view_content->day = $model->get_day();
+			$view_content->month = $model->get_month();
+			$view_content->year = $model->get_year();
+			$view_content->wd = $model->get_wd();
 		}
 
-		$view_content->day = $model->get_day();
-		$view_content->month = $model->get_month();
-		$view_content->year = $model->get_year();
-		$view_content->wd = $model->get_wd();
-		
-		//echo $view_content->wd;
 		
 		$view_outer = new View(REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
 		$view_outer->user_name = $model->get_user_name();

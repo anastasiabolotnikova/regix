@@ -10,7 +10,7 @@
 			echo "<tr>\n";
 			if($this->wd!=1){
 					for($cell=1;$cell<$this->wd;$cell++){
-						echo "<td align='center'></td>";
+						echo "<td></td>";
 					}
 				}
 			 for($d=1;$d<=$day_count;$d++) { 
@@ -19,8 +19,8 @@
 					echo " <tr>\n";
 					$i=1;
 				}
-				echo "<td align='center'>";
-				echo $d;
+				echo "<td>";
+				echo "<a href='calendar/".$this->month."/".$d."'>".$d."</a>";
 				echo "</td>\n";
 				$i++;
 				if (!($i % 8))  echo " </tr>\n";

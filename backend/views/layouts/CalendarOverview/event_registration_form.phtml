@@ -1,32 +1,44 @@
 <div id="event_registration_container" class="table_container">
-	<div class="title_block">Selected Date</div>
-	<div class="title_block">Day of the week</div>
+	<div class="title_block"><?php echo date("F", mktime(0,0,0,$this->month,$this->day,$this->year)); echo " ".$this->day ?></div>
+	<div class="title_block"><?php echo date("l", mktime(0,0,0,$this->month,$this->day,$this->year)); ?></div>
 	<form action="" method="post">
 		<table id="event_registration_table">
 			<tbody>
 				<tr>
 					<th class="table_row_header">Time</th>
-					<td><input name="time" type="text" /></td>
-				</tr>
-				<tr>
-					<th class="table_row_header">Worker</th>
-					<td><input name="worker" type="text" /></td>
-				</tr>
-				<tr>
-					<th class="table_row_header">Your Name</th>
-					<td><input name="client_name" type="text" /></td>
-				</tr>
-				<tr>
-					<th class="table_row_header">Comment</th>
-					<td><input name="comment" type="text" /></td>
-				</tr>
-				<tr>
-					<td colspan="2"><input name="reg_event" type="submit" value="Register" /></td>
-					<td colspan="2"><input name="cancel" type="submit" value="Cancel" /></td>
-				</tr>
-			</tbody>
-		</table>
-	</form>
-</div>
-
+					<td class="table_row_dropdown_menu">
+      <select>
+        <option>8:00-9:00</option>
+        <option>9:00-10:00</option>
+        <option>10:00-11:00</option>
+      </select>
+     </td>
+    </tr>
+    <tr>
+     <th class="table_row_header">Worker</th>
+     <td class="table_row_dropdown_menu">
+      <select>
+       <?php
+       foreach ($this->workers_to_assign as $worker) {
+			echo "<option>".$worker['name']."</option>";
+       }
+       ?>
+      </select>
+     </td>
+    </tr>
+    <tr>
+     <th class="table_row_header">Your Name</th>
+     <td><input name="client_name" type="text" /></td>
+    </tr>
+    <tr>
+     <th class="table_row_header">Comment</th>
+     <td><input name="comment" type="text" /></td>
+    </tr>
+    <tr>
+     <td colspan="1"><input name="cancel" type="submit" value="Cancel" /></td>
+     <td colspan="1"><input name="reg_event" type="submit" value="Register" /></td>
+    </tr>
+   </tbody>
+  </table>
+ </form>
 </div>
