@@ -87,15 +87,13 @@ class RegistrationPageModel extends Model{
 		$salt = LocalLoginModel::gen_salt("SHA512");
 		$hashed_pass = LocalLoginModel::password_hash($password, $salt);
 		
-		$this->db->insert("user", array("name" => $name));
-		$this->db->insert("local_login",
-				array(
-						"user_id" 	=> $this->db->get_last_id(),
-						"login" 	=> $login,
-						"salt" 		=> $salt,
-						"hash"		=> $hashed_pass,
-						"email"		=> $email,
-				));
+		$this->db->insert_user($name);
+		$this->db->insert_local_login(
+				$this->db->get_last_id(),
+				$login,
+				$salt,
+				$hashed_pass,
+				$email);
 	}
 	
 }

@@ -123,6 +123,11 @@ abstract class DB_Adapter {
 	
 	abstract public function select_local_login_by_email($email);
 	
+	abstract public function insert_user($name);
+	
+	abstract public function insert_local_login($user_id, $login, $salt, $hash,
+			$email);
+	
 	// UserManager
 	
 	abstract public function select_all_users_with_local_login();

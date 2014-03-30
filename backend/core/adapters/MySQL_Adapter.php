@@ -229,6 +229,26 @@ class MySQL_Adapter extends DB_Adapter {
 		return $this->query($query, array($email), "s");
 	}
 	
+	public function insert_user($name) {
+		$query = "
+				insert into `user` (`name`)
+				values (?);
+				";
+		
+		return $this->query($query, array($name), "s", FALSE);
+	}
+	
+	public function insert_local_login($user_id, $login, $salt, $hash,
+			$email) {
+		$query = "
+				insert into `local_login` (`user_id`,`login`,`salt`,`hash`,`email`)
+				values (?,?,?,?,?);
+				";
+		
+		return $this->query($query, array($user_id, $login, $salt, $hash,
+			$email), "issss", FALSE);
+	}
+	
 	// User manager
 	
 	public function select_all_users_with_local_login() {
