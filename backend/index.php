@@ -94,6 +94,9 @@ if ($config->debug_php) {
 	ini_set('display_errors', 0);
 }
 
+// Set timezone
+date_default_timezone_set($config->timezone);
+
 // DB
 
 try {
