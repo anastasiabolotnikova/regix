@@ -1,12 +1,6 @@
 <?php
 require_once REGIX_PATH.'models/Model.php';
 
-try {
-	require_once REGIX_PATH.'models/LocalLoginModel.php';
-} catch (Exception $e) {
-	exit("RegistrationPage component requires LocalLogin component!");
-}
-
 class CalendarModel extends Model{
 	
 	protected $day;
@@ -44,12 +38,13 @@ class CalendarModel extends Model{
 		return $this->month+1;
 	}
 	//Previous month
-	public function prev_manth() {
+	public function prev_month() {
 		return $this->month+1;
 	}
 	
-	public function get_workers_to_assign(){
+	public function get_workers_to_assign($time){
 		$workers_to_assign = $this->db->select_all_users_with_group_mark("Test Group 2");
+		//Check if worker is busy at selected time
 		return $workers_to_assign;
 	}
 	
@@ -80,22 +75,21 @@ class CalendarModel extends Model{
 		return $this->wd;
 	}
 
-	public function create_from($from_and_to) {
-		$array = explode("-",$from_and_to);
+	public function save_data($year, $month, $day, $event_name, $description, $assigned_user, $time) {
+		
+		$array = explode("-",$time);
+		
 		$from_almost = explode(":",$array[0]);
-		return $from = "TIMESTAMP '2014-3-14 ".$from_almost[0].":00:00'";
-	}
-
-	public function create_to($from_and_to) {
-		$array = explode("-",$from_and_to);
+		$timestamp = $year."-".$month."-".$day." ".$from_almost[0].":00:00";
+		$from = date('Y-m-d H:i:s', strtotime($timestamp));
+		
 		$to_almost = explode(":",$array[1]);
-		return $to = "TIMESTAMP '2014-3-14 ".$to_almost[0].":00:00'";
-	}
-
-	public function save_data($event_name, $description, $assigned_user, $from, $to) {
+		$timestamp = $year."-".$month."-".$day." ".$to_almost[0].":00:00";
+		$to = date('Y-m-d H:i:s', strtotime($timestamp));
+		
 		return $this->db->insert_new_event($event_name, $description, $assigned_user, $from, $to);
 	}
-
+	
 	public function get_assigned_user_id($name) {
 		return $this->db->select_user_id_by_name($name);
 	}

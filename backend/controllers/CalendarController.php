@@ -13,6 +13,7 @@ class CalendarController extends Controller{
 		} else {
 			return FALSE;
 		}
+		
 		//Day is selected
 		if (count($this->args)==2 or count($this->args)==3){
 			//Get here from Calendar date
@@ -26,7 +27,7 @@ class CalendarController extends Controller{
 				$view_content->year = $model->get_year();
 				$view_content->booked_hours = $model->get_booked_hours(2,$view_content->day);
 				
-			//Get here from time selection
+			//Get here from time selection or from Calendar small times
 			} else if (count($this->args)==3){
 			
 
@@ -34,11 +35,13 @@ class CalendarController extends Controller{
 				if (isset($_POST['reg_event']) && $_POST['reg_event'] == "Register") {
 
 					$model->save_data(
+						$model->get_year(),
+						$this->args[0],
+						$this->args[1],
 						$_POST['event_name'],
 						$_POST['comment'],
 						$model->get_assigned_user_id($_POST['worker'])[0]['id'],
-						$model->create_from($_POST['time']),
-						$model->create_to($_POST['time'])			
+						$_POST['time']			
 						);
 
 
@@ -69,30 +72,6 @@ class CalendarController extends Controller{
 			}
 			
 		}
-		//Day and time are selected. Get here from Calendar with small times
-		/*else if ($this->args[0]!=null and $this->args[1]!=null and count($this->args)==3){
-		//Registration is correct
-			if (1==2){
-				$view_content = new View(
-						REGIX_PATH."views/layouts/CalendarOverview/event_registration_success.phtml");
-				$title = "Event Registered :: Regix";	
-			}
-			//Registration is not correct
-			else if(1==2){
-				$view_content = new View(
-						REGIX_PATH."views/layouts/CalendarOverview/event_registration_failure.phtml");
-				$title = "Registration Error :: Regix";	
-			}
-			//Begin registration
-			else{
-				$view_content = new View(
-						REGIX_PATH."views/layouts/CalendarOverview/event_registration_form.phtml");
-				$title = "Event Registration Form :: Regix";
-				
-				$view_content->day = $this->args[0];
-				$view_content->from = $this->args[1];
-			}
-		}*/
 		else{
 			$view_content = new View(
 						REGIX_PATH."views/layouts/CalendarOverview/calendar_page.phtml");
