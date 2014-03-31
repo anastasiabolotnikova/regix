@@ -34,13 +34,14 @@ class CalendarController extends Controller{
 				//Registration is correct
 				if (isset($_POST['reg_event']) && $_POST['reg_event'] == "Register") {
 
+					$assigned_users = $model->get_assigned_user_id($_POST['worker']);
 					$model->save_data(
 						$model->get_year(),
 						$this->args[0],
 						$this->args[1],
 						$_POST['event_name'],
 						$_POST['comment'],
-						$model->get_assigned_user_id($_POST['worker'])[0]['id'],
+						$assigned_users[0]['id'],
 						$_POST['time']			
 						);
 

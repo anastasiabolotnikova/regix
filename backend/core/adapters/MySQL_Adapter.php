@@ -296,7 +296,7 @@ class MySQL_Adapter extends DB_Adapter {
 			where `group_name`=?
 			group by `name`;";
 		  
-		  return $this->query($query, array($group_name), "i");
+		  return $this->query($query, array($group_name), "s");
 	}
 	
 	public function select_local_login($user_id) {
