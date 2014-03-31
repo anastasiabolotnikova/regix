@@ -1,0 +1,29 @@
+<div id="permission_manager_category_list_container" class="table_container">
+	<h3 class="title_block">Permission categories</h3>
+	<table class="table_borders highlight_row cursor_pointer">
+		<thead>
+			<tr><th>Name</th><th>Remove</th></tr>
+		</thead>
+		<tbody>
+	<?php	
+		if ($this->categories){
+			foreach ($this->categories as $category) {
+	?>
+				<tr onclick="location.href='/<?php echo ($this->controller_uri_name . "/edit_category/" . $category["id"]); ?>'">
+					<td>
+						<?php echo $category["name"]; ?>
+					</td>
+					<td>
+						<a href="/<?php echo ($this->controller_uri_name . '/delete_category/' . $category['id']); ?>">remove</a>
+					</td>
+				</tr>
+	<?php
+			} 
+		}
+	?>
+		</tbody>
+	</table>
+	<div class="single_button_container">
+		<button onclick="location.href='/<?php echo $this->controller_uri_name; ?>/add_category'">Add category</button>
+	</div>
+</div>

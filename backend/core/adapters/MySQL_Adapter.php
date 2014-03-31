@@ -417,6 +417,99 @@ class MySQL_Adapter extends DB_Adapter {
 		return $this->query($query, array($id), "i", FALSE);
 	}
 	
+	// Permission manager
+	
+	public function select_all_permissions_with_categories() {
+		$query = "
+				select 
+					`permission`.`name` as `name`,
+					`permission`.`description` as `description`,
+					`permission_category`.`name` as `category_name`
+				from  `permission`
+				left join `permission_category`
+				on `permission_category`.`id` = 
+					`permission`.`permission_category_id`
+				order by `permission_category`.`name` asc;
+				";
+		
+		return $this->query($query);
+	}
+	
+	public function select_all_categories() {
+		$query = "
+				select `id`, `name`
+				from  `permission_category`
+				order by `name` asc;
+				";
+	
+		return $this->query($query);
+	}
+	
+	public function insert_permission_with_category_name($name,
+			$description, $permission_category_name) {
+		$query = "
+				insert into `permission`
+				(
+					`name`,
+					`description`,
+					`permission_category_id`
+				)
+				select ?, ?, `id`
+				from `permission_category`
+				where `name` = ?;
+				";
+		
+		return $this->query($query, array($name, $description,
+				$permission_category_name), "sss", FALSE);
+	}
+	
+	public function delete_permission($name) {
+		$query = "
+				delete from `permission`
+				where `name` = ?;
+				";
+		
+		return $this->query($query, array($name), "s", FALSE);
+	}
+	
+	public function select_permission_category($id) {
+		$query = "
+				select `id`, `name`
+				from `permission_category`
+				where `id` = ?;
+				";
+	
+		return $this->query($query, array($id), "i");
+	}
+	
+	public function update_permission_category($id, $name) {
+		$query = "
+				update `permission_category`
+				set `name` = ?
+				where `id` = ?;
+				";
+	
+		return $this->query($query, array($name, $id), "si", FALSE);
+	}
+	
+	public function delete_permission_category($id) {
+		$query = "
+				delete from `permission_category`
+				where `id` = ?;
+				";
+	
+		return $this->query($query, array($id), "i", FALSE);
+	}
+	
+	public function insert_permission_category($name) {
+		$query = "
+				insert into `permission_category` (`name`)
+				values (?);
+				";
+	
+		return $this->query($query, array($name), "s", FALSE);
+	}
+	
 	// Group manager
 	
 	public function select_all_groups() {

@@ -100,7 +100,7 @@ class User {
 	
 	public function has_permission($permission_name) {
 		foreach ($this->groups as $group) {
-			if ($group.has_permission($permission_name)) {
+			if ($group->has_permission($permission_name)) {
 				return TRUE;
 			}
 		}

@@ -20,7 +20,7 @@ class Group {
 	
 	public function __construct($name, $db) {
 		$this->name = $name;
-		$permissions = $db->select_group_permissions($name);
+		$this->permissions = $db->select_group_permissions($name);
 	}
 	
 	public function get_name() {
@@ -29,7 +29,7 @@ class Group {
 	
 	public function has_permission($permission_name) {
 		foreach ($this->permissions as $permission) {
-			if ($permission["name"] == $permission_name) {
+			if ($permission["permission_name"] == $permission_name) {
 				return TRUE;
 			}
 		}
