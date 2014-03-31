@@ -95,4 +95,8 @@ class CalendarModel extends Model{
 	public function save_data($event_name, $description, $assigned_user, $from, $to) {
 		return $this->db->insert_new_event($event_name, $description, $assigned_user, $from, $to);
 	}
+
+	public function get_assigned_user_id($name) {
+		return $this->db->select_user_id_by_name($name);
+	}
 }

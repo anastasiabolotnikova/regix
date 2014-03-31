@@ -36,7 +36,7 @@ class CalendarController extends Controller{
 					$model->save_data(
 						$_POST['event_name'],
 						$_POST['comment'],
-						2,
+						$model->get_assigned_user_id($_POST['worker'])[0]['id'],
 						$model->create_from($_POST['time']),
 						$model->create_to($_POST['time'])			
 						);

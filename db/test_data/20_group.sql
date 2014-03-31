@@ -7,3 +7,5 @@ LIMIT 0, 1000
 INSERT INTO `group` (`name`) VALUES ('Test Group 1');
 INSERT INTO `group` (`name`) VALUES ('Test Group 2');
 INSERT INTO `group` (`name`) VALUES ('Test Group 3');
+INSERT INTO `group` (`name`) VALUES ('Workers');
+

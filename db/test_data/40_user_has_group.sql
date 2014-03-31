@@ -8,3 +8,6 @@ INSERT INTO `user_has_group` (`user_id`,`group_name`) VALUES (2,'Test Group 1');
 INSERT INTO `user_has_group` (`user_id`,`group_name`) VALUES (2,'Test Group 2');
 INSERT INTO `user_has_group` (`user_id`,`group_name`) VALUES (3,'Test Group 2');
 INSERT INTO `user_has_group` (`user_id`,`group_name`) VALUES (3,'Test Group 3');
+INSERT INTO `user_has_group` (`user_id`,`group_name`) VALUES (4,'Workers');
+INSERT INTO `user_has_group` (`user_id`,`group_name`) VALUES (5,'Workers');
+INSERT INTO `user_has_group` (`user_id`,`group_name`) VALUES (6,'Workers');

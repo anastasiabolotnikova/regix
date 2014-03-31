@@ -181,6 +181,16 @@ class MySQL_Adapter extends DB_Adapter {
 	
 		return $this->query($query, array($user_id), 'i');
 	}
+
+	public function select_user_id_by_name($user_name) {
+		$query = "
+				select `id`
+				from `user`
+				where `name` = ?;
+				";
+	
+		return $this->query($query, array($user_name), 's');
+	}
 	
 	public function select_user_has_group($user_id) {
 		$query = "
