@@ -72,7 +72,7 @@ class User {
 		
 		$this->groups = array();
 		foreach ($groups_data as $group_data) {
-			array_push($this->groups, new Group($group_data["group_name"]));
+			array_push($this->groups, new Group($group_data["group_name"], $db));
 		}
 	}
 	
@@ -96,5 +96,14 @@ class User {
 	
 	public function get_groups() {
 		return $this->groups;
+	}
+	
+	public function has_permission($permission_name) {
+		foreach ($this->groups as $group) {
+			if ($group.has_permission($permission_name)) {
+				return TRUE;
+			}
+		}
+		return FALSE;
 	}
 }
