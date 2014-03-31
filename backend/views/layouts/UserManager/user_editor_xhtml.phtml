@@ -24,17 +24,17 @@
 		
 		<h1>Groups</h1>
 		<div class="form-label-container-center">
-			<label>
 			<?php
-				foreach ($this->edit_user["group_data"] as $group) {
-
-					echo($group["group_name"]);?>
-					<input name="user_groups[]" value="<?php echo($group["group_name"]); ?>" type="checkbox"<?php if ($group["user_registered"]) echo(' checked="checked"');?> />
+				foreach ($this->edit_user["group_data"] as $group) { ?>
+			<label for="group_<?php echo(base64_encode($group["group_name"]));?>">
+					<?php echo($group["group_name"]);?>
+			</label>
+					<input id="group_<?php echo(base64_encode($group["group_name"]));?>" name="user_groups[]" value="<?php echo($group["group_name"]); ?>" type="checkbox"<?php if ($group["user_registered"]) echo(' checked="checked"');?> />
 					<?php 
 					echo '<br />';
 				}
 			?>
-			</label>
+			
 		</div>
                 
 		<div class="button-holder">
