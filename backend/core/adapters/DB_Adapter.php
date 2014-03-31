@@ -170,6 +170,8 @@ abstract class DB_Adapter {
 	
 	abstract public function select_group_permissions($group_name);
 	
+	abstract public function insert_group($group_name);
+	
 	abstract public function delete_group($group_name);
 	
 	abstract public function delete_user_has_group($user_id, $group_name);

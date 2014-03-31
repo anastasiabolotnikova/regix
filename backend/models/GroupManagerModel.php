@@ -23,6 +23,10 @@ class GroupManagerModel extends Model{
 		return $this->db->select_group_permissions($group_name);
 	}
 	
+	public function add_group($group_name) {
+		return $this->db->insert_group($group_name);
+	}
+	
 	public function delete_group($group_name) {
 		return $this->db->delete_group($group_name);
 	}

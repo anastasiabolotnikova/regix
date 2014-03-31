@@ -477,6 +477,16 @@ class MySQL_Adapter extends DB_Adapter {
 		return $this->query($query, array($group_name), "s");
 	}
 	
+	public function insert_group($group_name) {
+		$query = "
+				insert
+				into  `group` (`name`)
+				values (?);
+				";
+		
+		return $this->query($query, array($group_name), "s", FALSE);
+	}
+	
 	public function delete_group($group_name) {
 		$query = "
 				delete

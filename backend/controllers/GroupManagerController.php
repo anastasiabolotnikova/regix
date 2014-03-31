@@ -67,6 +67,44 @@ class GroupManagerController extends Controller {
 				$view_inner->message = "Group does not exist.";
 			}
 			
+		} else if ($this->args[0] == "add" && isset($this->args[1])) {
+				
+			// Add group
+			// /add/group_name
+				
+			if ($model->add_group($this->args[1])) {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/success_generic_xhtml.phtml");
+		
+				$view_inner->message = "Group added";
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+		
+				$view_inner->message = "Group could not be added";
+			}
+			
+			
+		} else if ($this->args[0] == "add" && isset($_POST["submit"])) {
+		
+			// Add group redirect to clean url
+			// /add (with POST data)
+		
+			header("Location: /" . $this->get_controller_uri_name() . "/add/" .
+					urlencode($_POST["name"]));
+			
+			return;
+			
+		} else if ($this->args[0] == "add") {
+		
+			// Add group interface
+			// /add
+		
+			$view_inner = new View(REGIX_PATH.
+					"views/layouts/GroupManager/group_add_xhtml.phtml");
+				
+			$view_inner->controller_uri_name = $this->get_controller_uri_name();
+			
 		} else if ($this->args[0] == "delete" && isset($this->args[1])) {
 			
 			// Delete group
