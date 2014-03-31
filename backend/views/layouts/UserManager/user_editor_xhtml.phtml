@@ -1,49 +1,45 @@
-<div id="user_manager_editor_container" class="table_container">
-	<div class="title_block"><?php echo $this->edit_user['username']; ?></div>
-	<form action="/<?php echo $this->editor_uri; ?>/save/<?php echo $this->edit_user_id; ?>" method="post">
-		<table>
-			<tbody>
-				<tr>
-					<th class="table_row_header">Name</th>
-					<td><input name="name" type="text" value="<?php echo $this->edit_user['username']; ?>" /></td>
-				</tr>
-				<tr>
-					<th class="table_row_header">Login</th>
-					<td><input name="login" type="text" value="<?php echo $this->edit_user['login']; ?>" /></td>
-				</tr>
-				<tr>
-					<th class="table_row_header">Password</th>
-					<td><input name="password" type="password" value="" /></td>
-				</tr>
-				<tr>
-					<th class="table_row_header">Email</th>
-					<td><input name="email" type="text" value="<?php echo $this->edit_user['email']; ?>" /></td>
-				</tr>
-				</tbody>
-            </table>
-        
-
-				<h3 colspan="2" class="table_section_header">Groups</h3>
-        <table>
-            <tbody>
-<?php
+<div class="regix-form-container">
+	<form action="/<?php echo $this->editor_uri; ?>/save/<?php echo $this->edit_user_id; ?>" method="post" class="regix-form">
+		<h1><?php echo $this->edit_user['username']; ?></h1>
+		
+		<div>
+			<div class="form-label-container"><label for="name">Name</label></div>
+			<input id="name" type="text" name="name" class="regix-form-input" value="<?php echo $this->edit_user['username']; ?>" />
+		</div>
+		
+		<div>
+			<div class="form-label-container"><label for="login">Login</label></div>
+			<input id="login" type="text" name="login" class="regix-form-input" value="<?php echo $this->edit_user['login']; ?>" />
+		</div>
+		
+		<div>		
+			<div class="form-label-container"><label for="password">Password</label></div>
+			<input id="password" type="password" name="password" class="regix-form-input" value=""/>
+		</div>
+		
+		<div>
+			<div class="form-label-container"><label for="email">Email</label></div>
+			<input id="email" type="text" name="email" class="regix-form-input" value="<?php echo $this->edit_user['email']; ?>" />
+		</div>   
+		
+		<h1>Groups</h1>
+		<div class="form-label-container-center">
+			<label>
+			<?php
 				foreach ($this->edit_user["group_data"] as $group) {
-?>
 
-					<tr><td><?php echo($group["group_name"]); ?>
-                    
-                    						<input name="user_groups[]" value="<?php echo($group["group_name"]); ?>" type="checkbox"<?php if ($group["user_registered"]) echo(' checked="checked"');?> /></td></tr>
-
-
-<?php
+					echo($group["group_name"]);?>
+					<input name="user_groups[]" value="<?php echo($group["group_name"]); ?>" type="checkbox"<?php if ($group["user_registered"]) echo(' checked="checked"');?> />
+					<?php 
+					echo '<br />';
 				}
-?>
-                			</tbody>
-		</table>
-
-						<input name="submit" type="submit" value="Save" />
-						<input name="cancel" type="submit" value="Cancel" />
-
-
+			?>
+			</label>
+		</div>
+                
+		<div class="button-holder">
+			<button name="submit" type="submit" class="secondary-button">Save</button>
+			<button name="cancel" type="submit" class="default-button">Cancel</button>
+		</div>
 	</form>
 </div>

@@ -3,13 +3,20 @@
 	<h1><?php echo $this->user_name; ?></h1>
 		
 	<div class="form-label-container-bold"><label>Name:</label>
-		<span><?php echo $this->user_name; ?></span></div>
+		<span><?php echo $this->user_name; ?></span>
+	</div>
+		
 	<div class="form-label-container-bold"><label>Login:</label>
-		<span><?php echo $this->user_login; ?></span></div>
+		<span><?php echo $this->user_login; ?></span>
+	</div>
+		
 	<div class="form-label-container-bold"><label>Email:</label>
-	<span><?php echo $this->user_email; ?></span></div>
+	<span><?php echo $this->user_email; ?></span>
+	</div>
+		
 	<h1>Groups</h1>
-	<div class="form-label-container-center"><label>
+	<div class="form-label-container-center">
+		<label>
 		<?php
 		foreach ($this->user_group as $group_name) {
 			echo($group_name); //show elements of array in a user-friendly way
@@ -17,6 +24,6 @@
 		}
 		?>
 		</label>
-		</div>
-		</form>
+	</div>
+	</form>
 </div>
