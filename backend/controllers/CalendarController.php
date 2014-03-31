@@ -20,6 +20,7 @@ class CalendarController extends Controller{
 				$view_content = new View(
 						REGIX_PATH."views/layouts/CalendarOverview/time_selection_form.phtml");
 				$title = "Time Selection :: Regix";
+				$view_content->cal_uri = $this->get_controller_uri_name();
 				$view_content->month = $this->args[0];
 				$view_content->day = $this->args[1];
 				$view_content->year = $model->get_year();
@@ -27,6 +28,8 @@ class CalendarController extends Controller{
 				
 			//Get here from time selection
 			} else if (count($this->args)==3){
+			
+
 				//Registration is correct
 				if (isset($_POST['reg_event']) && $_POST['reg_event'] == "Register") {
 
@@ -41,7 +44,7 @@ class CalendarController extends Controller{
 
 					$view_content = new View(
 							REGIX_PATH."views/layouts/CalendarOverview/event_registration_success.phtml");
-					$title = "Event Registered :: Regix";	
+					$title = "Event Registered :: Regix";
 				}
 				//Registration is not correct
 				else if(1==2){
@@ -61,6 +64,7 @@ class CalendarController extends Controller{
 					$view_content->year = $model->get_year();
 					$view_content->workers_to_assign = $model->get_workers_to_assign();
 					$view_content->booked_hours = $model->get_booked_hours(3,$view_content->day);
+					$view_content->cal_uri = $this->get_controller_uri_name();
 				}
 			}
 			
@@ -94,6 +98,7 @@ class CalendarController extends Controller{
 						REGIX_PATH."views/layouts/CalendarOverview/calendar_page.phtml");
 			$title = "Calendar :: Regix";
 			
+			$view_content->cal_uri = $this->get_controller_uri_name();
 			$view_content->day = $model->get_day();
 			$view_content->month = $model->get_month();
 			$view_content->year = $model->get_year();

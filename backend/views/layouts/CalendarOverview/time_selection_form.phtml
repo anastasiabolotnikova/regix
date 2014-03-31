@@ -11,7 +11,7 @@
 				foreach ($this->booked_hours as $booked) {
 					if($booked['booked_hours']==$hour) $hour++;
 					}
-				echo "<tr><td><a href='calendar/".$this->month."/".$this->day."/".$hour."'>".$hour.":00 - ";
+				echo "<tr><td><a href='/".$this->cal_uri."/".$this->month."/".$this->day."/".$hour."'>".$hour.":00 - ";
 				$hour++;
 				echo $hour.":00</a></td></tr>";
 				$hour--;
