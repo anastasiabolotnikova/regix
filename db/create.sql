@@ -253,16 +253,15 @@ CREATE TABLE IF NOT EXISTS `event` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `calendar_id` INT NOT NULL,
   `user_id` INT NULL,
-  `name` VARCHAR(200) NULL,
   `description` VARCHAR(200) NULL,
   `assigned_user` INT NULL,
-  `assigned_group` VARCHAR(45) NULL,
+  `assigned_service` VARCHAR(45) NULL,
   `from` TIMESTAMP NULL,
   `to` TIMESTAMP NULL COMMENT 'ID of user who created the event.',
   PRIMARY KEY (`id`),
   INDEX `fk_event_calendar1_idx` (`calendar_id` ASC),
   INDEX `fk_event_assigned_user1_idx` (`assigned_user` ASC),
-  INDEX `fk_event_assigned_group1_idx` (`assigned_group` ASC),
+  INDEX `fk_event_assigned_service1_idx` (`assigned_service` ASC),
   INDEX `fk_event_user2_idx` (`user_id` ASC),
   CONSTRAINT `fk_evant_calendar1`
     FOREIGN KEY (`calendar_id`)
@@ -274,9 +273,9 @@ CREATE TABLE IF NOT EXISTS `event` (
     REFERENCES `user` (`id`)
     ON DELETE SET NULL
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_event_group1`
-    FOREIGN KEY (`assigned_group`)
-    REFERENCES `group` (`name`)
+  CONSTRAINT `fk_event_serviceb1`
+    FOREIGN KEY (`assigned_service`)
+    REFERENCES `service` (`uri_name`)
     ON DELETE SET NULL
     ON UPDATE CASCADE,
   CONSTRAINT `fk_event_user2`
