@@ -51,7 +51,6 @@ class CalendarController extends Controller{
 					REGIX_PATH."views/layouts/CalendarOverview/event_registration_form.phtml");
 			$title = "Event Registration Form :: Regix";
 			
-			$view_content->user_id = $model->get_user_id();
 			$view_content->service = $this->args[0];
 			$view_content->month = $this->args[1];
 			$view_content->day = $this->args[2];
@@ -62,16 +61,20 @@ class CalendarController extends Controller{
 			$view_content->cal_uri = $this->get_controller_uri_name();
 
 			if (isset($_POST['reg_event']) && $_POST['reg_event'] == "Register") {
-
+					
+					//if(!query()){FAILURE} else {
+					
+					$assigned_service = $this->args[0];
 					$assigned_users = $model->get_assigned_user_id($_POST['worker']);
 					$model->save_data(
 						$model->get_year(),
-						$this->args[0],
 						$this->args[1],
-						$_POST['event_name'],
+						$this->args[2],
+						2,//$model->get_user_id(),
 						$_POST['comment'],
 						$assigned_users[0]['id'],
-						$_POST['time']			
+						$assigned_service,
+						$this->args[3]			
 						);
 
 

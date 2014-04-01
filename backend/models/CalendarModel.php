@@ -75,19 +75,21 @@ class CalendarModel extends Model{
 		return $this->wd;
 	}
 
-	public function save_data($year, $month, $day, $event_name, $description, $assigned_user, $time) {
+	public function save_data($year, $month, $day, $user_id, $description, $assigned_user, $assigned_service, $time_start) {
 		
-		$array = explode("-",$time);
+		echo $this->get_user_id();
 		
-		$from_almost = explode(":",$array[0]);
-		$timestamp = $year."-".$month."-".$day." ".$from_almost[0].":00:00";
-		$from = date('Y-m-d H:i:s', strtotime($timestamp));
+		$step=1; //may be it's public variable from Event object that's generated using event_constraints table
 		
-		$to_almost = explode(":",$array[1]);
-		$timestamp = $year."-".$month."-".$day." ".$to_almost[0].":00:00";
-		$to = date('Y-m-d H:i:s', strtotime($timestamp));
+		$timestamp1 = $year."-".$month."-".$day." ".$time_start.":00:00";
+		$from = date('Y-m-d H:i:s', strtotime($timestamp1));
 		
-		return $this->db->insert_new_event($event_name, $description, $assigned_user, $from, $to);
+		$time_end = $time_start+$step;
+		$timestamp2 = $year."-".$month."-".$day." ".$time_end.":00:00";
+		//echo $timestamp2;
+		$to = date('Y-m-d H:i:s', strtotime($timestamp2));
+		
+		return $this->db->insert_new_event($user_id, $description, $assigned_user, $assigned_service, $from, $to);
 	}
 	
 	public function get_assigned_user_id($name) {
