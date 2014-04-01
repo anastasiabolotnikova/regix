@@ -107,6 +107,14 @@ button {
 	cursor: pointer;
 }
 
+select {
+	padding: 0.7em;
+	border: 1px solid #2e3436;
+	border-radius: 0.5em;
+	
+	background-color: #eeeeec;
+}
+
 /* Containers */
 
 #container {

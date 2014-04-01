@@ -158,6 +158,33 @@ abstract class DB_Adapter {
 	
 	abstract public function remove_controller($id);
 	
+	// Permission manager
+	
+	abstract public function select_all_permissions_with_categories();
+	
+	abstract public function select_all_categories();
+	
+	abstract public function insert_permission_with_category_name($name,
+			$description, $permission_category_name);
+	
+	abstract public function delete_permission($name);
+	
+	abstract public function select_permission_category($id);
+	
+	abstract public function update_permission_category($id, $name);
+	
+	abstract public function delete_permission_category($id);
+	
+	abstract public function insert_permission_category($name);
+	
+	abstract public function select_permission($name);
+	
+	abstract public function update_permission_with_category_name(
+				$name_old,
+				$name_new,
+				$description,
+				$permission_category_id);
+	
 	// Group manager
 	
 	abstract public function select_all_groups();
