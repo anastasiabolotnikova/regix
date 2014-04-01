@@ -12,8 +12,6 @@
 @if [%db_pass%]==[] set db_pass=test_password
 @if [%db_database%]==[] set db_database=test_user
 
-@echo %db_host%
-
 @echo Executing create.sql
 @mysql -h %db_host% -u %db_user% -p %db_pass% -D %db_database% -e "source create.sql"
 
