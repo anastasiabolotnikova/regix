@@ -37,7 +37,6 @@ class GroupManagerController extends Controller {
 			} else {
 				$view_inner = new View(REGIX_PATH.
 						"views/layouts/generic/failure_generic_xhtml.phtml");
-					
 				$view_inner->message = "Action forbidden";
 			}
 			
