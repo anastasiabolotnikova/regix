@@ -75,9 +75,9 @@ class CalendarModel extends Model{
 		return $this->wd;
 	}
 
-	public function save_data($year, $month, $day, $user_id, $description, $assigned_user, $assigned_service, $time_start) {
+	public function save_data($year, $month, $day, $description, $assigned_user, $assigned_service, $time_start) {
 		
-		echo $this->get_user_id();
+		$user_id=$this->get_user_id();
 		
 		$step=1; //may be it's public variable from Event object that's generated using event_constraints table
 		

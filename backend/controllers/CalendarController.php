@@ -70,7 +70,6 @@ class CalendarController extends Controller{
 						$model->get_year(),
 						$this->args[1],
 						$this->args[2],
-						2,//$model->get_user_id(),
 						$_POST['comment'],
 						$assigned_users[0]['id'],
 						$assigned_service,
