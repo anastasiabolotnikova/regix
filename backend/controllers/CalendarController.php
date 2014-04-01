@@ -51,6 +51,7 @@ class CalendarController extends Controller{
 					REGIX_PATH."views/layouts/CalendarOverview/event_registration_form.phtml");
 			$title = "Event Registration Form :: Regix";
 			
+			$view_content->user_id = $model->get_user_id();
 			$view_content->service = $this->args[0];
 			$view_content->month = $this->args[1];
 			$view_content->day = $this->args[2];
