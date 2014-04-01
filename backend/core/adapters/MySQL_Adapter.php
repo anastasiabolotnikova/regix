@@ -278,7 +278,7 @@ class MySQL_Adapter extends DB_Adapter {
 					`group`.`name` as `group_name`,
 					max(`user_has_group`.`user_id` = ?) as `user_registered`
 				from `group`
-				join `user_has_group`
+				left join `user_has_group`
 				on `group`.`name` = `user_has_group`.`group_name`
 				group by `group_name`
 				order by `group_name`;
