@@ -208,6 +208,41 @@ CREATE TABLE IF NOT EXISTS `calendar` (
 ENGINE = InnoDB
 COMMENT = 'Virtual calendars.';
 
+-- -----------------------------------------------------
+-- Table `service`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `service` ;
+
+CREATE TABLE IF NOT EXISTS `service` (
+  `name` VARCHAR(45) NOT NULL,
+  `uri_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`uri_name`))
+ENGINE = InnoDB
+COMMENT = 'Services and their uri.';
+
+-- -----------------------------------------------------
+-- Table `service_has_worker`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `service_has_worker` ;
+
+CREATE TABLE IF NOT EXISTS `service_has_worker` (
+  `user_id` INT NOT NULL,
+  `uri_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`user_id`, `uri_name`),
+  INDEX `fk_service_has_worker_service_uri1_idx` (`uri_name` ASC),
+  INDEX `fk_service_has_worker_worker1_idx` (`user_id` ASC),
+  CONSTRAINT `fk_service_has_worker_worker1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `user` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_service_has_worker_uri1`
+    FOREIGN KEY (`uri_name`)
+    REFERENCES `service` (`uri_name`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+COMMENT = 'Connect services uri and users-workers.';
 
 -- -----------------------------------------------------
 -- Table `event`
