@@ -211,7 +211,7 @@ COMMENT = 'Virtual calendars.';
 -- -----------------------------------------------------
 -- Table `service`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `event` ;
+DROP TABLE IF EXISTS `service` ;
 
 CREATE TABLE IF NOT EXISTS `service` (
   `name` VARCHAR(45) NOT NULL,
