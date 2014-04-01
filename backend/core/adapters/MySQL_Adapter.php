@@ -271,6 +271,15 @@ class MySQL_Adapter extends DB_Adapter {
 	
 		return $this->query($query);
 	}
+
+	public function select_all_services() {
+		$query = "
+				select *
+				from  `service`
+				";
+	
+		return $this->query($query);
+	}
 	
 	public function select_all_groups_with_user_mark($user_id) {
 		$query = "
@@ -297,6 +306,18 @@ class MySQL_Adapter extends DB_Adapter {
 			group by `name`;";
 		  
 		  return $this->query($query, array($group_name), "s");
+	}
+
+	 public function select_all_workers_with_service_mark($service_uri_name) {
+		  $query = "
+			select `name`
+			from `user`
+			join `service_has_worker`
+			on `user`.`id` = `service_has_worker`.`user_id`
+			where `uri_name`=?
+			group by `name`;";
+		  
+		  return $this->query($query, array($service_uri_name), "s");
 	}
 	
 	public function select_local_login($user_id) {
@@ -426,8 +447,8 @@ class MySQL_Adapter extends DB_Adapter {
 	
 		return $this->query($query, array($id), "i", FALSE);
 	}
-	
-	// Permission manager
+
+		// Permission manager
 	
 	public function select_all_permissions_with_categories() {
 		$query = "
@@ -547,6 +568,7 @@ class MySQL_Adapter extends DB_Adapter {
 		return $this->query($query, array($name_new, $description,
 				$permission_category_id, $name_old), "ssss", FALSE);
 	}
+
 	
 	// Group manager
 	

@@ -13,26 +13,54 @@ class CalendarController extends Controller{
 		} else {
 			return FALSE;
 		}
-		
-		//Day is selected
-		if (count($this->args)==2 or count($this->args)==3){
-			//Get here from Calendar date
-			if(count($this->args)==2){
-				$view_content = new View(
-						REGIX_PATH."views/layouts/CalendarOverview/time_selection_form.phtml");
-				$title = "Time Selection :: Regix";
-				$view_content->cal_uri = $this->get_controller_uri_name();
-				$view_content->month = $this->args[0];
-				$view_content->day = $this->args[1];
-				$view_content->year = $model->get_year();
-				$view_content->booked_hours = $model->get_booked_hours(2,$view_content->day);
-				
-			//Get here from time selection or from Calendar small times
-			} else if (count($this->args)==3){
-			
 
-				//Registration is correct
-				if (isset($_POST['reg_event']) && $_POST['reg_event'] == "Register") {
+		//Service is selected
+		if(count($this->args)==1){
+			//Show a calendar
+			$view_content = new View(
+						REGIX_PATH."views/layouts/CalendarOverview/calendar_page.phtml");
+			$title = "Calendar :: Regix";
+			
+			$view_content->cal_uri = $this->get_controller_uri_name();
+			$view_content->day = $model->get_day();
+			$view_content->month = $model->get_month();
+			$view_content->year = $model->get_year();
+			$view_content->wd = $model->get_wd();
+			$view_content->service = $this->args[0];
+
+		}
+
+
+		else if(count($this->args)==3){
+			//Show a time selection
+			$view_content = new View(
+					REGIX_PATH."views/layouts/CalendarOverview/time_selection_form.phtml");
+			$title = "Time Selection :: Regix";
+			$view_content->cal_uri = $this->get_controller_uri_name();
+			$view_content->service = $this->args[0];
+			$view_content->month = $this->args[1];
+			$view_content->day = $this->args[2];
+			$view_content->year = $model->get_year();
+			$view_content->booked_hours = $model->get_booked_hours(2,$view_content->day);
+
+		}
+
+		else if(count($this->args)==4){
+			//Show registration form
+			$view_content = new View(
+					REGIX_PATH."views/layouts/CalendarOverview/event_registration_form.phtml");
+			$title = "Event Registration Form :: Regix";
+			
+			$view_content->service = $this->args[0];
+			$view_content->month = $this->args[1];
+			$view_content->day = $this->args[2];
+			$view_content->from = $this->args[3];
+			$view_content->year = $model->get_year();
+			$view_content->workers_to_assign = $model->get_workers_to_assign($view_content->service);
+			$view_content->booked_hours = $model->get_booked_hours(3,$view_content->day);
+			$view_content->cal_uri = $this->get_controller_uri_name();
+
+			if (isset($_POST['reg_event']) && $_POST['reg_event'] == "Register") {
 
 					$assigned_users = $model->get_assigned_user_id($_POST['worker']);
 					$model->save_data(
@@ -50,34 +78,16 @@ class CalendarController extends Controller{
 							REGIX_PATH."views/layouts/CalendarOverview/event_registration_success.phtml");
 					$title = "Event Registered :: Regix";
 				}
-				//Registration is not correct
-				else if(1==2){
-					$view_content = new View(
-							REGIX_PATH."views/layouts/CalendarOverview/event_registration_failure.phtml");
-					$title = "Registration Error :: Regix";	
-				}
-				//Begin registration
-				else{
-					$view_content = new View(
-							REGIX_PATH."views/layouts/CalendarOverview/event_registration_form.phtml");
-					$title = "Event Registration Form :: Regix";
-					
-					$view_content->month = $this->args[0];
-					$view_content->day = $this->args[1];
-					$view_content->from = $this->args[2];
-					$view_content->year = $model->get_year();
-					$view_content->workers_to_assign = $model->get_workers_to_assign();
-					$view_content->booked_hours = $model->get_booked_hours(3,$view_content->day);
-					$view_content->cal_uri = $this->get_controller_uri_name();
-				}
-			}
-			
+
 		}
+
+		//Show services list
 		else{
 			$view_content = new View(
-						REGIX_PATH."views/layouts/CalendarOverview/calendar_page.phtml");
+						REGIX_PATH."views/layouts/CalendarOverview/service_selection_form.phtml");
 			$title = "Calendar :: Regix";
 			
+			$view_content->services = $model->get_services();
 			$view_content->cal_uri = $this->get_controller_uri_name();
 			$view_content->day = $model->get_day();
 			$view_content->month = $model->get_month();

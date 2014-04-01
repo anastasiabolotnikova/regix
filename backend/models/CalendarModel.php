@@ -42,8 +42,8 @@ class CalendarModel extends Model{
 		return $this->month+1;
 	}
 	
-	public function get_workers_to_assign(){
-		$workers_to_assign = $this->db->select_all_users_with_group_mark('Workers');
+	public function get_workers_to_assign($service){
+		$workers_to_assign = $this->db->select_all_workers_with_service_mark($service);
 		//Check if worker is busy at selected time
 		return $workers_to_assign;
 	}
@@ -92,5 +92,9 @@ class CalendarModel extends Model{
 	
 	public function get_assigned_user_id($name) {
 		return $this->db->select_user_id_by_name($name);
+	}
+
+	public function get_services() {
+		return $this->db->select_all_services();
 	}
 }
