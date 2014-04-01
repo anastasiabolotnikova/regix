@@ -21,218 +21,327 @@ class GroupManagerController extends Controller {
 		$view_outer->user_name = $model->get_user_name();
 		
 		if (!$this->args[0]) {
-			// Group list
-			// /
 			
-			$view_inner = new View(REGIX_PATH.
-					"views/layouts/GroupManager/group_list_xhtml.phtml");
-			
-			$view_inner->controller_uri_name =
-					$this->get_controller_uri_name();
-			$view_inner->groups = $model->get_group_array();
-			
-		} else if ($this->args[0] == "edit" && isset($this->args[1])) {
-			
-			// Group editor
-			// /edit/group_name
-			
-			$group_data = $model->get_group_data(urldecode($this->args[1]));
-			
-			if ($group_data) {
+			if ($this->session->user->has_permission("list_groups")) {
 				
-				// Group exists
-				
-				$group_users = $model->get_group_users(
-						urldecode($this->args[1]));
-				
-				$group_permissions = $model->get_group_permissions(
-						urldecode($this->args[1]));
+				// Group list
+				// /
 				
 				$view_inner = new View(REGIX_PATH.
-						"views/layouts/GroupManager/group_editor_xhtml.phtml");
+						"views/layouts/GroupManager/group_list_xhtml.phtml");
 				
-				$view_inner->controller_uri_name = 
+				$view_inner->controller_uri_name =
 						$this->get_controller_uri_name();
-				$view_inner->group_data = $group_data[0];
-				$view_inner->group_users = $group_users;
-				$view_inner->group_permissions = $group_permissions;
+				$view_inner->groups = $model->get_group_array();
 				
 			} else {
-				
-				// Wrong group name
-				
 				$view_inner = new View(REGIX_PATH.
 						"views/layouts/generic/failure_generic_xhtml.phtml");
 					
-				$view_inner->message = "Group does not exist.";
+				$view_inner->message = "Action forbidden";
+			}
+			
+		} else if ($this->args[0] == "edit" && isset($this->args[1])) {
+			
+			if ($this->session->user->has_permission("edit_group")) {
+			
+				// Group editor
+				// /edit/group_name
+				
+				$group_data = $model->get_group_data(urldecode($this->args[1]));
+				
+				if ($group_data) {
+					
+					// Group exists
+					
+					$group_users = $model->get_group_users(
+							urldecode($this->args[1]));
+					
+					$group_permissions = $model->get_group_permissions(
+							urldecode($this->args[1]));
+					
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/GroupManager/group_editor_xhtml.phtml");
+					
+					$view_inner->controller_uri_name = 
+							$this->get_controller_uri_name();
+					$view_inner->group_data = $group_data[0];
+					$view_inner->group_users = $group_users;
+					$view_inner->group_permissions = $group_permissions;
+					
+				} else {
+					
+					// Wrong group name
+					
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/failure_generic_xhtml.phtml");
+						
+					$view_inner->message = "Group does not exist.";
+				}
+				
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+					
+				$view_inner->message = "Action forbidden";
 			}
 			
 		} else if ($this->args[0] == "add" && isset($this->args[1])) {
+			
+			if ($this->session->user->has_permission("add_group")) {
 				
-			// Add group
-			// /add/group_name
-				
-			if ($model->add_group($this->args[1])) {
-				$view_inner = new View(REGIX_PATH.
-						"views/layouts/generic/success_generic_xhtml.phtml");
-		
-				$view_inner->message = "Group added";
+				// Add group
+				// /add/group_name
+					
+				if ($model->add_group($this->args[1])) {
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/success_generic_xhtml.phtml");
+			
+					$view_inner->message = "Group added";
+				} else {
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/failure_generic_xhtml.phtml");
+			
+					$view_inner->message = "Group could not be added";
+				}
+			
 			} else {
 				$view_inner = new View(REGIX_PATH.
 						"views/layouts/generic/failure_generic_xhtml.phtml");
-		
-				$view_inner->message = "Group could not be added";
+					
+				$view_inner->message = "Action forbidden";
 			}
 			
-			
 		} else if ($this->args[0] == "add" && isset($_POST["submit"])) {
-		
-			// Add group redirect to clean url
-			// /add (with POST data)
-		
-			header("Location: /" . $this->get_controller_uri_name() . "/add/" .
-					urlencode($_POST["name"]));
 			
-			return;
+			if ($this->session->user->has_permission("add_group")) {
+		
+				// Add group redirect to clean url
+				// /add (with POST data)
+			
+				header("Location: /" . $this->get_controller_uri_name() .
+						"/add/" . urlencode($_POST["name"]));
+				
+				return;
+				
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+					
+				$view_inner->message = "Action forbidden";
+			}
 			
 		} else if ($this->args[0] == "add") {
-		
-			// Add group interface
-			// /add
-		
-			$view_inner = new View(REGIX_PATH.
-					"views/layouts/GroupManager/group_add_xhtml.phtml");
+			
+			if ($this->session->user->has_permission("add_group")) {
 				
-			$view_inner->controller_uri_name = $this->get_controller_uri_name();
+				// Add group interface
+				// /add
+			
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/GroupManager/group_add_xhtml.phtml");
+					
+				$view_inner->controller_uri_name =
+						$this->get_controller_uri_name();
+				
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+					
+				$view_inner->message = "Action forbidden";
+			}
 			
 		} else if ($this->args[0] == "delete" && isset($this->args[1])) {
 			
-			// Delete group
-			// /delete/group_name
-			
-			if ($model->delete_group($this->args[1])) {
-				$view_inner = new View(REGIX_PATH.
-						"views/layouts/generic/success_generic_xhtml.phtml");
+			if ($this->session->user->has_permission("delete_group")) {
 				
-				$view_inner->message = "Group deleted";
+				// Delete group
+				// /delete/group_name
+				
+				if ($model->delete_group($this->args[1])) {
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/success_generic_xhtml.phtml");
+					
+					$view_inner->message = "Group deleted";
+				} else {
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/failure_generic_xhtml.phtml");
+					
+					$view_inner->message = "Group does not exist";
+				}
+			
 			} else {
 				$view_inner = new View(REGIX_PATH.
 						"views/layouts/generic/failure_generic_xhtml.phtml");
-				
-				$view_inner->message = "Group does not exist";
+					
+				$view_inner->message = "Action forbidden";
 			}
 			
 		} else if ($this->args[0] == "delete_user" &&
 				isset($this->args[1]) && isset($this->args[2])) {
+			
+			if ($this->session->user->has_permission("delete_group_user")) {
 				
-			// Delete group user
-			// /delete_user/group_name/user_id
-				
-			if ($model->delete_group_user(
-					urldecode($this->args[1]),
-					$this->args[2])) {
-				
-				$view_inner = new View(REGIX_PATH.
-						"views/layouts/generic/success_generic_xhtml.phtml");
-		
-				$view_inner->message = "User removed from group";
+				// Delete group user
+				// /delete_user/group_name/user_id
+					
+				if ($model->delete_group_user(
+						urldecode($this->args[1]),
+						$this->args[2])) {
+					
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/success_generic_xhtml.phtml");
+			
+					$view_inner->message = "User removed from group";
+					
+				} else {
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/failure_generic_xhtml.phtml");
+			
+					$view_inner->message = "User does not belong to this group";
+				}
 				
 			} else {
 				$view_inner = new View(REGIX_PATH.
 						"views/layouts/generic/failure_generic_xhtml.phtml");
-		
-				$view_inner->message = "User does not belong to this group";
+					
+				$view_inner->message = "Action forbidden";
 			}
 		
 		} else if ($this->args[0] == "add_user" && isset($this->args[1])) {
-		
-			// Add user interface
-			// /add_user/group_name
-		
-			$view_inner = new View(REGIX_PATH.
-					"views/layouts/GroupManager/group_add_user_xhtml.phtml");
-				
-			$view_inner->controller_uri_name = $this->get_controller_uri_name();
-			$view_inner->group_name = urldecode($this->args[1]);
-			$view_inner->users_not_in_group = $model->get_users_not_in_group(
-						urldecode($this->args[1]));
 			
-		} else if ($this->args[0] == "add_user_by_id" &&
-				isset($this->args[1]) && isset($this->args[2])) {
+			if ($this->session->user->has_permission("add_group_user")) {
 		
-			// Add group user by id
-			// /add_user_by_id/group_name/user_id
-		
-			if ($model->add_group_user_by_id(urldecode($this->args[1]),
-					$this->args[2])) {
-		
+				// Add user interface
+				// /add_user/group_name
+			
 				$view_inner = new View(REGIX_PATH.
-						"views/layouts/generic/success_generic_xhtml.phtml");
-		
-				$view_inner->message = "User added to group";
-		
+						"views/layouts/GroupManager/group_add_user_xhtml.phtml");
+					
+				$view_inner->controller_uri_name = $this->get_controller_uri_name();
+				$view_inner->group_name = urldecode($this->args[1]);
+				$view_inner->users_not_in_group = $model->get_users_not_in_group(
+							urldecode($this->args[1]));
+			
 			} else {
 				$view_inner = new View(REGIX_PATH.
 						"views/layouts/generic/failure_generic_xhtml.phtml");
+					
+				$view_inner->message = "Action forbidden";
+			}
+			
+		} else if ($this->args[0] == "add_user_by_id" &&
+				isset($this->args[1]) && isset($this->args[2])) {
+			
+			if ($this->session->user->has_permission("add_group_user")) {
 		
-				$view_inner->message = "User could not be added";
+				// Add group user by id
+				// /add_user_by_id/group_name/user_id
+			
+				if ($model->add_group_user_by_id(urldecode($this->args[1]),
+						$this->args[2])) {
+			
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/success_generic_xhtml.phtml");
+			
+					$view_inner->message = "User added to group";
+			
+				} else {
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/failure_generic_xhtml.phtml");
+			
+					$view_inner->message = "User could not be added";
+				}
+				
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+					
+				$view_inner->message = "Action forbidden";
 			}
 			
 		} else if ($this->args[0] == "add_permission" &&
 		isset($this->args[1]) && isset($this->args[2])) {
+			
+			if ($this->session->user->has_permission("add_group_permission")) {
 		
-			// Add group permission
-			// /add_permission/group_name/prmission_name
-		
-			if ($model->add_group_permission(urldecode($this->args[1]),
-					urldecode($this->args[2]))) {
-		
-				$view_inner = new View(REGIX_PATH.
-						"views/layouts/generic/success_generic_xhtml.phtml");
-		
-				$view_inner->message = "Permission granted to group";
-		
+				// Add group permission
+				// /add_permission/group_name/prmission_name
+			
+				if ($model->add_group_permission(urldecode($this->args[1]),
+						urldecode($this->args[2]))) {
+			
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/success_generic_xhtml.phtml");
+			
+					$view_inner->message = "Permission granted to group";
+			
+				} else {
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/failure_generic_xhtml.phtml");
+			
+					$view_inner->message = "Permission could not be granted";
+				}
+				
 			} else {
 				$view_inner = new View(REGIX_PATH.
 						"views/layouts/generic/failure_generic_xhtml.phtml");
-		
-				$view_inner->message = "Permission could not be granted";
+					
+				$view_inner->message = "Action forbidden";
 			}
 		
 		} else if ($this->args[0] == "add_permission" &&
 		isset($this->args[1])) {
+			
+			if ($this->session->user->has_permission("add_group_permission")) {
 		
-			// Add group permission interface
-			// /add_permission/group_name
-		
-			$view_inner = new View(REGIX_PATH.
-					"views/layouts/GroupManager/group_add_permission_xhtml.phtml");
-				
-			$view_inner->controller_uri_name = $this->get_controller_uri_name();
-			$view_inner->group_name = urldecode($this->args[1]);
-			$view_inner->permissions_not_granted =
-			$model->get_permissions_not_granted(
-					urldecode($this->args[1]));
-		
-		} else if ($this->args[0] == "delete_permission" &&
-		isset($this->args[1]) && isset($this->args[2])) {
-		
-			// Delete (revoke) group permission
-			// /delete_permission/group_name/prmission_name
-		
-			if ($model->delete_group_permission(urldecode($this->args[1]),
-					urldecode($this->args[2]))) {
-		
+				// Add group permission interface
+				// /add_permission/group_name
+			
 				$view_inner = new View(REGIX_PATH.
-						"views/layouts/generic/success_generic_xhtml.phtml");
-		
-				$view_inner->message = "Permission revoked from group";
-		
+						"views/layouts/GroupManager/group_add_permission_xhtml.phtml");
+					
+				$view_inner->controller_uri_name = $this->get_controller_uri_name();
+				$view_inner->group_name = urldecode($this->args[1]);
+				$view_inner->permissions_not_granted =
+				$model->get_permissions_not_granted(
+						urldecode($this->args[1]));
+				
 			} else {
 				$view_inner = new View(REGIX_PATH.
 						"views/layouts/generic/failure_generic_xhtml.phtml");
+					
+				$view_inner->message = "Action forbidden";
+			}
 		
-				$view_inner->message = "Permission could not be revoked";
+		} else if ($this->args[0] == "delete_permission" &&
+		isset($this->args[1]) && isset($this->args[2])) {
+			
+			if ($this->session->user->has_permission("delete_group_permission")) {
+		
+				// Delete (revoke) group permission
+				// /delete_permission/group_name/prmission_name
+			
+				if ($model->delete_group_permission(urldecode($this->args[1]),
+						urldecode($this->args[2]))) {
+			
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/success_generic_xhtml.phtml");
+			
+					$view_inner->message = "Permission revoked from group";
+			
+				} else {
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/failure_generic_xhtml.phtml");
+			
+					$view_inner->message = "Permission could not be revoked";
+				}
+			
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+					
+				$view_inner->message = "Action forbidden";
 			}
 			
 		} else {

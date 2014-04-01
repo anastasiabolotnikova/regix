@@ -2,7 +2,7 @@
 -- Query: SELECT * FROM test_user.controller
 LIMIT 0, 1000
 
--- Date: 2014-03-26 17:05
+-- Date: 2014-04-01 16:09
 */
 INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (1,'MainPageController','Main page controller',1,'main','controllers/MainPageController.php');
 INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (2,'ControllerManagerController','Management of Regix controllers',1,'controllers','controllers/ControllerManagerController.php');
@@ -12,3 +12,4 @@ INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_p
 INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (8,'UserManagerController','Management of user accounts and groups.',1,'uac','controllers/UserManagerController.php');
 INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (9,'CalendarController','Calendar overview.',1,'calendar','controllers/CalendarController.php');
 INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (10,'GroupManagerController','Management of groups and permissions.',1,'groups','controllers/GroupManagerController.php');
+INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (11,'PermissionManagerController','Add and remove permissions used by the Regix. Note that permissions are granted via group manager.',1,'permissions','controllers/PermissionManagerController.php');
