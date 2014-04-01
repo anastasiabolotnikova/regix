@@ -31,6 +31,43 @@ class PermissionManagerController extends Controller {
 					$this->get_controller_uri_name();
 			$view_inner->permissions = $model->get_permission_array();
 			
+		} else if ($this->args[0] == "edit" && isset($this->args[1]) &&
+				isset($_POST["submit"])) {
+		
+			// Permission editor - save data
+			// /edit_category/permission_name (with POST data)
+		
+			if ($model->update_permission(urldecode(
+					$this->args[1]),
+					$_POST["name"],
+					$_POST["description"],
+					$_POST["category_id"])) {
+			
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/success_generic_xhtml.phtml");
+			
+				$view_inner->message = "Permission saved";
+			
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+			
+				$view_inner->message = "Could not save permission";
+			}
+			
+		} else if ($this->args[0] == "edit" && isset($this->args[1])) {
+		
+			// Permission editor
+			// /edit_category/permission_name
+		
+			$view_inner = new View(REGIX_PATH.
+					"views/layouts/PermissionManager/permission_editor_xhtml.phtml");
+		
+			$view_inner->controller_uri_name =
+					$this->get_controller_uri_name();
+			$view_inner->permission_data =
+					$model->get_permission_data(urldecode($this->args[1]));
+			$view_inner->categories = $model->get_category_array();
 
 		} else if ($this->args[0] == "add" && isset($_POST["submit"])) {
 			

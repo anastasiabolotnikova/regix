@@ -177,6 +177,14 @@ abstract class DB_Adapter {
 	
 	abstract public function insert_permission_category($name);
 	
+	abstract public function select_permission($name);
+	
+	abstract public function update_permission_with_category_name(
+				$name_old,
+				$name_new,
+				$description,
+				$permission_category_id);
+	
 	// Group manager
 	
 	abstract public function select_all_groups();

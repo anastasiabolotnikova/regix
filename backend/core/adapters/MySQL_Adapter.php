@@ -510,6 +510,34 @@ class MySQL_Adapter extends DB_Adapter {
 		return $this->query($query, array($name), "s", FALSE);
 	}
 	
+	public function select_permission($name) {
+		$query = "
+				select `name`, `description`, `permission_category_id`
+				from `permission`
+				where `name` = ?;
+				";
+		
+		return $this->query($query, array($name), "s");
+	}
+	
+	public function update_permission_with_category_name(
+			$name_old,
+			$name_new,
+			$description,
+			$permission_category_id) {
+		$query = "
+				update `permission`
+				set
+					`name` = ?,
+					`description` = ?,
+					`permission_category_id` = ?
+				where `name` = ?;
+				";
+		
+		return $this->query($query, array($name_new, $description,
+				$permission_category_id, $name_old), "ssss", FALSE);
+	}
+	
 	// Group manager
 	
 	public function select_all_groups() {

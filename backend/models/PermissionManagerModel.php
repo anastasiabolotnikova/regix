@@ -40,4 +40,22 @@ class PermissionManagerModel extends Model {
 	public function add_permission_category($category_name) {
 		return $this->db->insert_permission_category($category_name);
 	}
+	
+	public function get_permission_data($permission_name) {
+		$permissions =  $this->db->select_permission($permission_name);
+		if ($permissions) {
+			return $permissions[0];
+		} else {
+			return NULL;
+		}
+	}
+	
+	public function update_permission($name_old, $name_new, $description,
+			$category_id) {
+		return $this->db->update_permission_with_category_name(
+				$name_old,
+				$name_new,
+				$description,
+				$category_id);
+	}
 }

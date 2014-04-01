@@ -1,0 +1,45 @@
+<div id="permission_manager_editor_container" class="table_container">
+	<h1 class="title_block">Edit permission</h1>
+	
+	<form action="" method="POST">
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						Name
+					</td>
+					<td>
+						<input id="name" name="name" type="text" value="<?php echo $this->permission_data['name']; ?>"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Category
+					</td>
+					<td>
+						<select id="category_id" name="category_id">
+							<?php foreach ($this->categories as $category) { ?>
+							<option value="<?php echo $category["id"]; ?>"<?php if ($category["id"] == $this->permission_data["permission_category_id"]) { echo ' selected="selected"'; } ?>><?php echo $category["name"]; ?></option>
+							<?php } ?>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Description
+					</td>
+					<td>
+						<input id="description" name="description" type="text" value="<?php echo $this->permission_data['description']; ?>"/>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="single_button_container">
+			<button id="submit" name="submit" type="submit">Save</button>
+		</div>
+	</form>
+	
+	<div class="single_button_container">
+		<button type="button" onclick="location.href='/<?php echo ($this->controller_uri_name . "/delete/" . urlencode($this->permission_data['name'])); ?>'">Delete permission</button>
+	</div>
+</div>
