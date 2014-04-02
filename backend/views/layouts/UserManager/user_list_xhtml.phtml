@@ -1,5 +1,8 @@
-<div id="table-content">
-	<table cellspacing="0">
+<div class="regix-form-container">
+	<form action="#" class="regix-form">
+	<h1>Users</h1>
+<div class="table-content">
+		<table class="hover-row">
 		<thead>
 			<tr><th>ID</th><th>Name</th><th>Login</th><th>Email</th><th>Remove</th></tr>
 		</thead>
@@ -21,7 +24,7 @@
 					<td>
 						<?php echo $user['email']; ?>
 					</td>
-					<td>
+					<td class="last">
 						<?php if ($user['id'] != 1) { ?>
 						<a href="/<?php echo $this->editor_uri; ?>/delete/<?php echo $user['id']; ?>">remove</a>
 						<?php }; ?>
@@ -33,6 +36,9 @@
 	?>
 		</tbody>
 	</table>
+</div>
+	</form>
+</div>
 
 <div class="regix-form-container">
 	<div class="button-holder">

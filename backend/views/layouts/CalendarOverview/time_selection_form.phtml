@@ -1,8 +1,10 @@
-<div id="time_selection_container" class="table_container">
-	<div class="title_block"><?php echo date("F", mktime(0,0,0,$this->month,$this->day,$this->year)); echo " ".$this->day; ?></div>
-	<div class="title_block"><?php echo date("l", mktime(0,0,0,$this->month,$this->day,$this->year)); ?></div>
-	<form action="" method="post">
-		<table id="event_registration_table">
+<div class="regix-form-container">
+	<form action="" method="post" class="regix-form">
+		<div class="table-content">
+			<h1><?php echo date("F", mktime(0,0,0,$this->month,$this->day,$this->year)); echo " ".$this->day; ?></h1>
+			<table>
+				<thead>
+			<tr><th><?php echo date("l", mktime(0,0,0,$this->month,$this->day,$this->year)); ?></th></tr></thead>
 			<tbody>
 			<?php
 			$from=8; //working day starts (calculated using constraints)
@@ -11,7 +13,7 @@
 				foreach ($this->booked_hours as $booked) {
 					if($booked['booked_hours']==$hour) $hour++;
 					}
-				echo "<tr><td><a href='/".$this->cal_uri."/".$this->service."/".$this->month."/".$this->day."/".$hour."'>".$hour.":00 - ";
+				echo "<tr><td class=\"last\"><a href='/".$this->cal_uri."/".$this->service."/".$this->month."/".$this->day."/".$hour."'>".$hour.":00 - ";
 				$hour++;
 				echo $hour.":00</a></td></tr>";
 				$hour--;
@@ -20,4 +22,5 @@
 			</tbody>
 		</table>
 	</form>
+</div>
 </div>

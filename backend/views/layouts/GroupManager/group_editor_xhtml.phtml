@@ -1,58 +1,78 @@
-<div id="group_manager_editor_container" class="table_container">
-	<div class="title_block"><?php echo $this->group_data['name']; ?></div>
-	
-	<h3 class="editor_section_header">Users</h3>
-	
-	<table>
-		<tbody>
-<?php
-	foreach ($this->group_users as $group_user) {
-?>
-			<tr>
-				<td>
-					<?php echo($group_user["name"]); ?>
-				</td>
-				<td>
-					<a href="/<?php echo($this->controller_uri_name . "/delete_user/" . urlencode($this->group_data['name']) . '/' . $group_user["id"]); ?>">remove from group</a>
-				</td>
-			</tr>
-<?php
-	}
-?>
-		</tbody>
-	</table>
-	
-	<div class="single_button_container">
-		<button type="button" onclick="location.href='/<?php echo ($this->controller_uri_name . "/add_user/" . urlencode($this->group_data['name'])); ?>'">Add user</button>
+<div class="regix-form-container">
+	<form action="#" class="regix-form">
+		<h1>
+			<?php echo $this->group_data['name']; ?></h1>
+
+		<div class="table-content">
+			<table class="hover-row">
+				<thead>
+					<tr>
+						<th colspan="2">
+							Users
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($this->group_users as $group_user) { ?>
+					<tr>
+						<td>
+							<?php echo($group_user["name"]); ?>
+						</td>
+						<td class="last">
+							<a href="/<?php echo($this->controller_uri_name . "/delete_user/" . urlencode($this->group_data['name']) . '/' . $group_user["id"]); ?>">remove from group</a>
+						</td>
+					</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+		</div>
+	</form>
+
+	<div class="button-holder">
+		<form action="/<?php echo ($this->controller_uri_name . "/add_user/" . urlencode($this->group_data['name'])); ?>" method="post" class="regix-form">
+			<div>
+				<button type="submit" class="secondary-button-single first">Add user to group</button>
+			</div>
+		</form>
 	</div>
-	
-	
-	<h3 class="editor_section_header">Permissions</h3>
-	
-	<table>
-		<tbody>			
-<?php
-	foreach ($this->group_permissions as $group_permission) {
-?>
-			<tr>
-				<td>
-					<?php echo($group_permission["permission_name"]); ?>	
-				</td>
-				<td>
-					<a href="/<?php echo($this->controller_uri_name . "/delete_permission/" . urlencode($this->group_data['name']) . '/' . urlencode($group_permission["permission_name"])); ?>">revoke</a>
-				</td>
-			</tr>
-<?php
-	}
-?>
-		</tbody>
-	</table>
-	
-	<div class="single_button_container">
-		<button type="button" onclick="location.href='/<?php echo ($this->controller_uri_name . "/add_permission/" . urlencode($this->group_data['name'])); ?>'">Add permission</button>
+	<form action="#" class="regix-form">
+		<div class="table-content">
+			<table class="hover-row">
+				<thead>
+					<tr>
+						<th colspan="2">
+							Permissions
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($this->group_permissions as $group_permission) { ?>
+					<tr>
+						<td>
+							<?php echo($group_permission[ "permission_name"]); ?>
+						</td>
+						<td class="last">
+							<a href="/<?php echo($this->controller_uri_name . "/delete_permission/" . urlencode($this->group_data['name']) . '/' . urlencode($group_permission["permission_name"])); ?>">revoke</a>
+						</td>
+					</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+		</div>
+	</form>
+
+	<div class="button-holder">
+		<form action="/<?php echo ($this->controller_uri_name . "/add_permission/" . urlencode($this->group_data['name'])); ?>" method="post" class="regix-form">
+			<div>
+				<button type="submit" class="secondary-button-single first">Add permission</button>
+			</div>
+		</form>
 	</div>
-	
-	<div class="single_button_container">
-		<button type="button" onclick="location.href='/<?php echo ($this->controller_uri_name . "/delete/" . urlencode($this->group_data['name'])); ?>'">Delete group</button>
+	<div class="button-holder">
+		<form action="/<?php echo ($this->controller_uri_name . "/delete/" . urlencode($this->group_data['name'])); ?>" method="post" class="regix-form">
+			<div>
+				<button type="submit" class="warning-button-single">Delete group</button>
+			</div>
+		</form>
 	</div>
 </div>

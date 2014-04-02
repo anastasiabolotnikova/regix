@@ -1,46 +1,16 @@
-<div id="permission_manager_add_container" class="table_container">
-	<h3 class="title_block">Add permission</h3>
-	<div>
-		<form action="" method="post">
-		
-			<table>
-				<tbody>
-					<tr>
-						<td>
-							<label for="name">Permission name</label>
-						</td>
-						<td>
-							<input id="name" name="name" type="text" value="new_permission"/>
-						</td>
-					</tr>
-					
-					<tr>
-						<td>
-							<label for="category_name">Category</label>
-						</td>
-						<td>
-							<select id="category_name" name="category_name">
+<div class="regix-form-container">
+	<form action="#" method="post" class="regix-form">
+		<h1>Add permission</h1>
+		<div class="form-label-container"><label for="name">Permission name</label></div>	
+		<div><input id="name" type="text" name="name" class="regix-form-input" value="new_permission"/></div>
+		<div class="form-label-container"><label for="category_name">Category</label></div>
+		<div><select id="category_name" name="category_name">
 								<?php foreach ($this->categories as $category) { ?>
 								<option><?php echo $category["name"]; ?></option>
 								<?php } ?>
-							</select>
-						</td>
-					</tr>
-					
-					<tr>
-						<td>
-							<label for="description">Description</label>
-						</td>
-						<td>
-							<input id="description" name="description" type="text" value="Description."/>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
-			<div class="single_button_container">
-				<button name="submit" type="submit">Create permission</button>
-			</div>
-		</form>
-	</div>
+							</select></div>
+		<div class="form-label-container"><label for="description">Description</label></div>	
+		<div><input id="description" type="text" name="description" class="regix-form-input" value="Description."/></div>
+		<div><button type="submit" class="secondary-button-single" >Create permission</button></div>		
+	</form>
 </div>

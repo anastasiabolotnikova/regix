@@ -1,6 +1,8 @@
-<div id="group_manager_list_container" class="table_container">
-	<div class="title_block">Groups</div>
-	<table class="table_borders highlight_row cursor_pointer">
+<div class="regix-form-container">
+	<form action="#" class="regix-form">
+	<h1>Groups</h1>
+<div class="table-content">
+		<table class="hover-row">
 		<thead>
 			<tr><th>Name</th></tr>
 		</thead>
@@ -10,7 +12,7 @@
 			foreach ($this->groups as $group) {
 	?>
 				<tr onclick="location.href='/<?php echo ($this->controller_uri_name . "/edit/" . urlencode($group['name'])); ?>'">
-					<td>
+					<td class="last">
 						<?php echo $group['name']; ?>
 					</td>
 				</tr>
@@ -20,7 +22,18 @@
 	?>
 		</tbody>
 	</table>
-	<div class="single_button_container">
-		<button onclick="location.href='/<?php echo $this->controller_uri_name; ?>/add'">Add group</button>
+</div>
+	</form>		
+
+	<div class="button-holder">
+	<form action="/<?php echo $this->controller_uri_name; ?>/add" class="regix-form">
+		<div><button type="submit" class="secondary-button-single first" >Add group</button></div>		
+	</form>
+	</div>
+	
+	<div class="button-holder">
+	<form action="/<?php echo $this->controller_uri_name; ?>/add" class="regix-form">
+		<div><button type="submit" class="default-button-single" >Categories</button></div>		
+	</form>
 	</div>
 </div>

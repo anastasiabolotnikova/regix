@@ -1,25 +1,11 @@
-<div id="permission_manager_category_editor_container" class="table_container">
-	<h1 class="title_block">Edit category</h1>
-	
-	<form action="" method="POST">
-		<table>
-			<tbody>
-				<tr>
-					<td>
-						Name
-					</td>
-					<td>
-						<input id="name" name="name" type="text" value="<?php echo $this->category_data['name']; ?>"/>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<div class="single_button_container">
-			<button id="submit" name="submit" type="submit">Save</button>
-		</div>
+<div class="regix-form-container">
+	<form action="#" method="post" class="regix-form">
+		<h1>Edit category</h1>
+		<div class="form-label-container"><label for="name">Category name</label></div>
+		<div><input id="name" type="text" name="name" class="regix-form-input" value="<?php echo $this->category_data['name']; ?>"/></div>	
+		<div><button type="submit" class="secondary-button-single" >Save</button></div>		
 	</form>
-	
-	<div class="single_button_container">
-		<button type="button" onclick="location.href='/<?php echo ($this->controller_uri_name . "/delete_category/" . $this->category_data['id']); ?>'">Delete category</button>
-	</div>
+	<form action="/<?php echo ($this->controller_uri_name . "/delete_category/" . $this->category_data['id']); ?>">
+		<div><button type="submit" class="warning-button-single" >Delete category</button></div>
+		</form>
 </div>

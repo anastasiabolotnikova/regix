@@ -1,10 +1,15 @@
-<div id="group_manager_add_user_container" class="table_container">
-	<div class="title_block"><?php echo $this->group_name; ?></div>
-	
-	<h3 class="editor_section_header">Permissions not granted to group</h3>
-	
-	<table>
-		<tbody>
+<div class="regix-form-container">
+	<form action="#" class="regix-form">
+		<h1>
+			<?php echo $this->group_name;?></h1>
+		<div class="table-content">
+				<table class="hover-row">
+				<thead>
+					<tr>
+						<th colspan="2">Permissions not granted to group</th>
+					</tr>
+				</thead>
+						<tbody>
 <?php
 	foreach ($this->permissions_not_granted as $permission) {
 ?>
@@ -12,7 +17,7 @@
 				<td>
 					<?php echo($permission["name"]); ?>
 				</td>
-				<td>
+				<td class="last">
 					<a href="/<?php echo($this->controller_uri_name . "/add_permission/" . urlencode($this->group_name) . '/' . urlencode($permission["name"])); ?>">grant</a>
 				</td>
 			</tr>
@@ -20,5 +25,7 @@
 	}
 ?>
 		</tbody>
-	</table>
+			</table>
+		</div>
+	</form>
 </div>

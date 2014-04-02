@@ -1,5 +1,8 @@
-<div id="table-content">
-	<table cellspacing="0">
+<div class="regix-form-container">
+	<form action="" class="regix-form">
+	<h1>Controllers</h1>
+<div class="table-content">
+	<table class="hover-row">
 		<thead>
 			<tr><th>ID</th><th>Name</th><th>Description</th><th>Status</th><th>URL</th><th>Path</th></tr>
 		</thead>
@@ -28,7 +31,7 @@
 					<td>
 						<?php echo $controller['uri_name']; ?>
 					</td>
-					<td>
+					<td class="last">
 						<?php echo $controller['file_path']; ?>
 					</td>
 				</tr>
@@ -40,6 +43,11 @@
 		</tbody>	
 	</table>
 </div>
+			</form>
+	</div>
+
+
+
 <div class="regix-form-container">
 	<div class="button-holder">
 	<form action="/<?php echo $this->editor_uri; ?>/add" method="post" class="regix-form">

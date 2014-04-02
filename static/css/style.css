@@ -109,14 +109,6 @@ input[type="submit"]:HOVER {
 	cursor: pointer;
 }*/
 
-select {
-	padding: 0.7em;
-	border: 1px solid #2e3436;
-	border-radius: 0.5em;
-	
-	background-color: #eeeeec;
-}
-
 /* Containers */
 
 #container {
@@ -397,6 +389,15 @@ input{
 	text-align: center;
 }
 
+.regix-form h2 {
+	word-wrap: break-word;
+	margin-bottom: 20px;
+	font-size: 20px;
+	font-weight: bold;
+	color: #5c5c5c;
+	text-align: center;
+}
+
 .regix-form span {
 	margin-bottom: 10px;
 	font-size: 18px;
@@ -432,6 +433,10 @@ button{
 	cursor: pointer;
 }
 
+button.first{
+	margin-top: 5px;
+}
+
 .default-button {
 	width: 49%;
 	color: #fff;
@@ -446,12 +451,12 @@ button{
 .default-button-single {
 	width: 100%;
     color: #fff;
-	background: #28b0e2;
-	border: 1px solid #1581a8;
+	background: hsl(196, 7%, 52%);
+	border: 1px solid hsl(196, 7%, 37%);
 }
 
 .default-button-single:active {
-	background: #219ace;
+	background: hsl(198, 7%, 47%);
 }
 
 .secondary-button {
@@ -525,30 +530,49 @@ button{
 }
 
 
-/*%Table*/
+/*Tables*/
 
-	#table-content {
-		word-wrap: break-word; color:#5c5c5c;
-	}
+.table-content {
+	word-wrap: break-word; color:#5c5c5c;
+}
 
-	
-	table {
-		table-layout:fixed;
-		border:1px solid #d3d3d3;
-		background:#f4f4f4;
-		width:80%;
-		min-width: 450px;
-		margin:auto;
-	}
-	
-	th, td {padding:20px 20px 10px; text-align:center; }
-	
-	th {padding-top:10px; background:#eae8e8;}
-	
-	td {border-top:1px solid #e0e0e0; border-right:1px solid #e0e0e0;}
-	
-	tr.odd-row td {background:#f6f6f6;}
-	
-	td.first, th.first {text-align:left}
-	
-	td.last {border-right:none;}
+
+table {
+	table-layout:fixed;
+	border:1px solid #b4b4b4;
+	background:#f4f4f4;
+	max-width: 1500px;
+	min-width: 450px;
+	margin:auto;
+	border-spacing: 0px;
+	cursor: pointer;
+}
+
+th{
+	word-wrap: break-word;
+	margin-bottom: 20px;
+	font-size: 20px;
+	font-weight: bold;
+	color: #5c5c5c;
+	text-align: center;
+}
+
+.hover-row tr:HOVER td{
+	background-color:#e2e2e2;
+}
+
+.hover-cell td:HOVER{
+	background-color:#e2e2e2;
+}
+
+th, td {padding:20px 20px 10px; text-align:center; }
+
+th {padding-top:10px; background:#eae8e8;}
+
+td {border-top:1px solid #b4b4b4; border-right:1px solid #b4b4b4;}
+
+tr.odd-row td {background:#f6f6f6;}
+
+td.first, th.first {text-align:left}
+
+td.last {border-right:none;}

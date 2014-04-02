@@ -1,6 +1,8 @@
-<div id="permission_manager_category_list_container" class="table_container">
-	<h3 class="title_block">Permission categories</h3>
-	<table class="table_borders highlight_row cursor_pointer">
+<div class="regix-form-container">
+	<form action="#" class="regix-form">
+	<h1>Permissions catergories</h1>
+<div class="table-content">
+		<table class="hover-row">
 		<thead>
 			<tr><th>Name</th><th>Remove</th></tr>
 		</thead>
@@ -13,7 +15,7 @@
 					<td>
 						<?php echo $category["name"]; ?>
 					</td>
-					<td>
+					<td class="last">
 						<a href="/<?php echo ($this->controller_uri_name . '/delete_category/' . $category['id']); ?>">remove</a>
 					</td>
 				</tr>
@@ -23,7 +25,15 @@
 	?>
 		</tbody>
 	</table>
-	<div class="single_button_container">
-		<button onclick="location.href='/<?php echo $this->controller_uri_name; ?>/add_category'">Add category</button>
+</div>
+	</form>
+</div>
+
+
+<div class="regix-form-container">
+	<div class="button-holder">
+	<form action="/<?php echo $this->controller_uri_name; ?>/add_category" method="post" class="regix-form">
+		<div><button type="submit" class="secondary-button-single" > Add category</button></div>		
+	</form>
 	</div>
 </div>
