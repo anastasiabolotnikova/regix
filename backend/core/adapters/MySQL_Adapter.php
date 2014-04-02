@@ -859,7 +859,9 @@ class MySQL_Adapter extends DB_Adapter {
 					`calendar_id`,
 					`user_id`,
 					`assigned_service`,
-					`description`
+					`description`,
+					`from`,
+					`to`
 				from `event`
 				order by `id` desc
 				limit ?;
