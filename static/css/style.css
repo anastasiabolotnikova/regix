@@ -35,7 +35,6 @@ a:active {}
 
 a.no_deco {
 	color: inherit;
-	display: block;
 	text-decoration: none;
 	cursor: pointer;
 }
