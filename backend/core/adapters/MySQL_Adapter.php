@@ -100,7 +100,7 @@ class MySQL_Adapter extends DB_Adapter {
 	
 	public function close() {
 		if ($this->mysqli) {
-			$this->mysqli->close();
+			@$this->mysqli->close();
 			$this->mysqli = NULL;
 		}
 	}

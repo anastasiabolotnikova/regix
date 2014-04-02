@@ -2,6 +2,7 @@
 require_once REGIX_PATH.'models/Model.php';
 
 class PermissionManagerModel extends Model {
+	
 	public function get_permission_array() {
 		return $this->db->select_all_permissions_with_categories();
 	}

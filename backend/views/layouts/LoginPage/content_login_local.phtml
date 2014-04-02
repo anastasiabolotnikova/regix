@@ -14,5 +14,8 @@
 				<td colspan="2"><input name="login_b" type="submit" value="Sign In" /></td>
 			</tr>
 		</table>
+		<?php if($this->redirect_to) { ?>
+		<input id="redirect_to" name="redirect_to" type="hidden" value="<?php echo base64_encode($this->redirect_to); ?>" />
+		<?php } ?>
 	</form>
 </div>

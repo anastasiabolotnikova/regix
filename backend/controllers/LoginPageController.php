@@ -19,7 +19,6 @@ class LoginPageController extends Controller{
 			$model->logout();
 			$view_content = new View(
 					REGIX_PATH."views/layouts/LoginPage/content_logout.phtml");
-			$title = "Logged out :: Regix";
 			
 		} else if (isset($_POST['login_b'])) {
 			// Log in (form)
@@ -27,22 +26,29 @@ class LoginPageController extends Controller{
 				// Logged in
 				$view_content = new View(
 						REGIX_PATH."views/layouts/LoginPage/content_login_success.phtml");
-				$title = "Logged in :: Regix";
+				
+				if (isset($_POST["redirect_to"])) {
+					header("Location: /".base64_decode($_POST["redirect_to"]));
+					return TRUE;
+				}
 			} else {
 				// Log in failed
 				$view_content = new View(
 						REGIX_PATH."views/layouts/LoginPage/content_login_failure.phtml");
-				$title = "Wrong login or password :: Regix";
 			}
 		} else {
 			// Show form
 			$view_content = new View(
 					REGIX_PATH."views/layouts/LoginPage/content_login_local.phtml");
-			$title = "Login :: Regix";
+			if ($this->args) {
+				$view_content->redirect_to = implode("/", $this->args);
+			} else {
+				$view_content->redirect_to = NULL;
+			}
 		}
 		
 		$view_outer = new View(REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
-		$view_outer->title = $title;
+		$view_outer->title = "Sign In - Regix";
 		$view_outer->user_name = $model->get_user_name();
 		$view_outer->content = $view_content->render(FALSE);
 		
