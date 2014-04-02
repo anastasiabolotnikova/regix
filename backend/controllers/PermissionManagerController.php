@@ -53,8 +53,11 @@ class PermissionManagerController extends Controller {
 	
 	
 	public function edit_permission_save_data() {
-		if ($this->session->user->has_permission("edit_permission")) {
-			if ($this->model->update_permission(urldecode(
+		if ($this->check_permission("edit_permission", "edit")) {
+			if (isset($_POST["name"]) &&
+				isset($_POST["description"]) &&
+				isset($_POST["category_id"]) &&
+				$this->model->update_permission(urldecode(
 					$this->args[1]),
 					$_POST["name"],
 					$_POST["description"],
@@ -74,7 +77,9 @@ class PermissionManagerController extends Controller {
 	
 	
 	public function edit_permission_editor() {
-		if ($this->check_permission("edit_permission", ("edit/".($this->args[1])))) {
+		if ($this->check_permission(
+				"edit_permission",
+				("edit/".$this->args[1]))) {
 			$view_inner = new View(LAYOUT_PATH."permission_editor_xhtml.phtml");
 			$view_inner->controller_uri_name = $this->get_controller_uri_name();
 			$view_inner->permission_data = $this->model->get_permission_data(
@@ -89,11 +94,14 @@ class PermissionManagerController extends Controller {
 	
 	
 	public function add_permission_save_data() {
-		if ($this->session->user->has_permission("add_permission")) {
-			if ($this->model->add_permission(
-					$_POST["name"],
-					$_POST["description"],
-					$_POST["category_name"])) {
+		if ($this->check_permission("add_permission", "add")) {
+			if (isset($_POST["name"]) &&
+				isset($_POST["description"]) && 
+				isset($_POST["category_name"]) &&
+				$this->model->add_permission(
+						$_POST["name"],
+						$_POST["description"],
+						$_POST["category_name"])) {
 				$view_inner = new View(LAYOUT_SUCCESS);
 				$view_inner->message = "Permission added";
 			} else {
@@ -122,7 +130,9 @@ class PermissionManagerController extends Controller {
 	
 	
 	public function delete_permission() {
-		if ($this->session->user->has_permission("delete_permission")) {
+		if ($this->check_permission(
+				"delete_permission",
+				"delete/".$this->args[1])) {
 			if ($this->model->delete_permission(urldecode($this->args[1]))) {
 				$view_inner = new View(LAYOUT_SUCCESS);
 				$view_inner->message = "Permission deleted";
@@ -139,7 +149,9 @@ class PermissionManagerController extends Controller {
 	
 	
 	public function category_list() {
-		if ($this->check_permission("list_permission_categories", "categories")) {
+		if ($this->check_permission(
+				"list_permission_categories",
+				"categories")) {
 			$view_inner = new View(LAYOUT_PATH."permission_category_list_xhtml.phtml");
 			$view_inner->controller_uri_name = $this->get_controller_uri_name();
 			$view_inner->categories = $this->model->get_category_array();
@@ -152,7 +164,9 @@ class PermissionManagerController extends Controller {
 	
 	
 	public function edit_category_save_data() {
-		if ($this->session->user->has_permission("edit_permission_category")) {
+		if ($this->check_permission(
+				"edit_permission_category",
+				"edit_category/".$this->args[1])) {
 			if ($this->model->save_permission_category($this->args[1], $_POST["name"])) {
 				$view_inner = new View(LAYOUT_SUCCESS);
 				$view_inner->message = "Category saved";
@@ -173,7 +187,7 @@ class PermissionManagerController extends Controller {
 	public function edit_category_editor() {
 		if ($this->check_permission(
 				"edit_permission_category",
-				("edit_category/".$this->args[1]))) {
+				"edit_category/".$this->args[1])) {
 			$view_inner = new View(LAYOUT_PATH."permission_category_editor_xhtml.phtml");
 			$view_inner->controller_uri_name = $this->get_controller_uri_name();
 			$view_inner->category_data = $this->model->get_category_data($this->args[1]);
@@ -203,7 +217,9 @@ class PermissionManagerController extends Controller {
 	
 	
 	public function add_category_save_data() {
-		if ($this->session->user->has_permission("add_permission_category")) {
+		if ($this->check_permission(
+				"add_permission_category",
+				"add_category")) {
 			if ($this->model->add_permission_category($_POST["name"])) {
 				$view_inner = new View(LAYOUT_SUCCESS);
 				$view_inner->message = "Category added";
@@ -220,7 +236,9 @@ class PermissionManagerController extends Controller {
 	
 	
 	public function add_category_editor() {
-		if ($this->check_permission("add_permission_category", "add_category")) {
+		if ($this->check_permission(
+				"add_permission_category",
+				"add_category")) {
 			$view_inner = new View(LAYOUT_PATH."permission_category_add_xhtml.phtml");
 			$view_inner->controller_uri_name = $this->get_controller_uri_name();
 		} else {
