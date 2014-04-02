@@ -12,7 +12,7 @@
 			foreach ($this->groups as $group) {
 	?>
 				<tr onclick="location.href='/<?php echo ($this->controller_uri_name . "/edit/" . urlencode($group['name'])); ?>'">
-					<td class="last">
+					<td>
 						<?php echo $group['name']; ?>
 					</td>
 				</tr>
@@ -33,7 +33,7 @@
 	
 	<div class="button-holder">
 	<form action="/<?php echo $this->controller_uri_name; ?>/add" class="regix-form">
-		<div><button type="submit" class="default-button-single" >Categories</button></div>		
+		<div><button type="submit" class="default-button-single last" >Categories</button></div>		
 	</form>
 	</div>
 </div>

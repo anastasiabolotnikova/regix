@@ -13,7 +13,7 @@
 				foreach ($this->booked_hours as $booked) {
 					if($booked==$hour) $hour++;
 					}
-				echo "<tr><td class=\"last\"><a href='/".$this->cal_uri."/".$this->service."/".$this->year."/".$this->month."/".$this->day."/".$hour."'>".$hour.":00 - ";
+				echo "<tr><td><a href='/".$this->cal_uri."/".$this->service."/".$this->year."/".$this->month."/".$this->day."/".$hour."'>".$hour.":00 - ";
 				$hour++;
 				echo $hour.":00</a></td></tr>";
 				$hour--;
@@ -22,6 +22,7 @@
 			</tbody>
 		</table>
 	</form>
+</div>
 </div>
 
 <script src="/js/components/Calendar.js"></script>
