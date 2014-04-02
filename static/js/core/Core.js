@@ -1,3 +1,5 @@
 $(document).ready(function() {
-	updater(5000);
+	if (updater) {
+		updater(5000);
+	}
 });	
