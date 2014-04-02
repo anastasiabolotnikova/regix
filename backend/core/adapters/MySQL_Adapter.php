@@ -869,4 +869,48 @@ class MySQL_Adapter extends DB_Adapter {
 		
 		return $this->query($query, array($max_event_number), "i");
 	}
+	
+	public function select_data_from_events(){
+		$query = "
+				SELECT `event`.`id`, `from`, `to`, `u2`.`name` as 'worker', `description`, `u1`.`name` as 'client', `assigned_service` as 'service'
+				From `event`
+				JOIN `user` as `u1`
+				ON `u1`.`id`=`event`.`user_id`
+				JOIN `user` as `u2`
+				ON `u2`.`id`=`event`.`assigned_user`
+				ORDER BY `from`;
+				";
+		
+		return $this->query($query);
+	}
+	
+	public function delete_event($event_id){
+		$query = "
+				DELETE FROM `event` WHERE `id`=?;
+				";
+		
+		return $this->query($query, array($event_id),"i",FALSE);
+	}
+	
+	public function select_event_data($id){
+		$query = "
+				SELECT `from`, `to`, `u2`.`name` as 'worker', `description`, `u1`.`name` as 'client', `assigned_service` as 'service'
+				From `event`
+				JOIN `user` as `u1`
+				ON `u1`.`id`=`event`.`user_id`
+				JOIN `user` as `u2`
+				ON `u2`.`id`=`event`.`assigned_user`
+				WHERE `event`.`id`=?;
+				";
+		
+		return $this->query($query, array($id),"i");
+	}
+	
+	public function set_updated_event($cal_id,$user_id,$desc,$assigned_user,$assigned_service,$from,$to,$id) {
+		$query = "
+				UPDATE `event` SET `calendar_id`=?,`user_id`=?,`description`=?,`assigned_user`=?,`assigned_service`=?,`from`=?,`to`=? WHERE `id`=?
+				";
+	
+		return $this->query($query, array($cal_id,$user_id,$desc,$assigned_user,$assigned_service,$from,$to,$id), "iisisssi", FALSE);
+	}
 }

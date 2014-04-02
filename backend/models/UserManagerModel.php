@@ -11,11 +11,13 @@ class UserManagerModel extends Model{
 	
 	public function get_user_data($id) {
 		if ($ll_data = $this->db->select_local_login($id)) {
+			$selected_user = $this->db->select_user($id);
 			$user = array_merge(
-					$this->db->select_user($id)[0],
+					$selected_user[0],
 					$ll_data[0]);
 		} else {
-			$user = $this->db->select_user($id)[0];
+			$selected_user = $this->db->select_user($id);
+			$user = $selected_user[0];
 			$user["email"] = "";
 			$user["login"] = "";
 		}
