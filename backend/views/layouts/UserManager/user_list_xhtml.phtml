@@ -24,7 +24,7 @@
 					<td>
 						<?php echo $user['email']; ?>
 					</td>
-					<td class="last">
+					<td>
 						<?php if ($user['id'] != 1) { ?>
 						<a href="/<?php echo $this->editor_uri; ?>/delete/<?php echo $user['id']; ?>">remove</a>
 						<?php }; ?>
@@ -43,7 +43,7 @@
 <div class="regix-form-container">
 	<div class="button-holder">
 	<form action="/<?php echo $this->editor_uri; ?>/add" method="post" class="regix-form">
-		<div><button type="submit" class="secondary-button-single" > Add user</button></div>		
+		<div><button type="submit" class="secondary-button-single last" > Add user</button></div>		
 	</form>
 	</div>
 </div>

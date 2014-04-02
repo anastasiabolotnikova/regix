@@ -39,84 +39,6 @@ a.no_deco {
 	cursor: pointer;
 }
 
-/* Tables */
-
-/*table {
-	margin: 0.5em;
-	
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-table td, table th {
-	padding: 0.5em;
-	
-	font-weight: normal;
-	font-family: 'Helvetica', sans-serif;
-	border: 0;
-}
-
-table.table_borders td, table.table_borders th {
-	border: 1px solid #777;
-}
-
-table.highlight_row tr:HOVER td{
-	background-color:#555753;
-}
-
-table.cursor_pointer tr td {
-	cursor: pointer;
-}
-
-h3.table_section_header {
-    text-align: center;
-	font-family: 'Roboto', 'Helvetica', sans-serif;
-	font-size: 2em;
-    
-}*/
-
-
-/* Forms */
-
-/* Inputs */
-
-/*
-input {
-	padding: 0.7em;
-	border: 1px solid #2e3436;
-	border-radius: 0.5em;
-	
-	background-color: #eeeeec;
-}
-
-input[type="submit"] {
-	padding-left: 1em;
-	padding-right: 1em;
-}
-
-input[type="submit"]:HOVER {	
-	background-color: #babdb6;
-	cursor: pointer;
-}
-*/
-
-/*button {
-	padding: 0.7em;
-	border: 1px solid #2e3436;
-	border-radius: 0.5em;
-	
-	background-color: #eeeeec;
-	cursor: pointer;
-}*/
-
-select {
-	padding: 0.7em;
-	border: 1px solid #2e3436;
-	border-radius: 0.5em;
-	
-	background-color: #eeeeec;
-}
-
 /* Containers */
 
 .popup {
@@ -125,7 +47,7 @@ select {
 	
 	color: black;
 	background-color: white;
-	padding: 0.7em;
+	padding: 1em;
 	
 	border-radius: 0.5em;
 }
@@ -156,14 +78,6 @@ select {
 	background-color: #a40000;
 	color: #fff;
 }
-
-/*#content {
-	min-width: 30em;
-	padding: 0;
-	border: 0;
-	margin: 0;
-	margin-bottom: -2.5em;
-}*/
 
 .push {
 	height: 2.5em;
@@ -199,8 +113,6 @@ select {
 	
 	background-color: #a40000;
 	color: #fff;
-	
-	border-radius: 0.5em;
 }
 
 .success_message_block {
@@ -213,8 +125,7 @@ select {
 	
 	background-color: #4e9a06;
 	color: #fff;
-	
-	border-radius: 0.5em;
+
 }
 
 
@@ -229,57 +140,6 @@ select {
 	margin: 0.5em;
 	text-align: center;
 }
-
-
-/* Common */
-
-/*.title_block {
-	font-style: normal;
-	font-variant: normal;
-	font-weight: normal;
-	font-family: 'Roboto', 'Helvetica', sans-serif;
-	font-size: 3em;
-	text-align: center;
-	padding-bottom: 0.5em;
-}
-
-.table_container {
-	width: 24em;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.table_container table {
-	width: 100%;
-}
-
-.table_container tbody th {
-	text-align: right;
-}
-
-.table_container input {
-	width: 92%;
-	
-	margin: 0;
-	padding-left: 4%;
-	padding-right: 4%;
-}
-
-.table_container input[type="submit"] {
-	width: 100%;
-	
-	margin: 0;
-	padding-left: 0;
-	padding-right: 0;
-}
-
-.table_container input[type="checkbox"] {
-	width: auto;
-	
-	margin: 0;
-	padding-left: 0;
-	padding-right: 0;
-}*/
 
 .center {
 	text-align: center;
@@ -319,62 +179,6 @@ select {
 	outline-style: solid;
 }
 
-/* LoginPage */
-
-#login_form_container th {
-	width: 5em;
-}
-
-/* User profile */
-
-#user_profile_container tbody th {
-	width: 5em;
-}
-
-
-/* UserManager */
-
-#user_manager_list_container {
-	width: 90%;
-}
-
-#user_manager_editor_container th {
-	text-align: left;
-}
-
-#user_manager_editor_container input[type="submit"] {
-	width: 49%;
-}
-
-/* ControllerManager */
-
-#controller_manager_list_container {
-	width: 90%;
-}
-
-#controller_manager_editor_container {
-	width: 40em;
-}
-
-#controller_manager_editor_container th, #controller_manager_editor_container td {
-	/*border: 1px solid #777;*/
-}
-
-#controller_manager_editor_container th {
-	width: 8em;
-	text-align: left;
-}
-
-#controller_manager_editor_container input[type="submit"] {
-	width: 49.5%;
-}
-
-#single_button_container{
-    text-align: center;
-    padding-left: 3em;
-	padding-right: 3em;
-}
-
 /* Fonts */
 
 @font-face {
@@ -397,7 +201,7 @@ input{
 	min-width: 300px;
 	display: table;
 	margin: auto;
-	padding: 10px 20px;
+	padding: 20px;
 	width: auto;
 	background: #f4f4f4;
 	border-bottom-color: #142647;
@@ -448,6 +252,7 @@ input{
 
 button{
 	display: inline-block;
+	color: white;
 	height: 37px;
 	font-size: 14px;
 	font-weight: bold;
@@ -458,6 +263,10 @@ button{
 
 button.first{
 	margin-top: 5px;
+}
+
+button.last{
+	margin-bottom: 0;
 }
 
 .default-button {
@@ -484,7 +293,6 @@ button.first{
 
 .secondary-button {
 	width: 49%;
-	color: white;
     background: #56db6f;
 	border: 1px solid #0d9b08;
 }
@@ -495,7 +303,6 @@ button.first{
 
 .secondary-button-single {
 	width: 100%;
-	color: white;
     background: #56db6f;
 	border: 1px solid #0d9b08;
 }
@@ -506,13 +313,11 @@ button.first{
 
 .warning-button {
 	width: 49%;
-	color: white;
     background: hsl(0, 65%, 60%);
 	border: 1px solid hsl(0, 90%, 32%);
 }
 .warning-button-single {
 	width: 100%;
-	color: white;
     background: hsl(0, 65%, 60%);
 	border: 1px solid hsl(0, 90%, 32%);
 }
@@ -552,6 +357,9 @@ button.first{
 	margin-bottom: 10px;
 }
 
+select{
+	margin-bottom: 10px;
+}
 
 /*Tables*/
 
@@ -559,8 +367,8 @@ button.first{
 	word-wrap: break-word; color:#5c5c5c;
 }
 
-
 table {
+	border-collapse:collapse;
 	table-layout:fixed;
 	border:1px solid #b4b4b4;
 	background:#f4f4f4;
@@ -571,13 +379,13 @@ table {
 	cursor: pointer;
 }
 
-th{
+th {
+	background:#eae8e8;
 	word-wrap: break-word;
 	margin-bottom: 20px;
 	font-size: 20px;
 	font-weight: bold;
 	color: #5c5c5c;
-	text-align: center;
 }
 
 .hover-row tr:HOVER td{
@@ -588,14 +396,4 @@ th{
 	background-color:#e2e2e2;
 }
 
-th, td {padding:20px 20px 10px; text-align:center; }
-
-th {padding-top:10px; background:#eae8e8;}
-
-td {border-top:1px solid #b4b4b4; border-right:1px solid #b4b4b4;}
-
-tr.odd-row td {background:#f6f6f6;}
-
-td.first, th.first {text-align:left}
-
-td.last {border-right:none;}
+th, td {border:1px solid #b4b4b4; padding:15px 20px 15px; text-align:center; }

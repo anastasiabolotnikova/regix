@@ -31,14 +31,17 @@
 					echo " <tr>\n";
 					$i=1;
 				}
-				if ($i-1 == 6){
-					echo "<td class=\"last\">";
-				}
-				else{
-					echo "<td>";
-				}
+//				if ($i-1 == 6){
+//					/* sunday element */
+//					echo "<td>";
+//				}
+//				else{
+//					echo "<td>";
+//				}
+				 
+				echo " <td>";
 				if ($this->day <= $d){
-					echo "<a href='/".$this->cal_uri."/".$this->service."/".$this->year."/".$this->month."/".$d."'>".$d."</a>";
+					echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->year."/".$this->month."/".$d."'>".$d."</a>";
 				}
 				else{
 					echo $d;
@@ -54,4 +57,4 @@
 		</form>
 </div>
 
-<script src="/js/components/Calendar.js"></script>
+<script src="/js/components/Calendar.js" type="text/javascript"></script>

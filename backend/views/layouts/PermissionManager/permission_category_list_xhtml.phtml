@@ -15,7 +15,7 @@
 					<td>
 						<?php echo $category["name"]; ?>
 					</td>
-					<td class="last">
+					<td>
 						<a href="/<?php echo ($this->controller_uri_name . '/delete_category/' . $category['id']); ?>">remove</a>
 					</td>
 				</tr>
@@ -33,7 +33,7 @@
 <div class="regix-form-container">
 	<div class="button-holder">
 	<form action="/<?php echo $this->controller_uri_name; ?>/add_category" method="post" class="regix-form">
-		<div><button type="submit" class="secondary-button-single" > Add category</button></div>		
+		<div><button type="submit" class="secondary-button-single last" > Add category</button></div>		
 	</form>
 	</div>
 </div>

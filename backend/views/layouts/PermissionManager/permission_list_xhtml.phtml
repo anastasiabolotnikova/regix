@@ -21,7 +21,7 @@
 					<td>
 						<?php echo $permission["description"]; ?>
 					</td>
-					<td class="last">
+					<td>
 						<a href="<?php echo ($this->controller_uri_name . '/delete/' . urlencode($permission['name'])); ?>">remove</a>
 					</td>
 				</tr>
@@ -41,6 +41,6 @@
 	<form action="/<?php echo $this->controller_uri_name; ?>/add" method="post">
 		<div><button type="submit" class="secondary-button-single" >Add permission</button></div></form>
 	<form action="/<?php echo $this->controller_uri_name; ?>/categories" method="post">
-		<div><button type="submit" class="default-button-single" >Categories</button></div></form>
+		<div><button type="submit" class="default-button-single last" >Categories</button></div></form>
 	</div>
 </div>
