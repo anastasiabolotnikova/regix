@@ -210,4 +210,8 @@ abstract class DB_Adapter {
 			$permission_name);
 	
 	abstract public function select_group_non_permissions($group_name);
+	
+	// Latest
+	
+	abstract public function select_last_events($max_event_number);
 }

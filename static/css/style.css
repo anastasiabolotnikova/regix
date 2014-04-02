@@ -117,6 +117,21 @@ select {
 
 /* Containers */
 
+.popup {
+	position:absolute;
+	display: none;
+	
+	color: black;
+	background-color: white;
+	padding: 1em;
+	
+	border-radius: 1em;
+}
+
+.popup div {
+	padding: 0.5em;
+}
+
 #container {
 	position: relative;
 	min-height: 100%;

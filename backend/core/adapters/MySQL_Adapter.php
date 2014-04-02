@@ -799,4 +799,22 @@ class MySQL_Adapter extends DB_Adapter {
 		
 		return $this->query($query, array($assigned_user_id, $day), "ii");
 	}
+	
+	// Latest
+	
+	public function select_last_events($max_event_number) {
+		$query = "
+				select
+					`id`,
+					`calendar_id`,
+					`user_id`,
+					`assigned_service`,
+					`description`
+				from `event`
+				order by `id` desc
+				limit ?;
+				";
+		
+		return $this->query($query, array($max_event_number), "i");
+	}
 }
