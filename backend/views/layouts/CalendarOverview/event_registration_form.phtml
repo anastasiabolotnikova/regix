@@ -4,31 +4,6 @@
   <form action="" method="post">
     <table id="event_registration_table">
       <tbody>
-        <!--
-        <tr>
-          <th class="table_row_header">Time</th>
-          <td class="table_row_dropdown_menu">
-          <select name='time'>
-                <?php
-                $from=8; //working day starts (calculated using constraints)
-                $to=18; //working day ends (calculated using constraints)
-                 for($hour=$from;$hour<$to;$hour++){
-                  foreach ($this->booked_hours as $booked) {
-                   if($booked['booked_hours']==$hour) $hour++;
-                   }
-                  if($hour==$this->from){
-                   echo "<option selected>".$this->from.":00 - ".($this->from+1).":00</option>";
-                  } else {
-                   echo "<option>".$hour.":00 - ";
-                   $hour++;
-                   echo $hour.":00</option>";
-                   $hour--;
-                  }
-                 }
-                ?>
-           </select>
-     </td>
-    </tr>-->
     <tr>
      <th class="table_row_header">Worker</th>
      <td class="table_row_dropdown_menu">
@@ -53,3 +28,5 @@
   </table>
  </form>
 </div>
+
+<script src="/js/components/Calendar.js"></script>

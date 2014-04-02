@@ -1,19 +1,19 @@
 <div class="regix-form-container">
 	<form action="" method="post" class="regix-form">
 		<div class="table-content">
-		<table>
-			<thead>
-			<tr><th>Services</th></tr></thead>
-			<tbody>
-			<?php
-			foreach ($this->services as $service) {
-				echo '<tr><td>';
-				echo "<a href='/".$this->cal_uri."/".$service['uri_name']."'>".$service['name']."</a>";
-				echo '</td></tr>';
-			}
-			?>
-			</tbody>
-		</table>
-</div>
+			<table>
+				<thead>
+				<tr><th>Services</th></tr></thead>
+				<tbody>
+				<?php
+				foreach ($this->services as $service) {
+					echo '<tr><td>';
+					echo "<a href='/".$this->cal_uri."/".$service['uri_name']."'>".$service['name']."</a>";
+					echo '</td></tr>';
+				}
+				?>
+				</tbody>
+			</table>
+		</div>
 	</form>
 </div>

@@ -109,7 +109,30 @@ input[type="submit"]:HOVER {
 	cursor: pointer;
 }*/
 
+select {
+	padding: 0.7em;
+	border: 1px solid #2e3436;
+	border-radius: 0.5em;
+	
+	background-color: #eeeeec;
+}
+
 /* Containers */
+
+.popup {
+	position:absolute;
+	display: none;
+	
+	color: black;
+	background-color: white;
+	padding: 1em;
+	
+	border-radius: 1em;
+}
+
+.popup div {
+	padding: 0.5em;
+}
 
 #container {
 	position: relative;

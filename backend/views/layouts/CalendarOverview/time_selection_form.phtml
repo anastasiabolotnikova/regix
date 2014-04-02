@@ -11,9 +11,9 @@
 			$to=18; //working day ends (calculated using constraints)
 			for($hour=$from;$hour<$to;$hour++){
 				foreach ($this->booked_hours as $booked) {
-					if($booked['booked_hours']==$hour) $hour++;
+					if($booked==$hour) $hour++;
 					}
-				echo "<tr><td class=\"last\"><a href='/".$this->cal_uri."/".$this->service."/".$this->month."/".$this->day."/".$hour."'>".$hour.":00 - ";
+				echo "<tr><td class=\"last\"><a href='/".$this->cal_uri."/".$this->service."/".$this->year."/".$this->month."/".$this->day."/".$hour."'>".$hour.":00 - ";
 				$hour++;
 				echo $hour.":00</a></td></tr>";
 				$hour--;
@@ -23,4 +23,5 @@
 		</table>
 	</form>
 </div>
-</div>
+
+<script src="/js/components/Calendar.js"></script>

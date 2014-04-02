@@ -42,14 +42,40 @@ class CalendarModel extends Model{
 		return $this->month+1;
 	}
 	
-	public function get_workers_to_assign($service){
-		$workers_to_assign = $this->db->select_all_workers_with_service_mark($service);
+	public function get_workers_to_assign($service,$day,$month,$year,$time){
+		$service_workers = $this->db->select_all_workers_with_service_mark($service);
 		//Check if worker is busy at selected time
-		return $workers_to_assign;
+		$busy_workers = $this->db->select_busy_workers($service,$day,$month,$year,$time);
+		
+		foreach($service_workers as $swk => $sw){
+			foreach($busy_workers as $bw){
+				if($sw['id']==$bw['id']){
+					unset($service_workers[$swk]);
+					break;
+				}
+			}
+		}
+		
+		return $service_workers;
 	}
 	
-	public function get_booked_hours($assigned_user,$day){
-		return $this->db->select_hours_booked_with_user_mark($assigned_user, $day);
+	public function get_booked_hours_for_worker($assigned_user,$day,$month,$year){
+		return $this->db->select_hours_booked_with_user_mark($assigned_user, $day,$month,$year);
+	}
+	
+	public function get_booked_hours_for_service($assigned_service,$day,$month,$year){
+		//if(count(assigned_users) that belong to service > count(hours) from event) {show available time}
+		//if(count(assigned_users) that belong to service <= count(hours) from event) {time is not available}
+		$temp = $this->db->select_booked_hours_and_count_them($assigned_service, $day,$month,$year);
+		$worker_qty = $this->db->count_workers_from_service($assigned_service);
+		
+		$booked_time=array();
+		foreach ($temp as $booked) {
+			if($booked['qty'] >= $worker_qty[0]['qty']){
+				array_push($booked_time, $booked['booked_hours']);
+			}
+		}
+		return $booked_time;
 	}
 	//Create calendar
 	

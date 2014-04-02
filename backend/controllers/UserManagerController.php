@@ -4,14 +4,22 @@ require_once REGIX_PATH.'views/View.php';
 
 class UserManagerController extends Controller {
 	
-	public function run() {
+	protected $model;
+	
+	public function __construct($id, $db, $session, $args) {
+		parent::__construct($id, $db, $session, $args);
+	
 		if (!loadClass(
 				REGIX_PATH."models/UserManagerModel.php",
 				"UserManagerModel",
 				"Model")) {
-			return FALSE;
+				throw new Exception("UserManagerModel missing.");
 		}
-		
+	
+		$this->model = new UserManagerModel($this->db, $this->session);
+	}
+	
+	public function run() {
 		if (!loadClass(
 				REGIX_PATH."models/LocalLoginModel.php",
 				"LocalLoginModel",
@@ -22,14 +30,12 @@ class UserManagerController extends Controller {
 				return FALSE;
 		}
 		
-		$model = new UserManagerModel($this->db, $this->session);
-		
 		$view_outer = new View(
 				REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
 		
 		if (!$this->args[0]) { 
 			
-			if ($this->session->user->has_permission("list_users")) {
+			if ($this->check_permission("list_users", "")) {
 			
 				// User list
 				//
@@ -37,7 +43,7 @@ class UserManagerController extends Controller {
 				$view_inner = new View(REGIX_PATH.
 						"views/layouts/UserManager/user_list_xhtml.phtml");
 					
-				$view_inner->users = $model->get_user_array();
+				$view_inner->users = $this->model->get_user_array();
 				$view_inner->editor_uri = $this->get_controller_uri_name();
 				
 			} else {
@@ -48,14 +54,14 @@ class UserManagerController extends Controller {
 			
 		} else if ($this->args[0] && $this->args[0] == "edit" && $this->args[1]) {
 			
-			if ($this->session->user->has_permission("edit_user")) {
+			if ($this->check_permission("edit_user", "edit/".$this->args[1])) {
 				
 				// User editor
 				
 				$view_inner = new View(REGIX_PATH.
 						"views/layouts/UserManager/user_editor_xhtml.phtml");
 				$view_inner->editor_uri = $this->get_controller_uri_name();
-				$view_inner->edit_user = $model->get_user_data($this->args[1]);
+				$view_inner->edit_user = $this->model->get_user_data($this->args[1]);
 				$view_inner->edit_user_id = $this->args[1];
 				
 			} else {
@@ -64,10 +70,16 @@ class UserManagerController extends Controller {
 				$view_inner->message = "Action forbidden";
 			}
 		
-		} else if ($this->args[0] && $this->args[0] == "save"
-			&& isset($this->args[1]) && isset($_POST["submit"])) {
+		} else if (	$this->args[0] &&
+					$this->args[0] == "save" &&
+					isset($this->args[1]) && 
+					isset($_POST["submit"]) &&
+					isset($_POST["name"]) &&
+					isset($_POST["login"]) &&
+					isset($_POST["email"]) &&
+					isset($_POST["password"])) {
 			
-			if ($this->session->user->has_permission("edit_user")) {
+			if ($this->check_permission("edit_user", "save/".$this->args[1])) {
 			
 				// Save user
 				
@@ -81,7 +93,7 @@ class UserManagerController extends Controller {
 				);
 				
 				try {
-					$model->set_user_data($this->args[1], $user_data_in);
+					$this->model->set_user_data($this->args[1], $user_data_in);
 					
 					$view_inner = new View(REGIX_PATH.
 							"views/layouts/generic/success_generic_xhtml.phtml");
@@ -103,7 +115,9 @@ class UserManagerController extends Controller {
 		} else if ($this->args[0] && $this->args[0] == "delete"
 				&& isset($this->args[1])) {
 			
-			if ($this->session->user->has_permission("delete_user")) {
+			if ($this->check_permission(
+					"delete_user",
+					"delete/".$this->args[1])) {
 				
 				// Delete user
 				
@@ -116,7 +130,7 @@ class UserManagerController extends Controller {
 					
 				} else {
 				
-					$model->delete_user($this->args[1]);
+					$this->model->delete_user($this->args[1]);
 					
 					$view_inner = new View(REGIX_PATH.
 							"views/layouts/generic/success_generic_xhtml.phtml");
@@ -131,7 +145,7 @@ class UserManagerController extends Controller {
 			
 		} else if ($this->args[0] && $this->args[0] == "add") {
 			
-			if ($this->session->user->has_permission("delete_user")) {
+			if ($this->check_permission("delete_user", "add")) {
 				
 				// Add user
 				header("Location: /reg");
@@ -152,7 +166,7 @@ class UserManagerController extends Controller {
 		$view_outer->title = "Users - Regix";
 		$view_outer->content = $view_inner->render(FALSE);
 		
-		$view_outer->user_name = $model->get_user_name();
+		$view_outer->user_name = $this->model->get_user_name();
 		$view_outer->render(TRUE);
 		
 		return TRUE;

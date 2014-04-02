@@ -14,9 +14,9 @@
 			echo "<tr>\n";
 			if($this->wd!=1){
 					for($cell=1;$cell<$this->wd;$cell++){
-							echo "<td></td>";
+						echo "<td></td>";
+					}
 				}
-			}
 			 for($d=1;$d<=$day_count;$d++) { 
 				//echo $i;
 				if ($i-1 == 7){
@@ -27,17 +27,23 @@
 					echo "<td class=\"last\">";
 				}
 				else{
-				echo "<td>";
+					echo "<td>";
 				}
-				echo "<a href='/".$this->cal_uri."/".$this->service."/".$this->month."/".$d."'>".$d."</a>";
+				if ($this->day <= $d){
+					echo "<a href='/".$this->cal_uri."/".$this->service."/".$this->year."/".$this->month."/".$d."'>".$d."</a>";
+				}
+				else{
+					echo $d;
+				}
 				echo "</td>\n";
 				$i++;
-				if (!($i % 8)){  echo " </tr>\n";
-			  }
-			 }
+				if (!($i % 8))  echo " </tr>\n";
+			  } 
 			?>
 			</tr>
 		</table>
 		</div>
 		</form>
 </div>
+
+<script src="/js/components/Calendar.js"></script>
