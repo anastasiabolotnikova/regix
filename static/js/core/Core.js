@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	if (updater) {
-		updater(5000);
+	if (typeof updater !== 'undefined') {
+		updater(3000);
 	}
 });	
