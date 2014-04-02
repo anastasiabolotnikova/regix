@@ -164,8 +164,13 @@ if ($controller_data) {
 
 try {
 	if (loadClass($controller_path, $controller_name, "Controller")) {
-		$controller = new $controller_name($controller_id, $db, $session,
-				$controller_args);
+		try {
+			$controller = new $controller_name($controller_id, $db, $session,
+					$controller_args);
+		} catch (Exception $e) {
+			$db->close();
+			exit("Controller failed (BL" . __LINE__ . ").");
+		}
 		if (!$controller->run()) {
 			$db->close();
 			exit("Controller failed (BL" . __LINE__ . ").");
