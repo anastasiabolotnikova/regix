@@ -1,0 +1,16 @@
+<div id="service_selection_container" class="table_container">
+	<div class="title_block">Services</div>
+	<form action="" method="post">
+		<table id="service_selection_table">
+			<tbody>
+			<?php
+			foreach ($this->services as $service) {
+				echo '<tr><td>';
+				echo "<a href='/".$this->cal_uri."/".$service['uri_name']."'>".$service['name']."</a>";
+				echo '</tr></td>';
+			}
+			?>
+			</tbody>
+		</table>
+	</form>
+</div>

@@ -22,8 +22,8 @@ class RegistrationPageController extends Controller{
 					$_POST['password'],
 					$_POST['repassword'],
 					$_POST['email'])) {
-				// Registered
-				//surround with try
+				
+				// Register
 				
 				$model->save_data(
 						$_POST['name'],
@@ -31,7 +31,6 @@ class RegistrationPageController extends Controller{
 						$_POST['password'],
 						$_POST['email']);
 				
-				//and catch if needed
 				$view_content = new View(
 						REGIX_PATH."views/layouts/RegistrationPage/content_registration_success.phtml");
 				$title = "Registered :: Regix";

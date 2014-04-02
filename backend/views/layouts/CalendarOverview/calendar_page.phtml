@@ -1,0 +1,30 @@
+<div id="calendar_page" class="table_container">
+	<div class="title_block"><a href=''><< </a><?php echo date("F"); ?> <?php echo $this->year; ?><a href=''> >> </a></div>
+		<table id="calendar">
+			<tr><td>Monday</td><td>Tuesday</td><td>Wednesday</td><td>Thursday</td><td>Friday</td><td>Saturday</td><td>Sunday</td></tr>
+			<?php
+			$month_stamp=mktime(0,0,0,$this->month,$this->day,$this->year);
+			$day_count=date("t",$month_stamp);
+			$i=$this->wd;
+			
+			echo "<tr>\n";
+			if($this->wd!=1){
+					for($cell=1;$cell<$this->wd;$cell++){
+						echo "<td></td>";
+					}
+				}
+			 for($d=1;$d<=$day_count;$d++) { 
+				//echo $i;
+				if ($i-1 == 7){
+					echo " <tr>\n";
+					$i=1;
+				}
+				echo "<td>";
+				echo "<a href='/".$this->cal_uri."/".$this->service."/".$this->month."/".$d."'>".$d."</a>";
+				echo "</td>\n";
+				$i++;
+				if (!($i % 8))  echo " </tr>\n";
+			  } 
+			?>
+		</table>
+</div>

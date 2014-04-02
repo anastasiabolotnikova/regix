@@ -27,4 +27,8 @@ class Model {
 	public function get_user_name() {
 		return $this->session->user->get_name();
 	}
+
+	public function get_user_id() {
+		return $this->session->user->get_id();
+	}
 }

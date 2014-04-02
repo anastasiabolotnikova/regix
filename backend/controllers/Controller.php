@@ -37,6 +37,8 @@ abstract class Controller {
 	 */
 	protected $id;
 	
+	protected $controller_data;
+	
 	/**
 	 * Creates a new controller.
 	 * 
@@ -77,6 +79,11 @@ abstract class Controller {
 		$this->db = $db;
 		$this->session = $session;
 		$this->args = $args;
+		$this->controller_data = $db->select_controller($id);
+	}
+	
+	public function get_controller_uri_name() {
+		return $this->controller_data[0]["uri_name"];
 	}
 	
 	/**

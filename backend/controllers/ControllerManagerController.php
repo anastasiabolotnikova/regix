@@ -14,7 +14,7 @@ class ControllerManagerController extends Controller {
 		
 		$model = new ControllerManagerModel($this->db, $this->session);
 		
-		$editor_uri = $model->get_editor_uri($this->id);
+		$editor_uri = $this->get_controller_uri_name();
 		
 		$view_outer = new View(
 				REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
@@ -22,119 +22,166 @@ class ControllerManagerController extends Controller {
 		
 		if ($this->args[0] && $this->args[0] == "edit" && isset($this->args[1])) {
 			
-			// Controller editor
-			
-			$controller_data = $model->get_controller_data($this->args[1]);
-			
-			if ($controller_data) {
+			if ($this->session->user->has_permission("edit_controller")) {
 				
-				// Controller exists
+				// Controller editor
 				
-				$view_inner = new View(REGIX_PATH.
-						"views/layouts/ControllerManager/controller_editor_xhtml.phtml");
+				$controller_data = $model->get_controller_data($this->args[1]);
 				
-				$view_inner->controller_data = $controller_data[0];
-				$view_inner->editor_uri = $editor_uri;
-				
+				if ($controller_data) {
+					
+					// Controller exists
+					
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/ControllerManager/controller_editor_xhtml.phtml");
+					
+					$view_inner->controller_data = $controller_data[0];
+					$view_inner->editor_uri = $editor_uri;
+					
+				} else {
+					
+					// Wrong id
+					
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/failure_generic_xhtml.phtml");
+						
+					$view_inner->message = "Controller with given ID does not exist.";
+				}
 			} else {
-				
-				// Wrong id
-				
 				$view_inner = new View(REGIX_PATH.
 						"views/layouts/generic/failure_generic_xhtml.phtml");
 					
-				$view_inner->message = "Controller with given ID does not exist.";
+				$view_inner->message = "Action forbidden";
 			}
 			
 		} else if ($this->args[0] && $this->args[0] == "save"
-			&& isset($this->args[1]) && isset($_POST["submit"])) {
+				&& isset($this->args[1]) && isset($_POST["submit"])) {
 			
-			// Save controller data
+			if ($this->session->user->has_permission("edit_controller")) {
 			
-			$controller_data_in = array(
-					"name" => $_POST["name"],
-					"description" => $_POST["description"],
-					"enabled" => isset($_POST["enabled"]),
-					"uri_name" => $_POST["uri_name"],
-					"file_path" => $_POST["file_path"]
-			);
+				// Save controller data
 				
-			try {
-				$model->set_controller_data($this->args[1], $controller_data_in);
-			
-				$view_inner = new View(REGIX_PATH.
-						"views/layouts/generic/success_generic_xhtml.phtml");
-				$view_inner->message = "Controller modified";
-			
-			} catch (Exception $e) {
+				$controller_data_in = array(
+						"name" => $_POST["name"],
+						"description" => $_POST["description"],
+						"enabled" => isset($_POST["enabled"]),
+						"uri_name" => $_POST["uri_name"],
+						"file_path" => $_POST["file_path"]
+				);
+					
+				try {
+					$model->set_controller_data($this->args[1], $controller_data_in);
+				
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/success_generic_xhtml.phtml");
+					$view_inner->message = "Controller modified";
+				
+				} catch (Exception $e) {
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/failure_generic_xhtml.phtml");
+				
+					$view_inner->message = "Cannot modify controller: " . $e->getMessage();
+				}
+			} else {
 				$view_inner = new View(REGIX_PATH.
 						"views/layouts/generic/failure_generic_xhtml.phtml");
-			
-				$view_inner->message = "Cannot modify controller: " . $e->getMessage();
+					
+				$view_inner->message = "Action forbidden";
 			}
 			
-		} else if ($this->args[0] && $this->args[0] == "save_new"
-				&& isset($_POST["submit"])) {
+		} else if ($this->args[0] && $this->args[0] == "save_new" && 
+				isset($_POST["submit"])) {
+			
+			if ($this->session->user->has_permission("add_controller")) {
 				
-			// Save new controller data
-				
-			$controller_data_in = array(
-					"name" => $_POST["name"],
-					"description" => $_POST["description"],
-					"enabled" => isset($_POST["enabled"]),
-					"uri_name" => $_POST["uri_name"],
-					"file_path" => $_POST["file_path"]
-			);
-		
-			try {
-				$model->add_controller($controller_data_in);
+				// Save new controller data
 					
-				$view_inner = new View(REGIX_PATH.
-						"views/layouts/generic/success_generic_xhtml.phtml");
-				$view_inner->message = "Controller added";
-					
-			} catch (Exception $e) {
+				$controller_data_in = array(
+						"name" => $_POST["name"],
+						"description" => $_POST["description"],
+						"enabled" => isset($_POST["enabled"]),
+						"uri_name" => $_POST["uri_name"],
+						"file_path" => $_POST["file_path"]
+				);
+			
+				try {
+					$model->add_controller($controller_data_in);
+						
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/success_generic_xhtml.phtml");
+					$view_inner->message = "Controller added";
+						
+				} catch (Exception $e) {
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/failure_generic_xhtml.phtml");
+						
+					$view_inner->message = "Cannot add controller<br />(name must be unique)";
+				}
+			} else {
 				$view_inner = new View(REGIX_PATH.
 						"views/layouts/generic/failure_generic_xhtml.phtml");
 					
-				$view_inner->message = "Cannot add controller<br />(name must be unique)";
+				$view_inner->message = "Action forbidden";
 			}
 			
-		} else if ($this->args[0] && $this->args[0] == "delete" && isset($this->args[1])) {
+		} else if ($this->args[0] && $this->args[0] == "delete" &&
+					isset($this->args[1])) {
 		
-			// Delete controller
-		
-			try {
-				$model->delete_controller($this->args[1]);
-					
-				$view_inner = new View(REGIX_PATH.
-						"views/layouts/generic/success_generic_xhtml.phtml");
-				$view_inner->message = "Controller deleted";
-					
-			} catch (Exception $e) {
+			if ($this->session->user->has_permission("delete_controller")) {
+				// Delete controller
+			
+				try {
+					$model->delete_controller($this->args[1]);
+						
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/success_generic_xhtml.phtml");
+					$view_inner->message = "Controller deleted";
+						
+				} catch (Exception $e) {
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/failure_generic_xhtml.phtml");
+						
+					$view_inner->message = "Cannot remove controller";
+				}
+			} else {
 				$view_inner = new View(REGIX_PATH.
 						"views/layouts/generic/failure_generic_xhtml.phtml");
 					
-				$view_inner->message = "Cannot remove controller";
+				$view_inner->message = "Action forbidden";
 			}
 			
 		} else if ($this->args[0] && $this->args[0] == "add") {
-				
-			// New controller editor
-				
-			$view_inner = new View(REGIX_PATH.
-					"views/layouts/ControllerManager/controller_add_editor_xhtml.phtml");
 			
-			$view_inner->editor_uri = $editor_uri;		
+			if ($this->session->user->has_permission("add_controller")) {	
+				// New controller editor
+					
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/ControllerManager/controller_add_editor_xhtml.phtml");
+				
+				$view_inner->editor_uri = $editor_uri;
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+					
+				$view_inner->message = "Action forbidden";
+			}
+			
 		} else {
 			
-			// Controller list
-			
-			$view_inner = new View(REGIX_PATH.
-					"views/layouts/ControllerManager/controller_list_xhtml.phtml");
-			
-			$view_inner->controllers = $model->get_controller_array();
-			$view_inner->editor_uri = $editor_uri;
+			if ($this->session->user->has_permission("list_controllers")) {
+				// Controller list
+				
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/ControllerManager/controller_list_xhtml.phtml");
+				
+				$view_inner->controllers = $model->get_controller_array();
+				$view_inner->editor_uri = $editor_uri;
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+					
+				$view_inner->message = "Action forbidden";
+			}
 		}
 		
 		$view_outer->content = $view_inner->render(FALSE);

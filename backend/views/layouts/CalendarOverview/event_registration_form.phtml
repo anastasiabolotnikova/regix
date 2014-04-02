@@ -1,0 +1,55 @@
+<div id="event_registration_container" class="table_container">
+  <div class="title_block"><?php echo date("F", mktime(0,0,0,$this->month,$this->day,$this->year)); echo " ".$this->day ?></div>
+  <div class="title_block"><?php echo date("l", mktime(0,0,0,$this->month,$this->day,$this->year)); ?></div>
+  <form action="" method="post">
+    <table id="event_registration_table">
+      <tbody>
+        <!--
+        <tr>
+          <th class="table_row_header">Time</th>
+          <td class="table_row_dropdown_menu">
+          <select name='time'>
+                <?php
+                $from=8; //working day starts (calculated using constraints)
+                $to=18; //working day ends (calculated using constraints)
+                 for($hour=$from;$hour<$to;$hour++){
+                  foreach ($this->booked_hours as $booked) {
+                   if($booked['booked_hours']==$hour) $hour++;
+                   }
+                  if($hour==$this->from){
+                   echo "<option selected>".$this->from.":00 - ".($this->from+1).":00</option>";
+                  } else {
+                   echo "<option>".$hour.":00 - ";
+                   $hour++;
+                   echo $hour.":00</option>";
+                   $hour--;
+                  }
+                 }
+                ?>
+           </select>
+     </td>
+    </tr>-->
+    <tr>
+     <th class="table_row_header">Worker</th>
+     <td class="table_row_dropdown_menu">
+      <select name='worker'>
+       <?php
+       foreach ($this->workers_to_assign as $worker) {
+      echo "<option>".$worker['name']."</option>";
+       }
+       ?>
+      </select>
+     </td>
+    </tr>
+    <tr>
+     <th class="table_row_header">Comment</th>
+     <td><input name="comment" type="text" /></td>
+    </tr>
+    <tr>
+     <td colspan="1"><a href="/<?php echo $this->cal_uri; ?>"><input name="cancel" type="button" value="Cancel" /><a></td>
+     <td colspan="1"><input name="reg_event" type="submit" value="Register" /></td>
+    </tr>
+   </tbody>
+  </table>
+ </form>
+</div>

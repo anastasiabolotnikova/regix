@@ -14,13 +14,25 @@
  */
 class Group {
 	
-	private $name;
+	protected $name;
 	
-	public function __construct($name) {
+	protected $permissions;	
+	
+	public function __construct($name, $db) {
 		$this->name = $name;
+		$this->permissions = $db->select_group_permissions($name);
 	}
 	
 	public function get_name() {
 		return $this->name;
+	}
+	
+	public function has_permission($permission_name) {
+		foreach ($this->permissions as $permission) {
+			if ($permission["permission_name"] == $permission_name) {
+				return TRUE;
+			}
+		}
+		return FALSE;
 	}
 }

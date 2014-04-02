@@ -13,11 +13,7 @@ class LoginPageModel extends Model{
 	
 	private function plaintext_check($login, $password) {
 		
-		$ll_data = $this->db->select(
-				"local_login",
-				array("user_id", "login", "salt", "hash", "email"),
-				"issss",
-				array("login" => $login), 1);
+		$ll_data = $this->db->select_local_login_by_login($login);
 		
 		if (!$ll_data) {
 			// Login not found

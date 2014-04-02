@@ -1,0 +1,39 @@
+<div id="permission_manager_list_container" class="table_container">
+	<h3 class="title_block">Permissions</h3>
+	<table class="table_borders highlight_row cursor_pointer">
+		<thead>
+			<tr><th>Category</th><th>Name</th><th>Description</th><th>Remove</th></tr>
+		</thead>
+		<tbody>
+	<?php	
+		if ($this->permissions){
+			foreach ($this->permissions as $permission) {
+	?>
+				<tr onclick="location.href='/<?php echo ($this->controller_uri_name . "/edit/" . urlencode($permission["name"])); ?>'">
+					<td>
+						<?php echo $permission["category_name"]; ?>
+					</td>
+					<td>
+						<?php echo $permission["name"]; ?>
+					</td>
+					<td>
+						<?php echo $permission["description"]; ?>
+					</td>
+					<td>
+						<a href="<?php echo ($this->controller_uri_name . '/delete/' . urlencode($permission['name'])); ?>">remove</a>
+					</td>
+				</tr>
+	<?php
+			} 
+		}
+	?>
+		</tbody>
+	</table>
+	<div class="single_button_container">
+		<button onclick="location.href='/<?php echo $this->controller_uri_name; ?>/add'">Add permission</button>
+	</div>
+	
+	<div class="single_button_container">
+		<button onclick="location.href='/<?php echo $this->controller_uri_name; ?>/categories'">Categories</button>
+	</div>
+</div>
