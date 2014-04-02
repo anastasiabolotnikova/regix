@@ -1,6 +1,5 @@
-<div id="user_manager_list_container" class="table_container">
-	<div class="title_block">Users</div>
-	<table class="table_borders highlight_row cursor_pointer">
+<div id="table-content">
+	<table cellspacing="0">
 		<thead>
 			<tr><th>ID</th><th>Name</th><th>Login</th><th>Email</th><th>Remove</th></tr>
 		</thead>
@@ -34,5 +33,11 @@
 	?>
 		</tbody>
 	</table>
-	<div id="single_button_container"><button onclick="location.href='/<?php echo $this->editor_uri; ?>/add'">Add user</button></div>
+
+<div class="regix-form-container">
+	<div class="button-holder">
+	<form action="/<?php echo $this->editor_uri; ?>/add" method="post" class="regix-form">
+		<div><button type="submit" class="secondary-button-single" > Add user</button></div>		
+	</form>
+	</div>
 </div>

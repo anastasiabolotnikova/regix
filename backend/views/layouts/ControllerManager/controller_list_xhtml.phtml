@@ -1,10 +1,9 @@
-<div id="controller_manager_list_container" class="table_container">
-	<div class="title_block">Controllers</div>
-	<table class="table_borders highlight_row cursor_pointer">
+<div id="table-content">
+	<table cellspacing="0">
 		<thead>
 			<tr><th>ID</th><th>Name</th><th>Description</th><th>Status</th><th>URL</th><th>Path</th></tr>
 		</thead>
-		<tbody>
+<tbody>
 	<?php
 		if ($this->controllers){
 			foreach ($this->controllers as $controller) {
@@ -37,7 +36,14 @@
 			} 
 		}
 	?>
-		</tbody>
+
+		</tbody>	
 	</table>
-	<div id="single_button_container"><button onclick="location.href='/<?php echo $this->editor_uri; ?>/add'">Add controller</button></div>
+</div>
+<div class="regix-form-container">
+	<div class="button-holder">
+	<form action="/<?php echo $this->editor_uri; ?>/add" method="post" class="regix-form">
+		<div><button type="submit" class="secondary-button-single" > Add controller</button></div>		
+	</form>
+	</div>
 </div>
