@@ -48,8 +48,12 @@ class CalendarModel extends Model{
 		return $workers_to_assign;
 	}
 	
-	public function get_booked_hours($assigned_user,$day){
+	public function get_booked_hours_for_worker($assigned_user,$day){
 		return $this->db->select_hours_booked_with_user_mark($assigned_user, $day);
+	}
+	
+	public function get_booked_hours_for_service($assigned_service,$day){
+		return $this->db->select_hours_booked_with_service_mark($assigned_service, $day);
 	}
 	//Create calendar
 	

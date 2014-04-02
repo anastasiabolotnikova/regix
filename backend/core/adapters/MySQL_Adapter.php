@@ -789,7 +789,7 @@ class MySQL_Adapter extends DB_Adapter {
 		$stmt->close();
 		return $res;
 	}
-		public function select_hours_booked_with_user_mark($assigned_user_id,$day) {
+	public function select_hours_booked_with_user_mark($assigned_user_id,$day) {
 		$query = "
 				SELECT HOUR( `from` ) as booked_hours
 				FROM `event`
@@ -800,6 +800,17 @@ class MySQL_Adapter extends DB_Adapter {
 		return $this->query($query, array($assigned_user_id, $day), "ii");
 	}
 	
+	public function select_hours_booked_with_service_mark($assigned_service,$day) {
+		$query = "
+				SELECT HOUR( `from` ) as booked_hours
+				FROM `event`
+				WHERE assigned_service =?
+				AND DAY( `from` ) =?
+				";
+		
+		return $this->query($query, array($assigned_service, $day), "si");
+	}
+
 	// Latest
 	
 	public function select_last_events($max_event_number) {

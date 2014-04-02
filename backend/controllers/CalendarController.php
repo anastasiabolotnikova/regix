@@ -41,7 +41,7 @@ class CalendarController extends Controller{
 			$view_content->month = $this->args[1];
 			$view_content->day = $this->args[2];
 			$view_content->year = $model->get_year();
-			$view_content->booked_hours = $model->get_booked_hours(2,$view_content->day);
+			$view_content->booked_hours = $model->get_booked_hours_for_service($view_content->service,$view_content->day);
 
 		}
 
@@ -57,7 +57,8 @@ class CalendarController extends Controller{
 			$view_content->from = $this->args[3];
 			$view_content->year = $model->get_year();
 			$view_content->workers_to_assign = $model->get_workers_to_assign($view_content->service);
-			$view_content->booked_hours = $model->get_booked_hours(3,$view_content->day);
+			$assigned_user = $model->get_assigned_user_id($_POST['worker']);
+			$view_content->booked_hours = $model->get_booked_hours_for_worker($assigned_user,$view_content->day);
 			$view_content->cal_uri = $this->get_controller_uri_name();
 
 			if (isset($_POST['reg_event']) && $_POST['reg_event'] == "Register") {
@@ -65,13 +66,13 @@ class CalendarController extends Controller{
 					//if(!query()){FAILURE} else {
 					
 					$assigned_service = $this->args[0];
-					$assigned_users = $model->get_assigned_user_id($_POST['worker']);
+					$assigned_user = $model->get_assigned_user_id($_POST['worker']);
 					$model->save_data(
 						$model->get_year(),
 						$this->args[1],
 						$this->args[2],
 						$_POST['comment'],
-						$assigned_users[0]['id'],
+						$assigned_user[0]['id'],
 						$assigned_service,
 						$this->args[3]			
 						);
