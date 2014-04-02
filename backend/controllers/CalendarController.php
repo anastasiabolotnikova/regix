@@ -31,50 +31,58 @@ class CalendarController extends Controller{
 		}
 
 
-		else if(count($this->args)==3){
+		else if(count($this->args)==4){
 			//Show a time selection
 			$view_content = new View(
 					REGIX_PATH."views/layouts/CalendarOverview/time_selection_form.phtml");
 			$title = "Time Selection :: Regix";
+			$service=$this->args[0];
+			$year=$this->args[1];
+			$month=$this->args[2];
+			$day=$this->args[3];
+			
 			$view_content->cal_uri = $this->get_controller_uri_name();
-			$view_content->service = $this->args[0];
-			$view_content->month = $this->args[1];
-			$view_content->day = $this->args[2];
-			$view_content->year = $model->get_year();
-			$view_content->booked_hours = $model->get_booked_hours_for_service($view_content->service,$view_content->day);
+			$view_content->service = $service;
+			$view_content->year = $year;
+			$view_content->month = $month;
+			$view_content->day = $day;
+			$view_content->booked_hours = $model->get_booked_hours_for_service($service,$day,$month,$year);
 
 		}
 
-		else if(count($this->args)==4){
+		else if(count($this->args)==5){
 			//Show registration form
 			$view_content = new View(
 					REGIX_PATH."views/layouts/CalendarOverview/event_registration_form.phtml");
 			$title = "Event Registration Form :: Regix";
 			
-			$view_content->service = $this->args[0];
-			$view_content->month = $this->args[1];
-			$view_content->day = $this->args[2];
-			$view_content->from = $this->args[3];
-			$view_content->year = $model->get_year();
-			$view_content->workers_to_assign = $model->get_workers_to_assign($view_content->service);
-			$assigned_user = $model->get_assigned_user_id($_POST['worker']);
-			$view_content->booked_hours = $model->get_booked_hours_for_worker($assigned_user,$view_content->day);
+			$service=$this->args[0];
+			$year=$this->args[1];
+			$month=$this->args[2];
+			$day=$this->args[3];
+			
+			$view_content->service = $service;
+			$view_content->year = $year;
+			$view_content->month = $month;
+			$view_content->day = $day;
+			$view_content->from = $this->args[4];
+			$view_content->workers_to_assign = $model->get_workers_to_assign($service,$day,$month,$year,$this->args[4]);
 			$view_content->cal_uri = $this->get_controller_uri_name();
 
 			if (isset($_POST['reg_event']) && $_POST['reg_event'] == "Register") {
 					
 					//if(!query()){FAILURE} else {
 					
-					$assigned_service = $this->args[0];
+					$assigned_service = $service;
 					$assigned_user = $model->get_assigned_user_id($_POST['worker']);
 					$model->save_data(
-						$model->get_year(),
-						$this->args[1],
-						$this->args[2],
+						$year,
+						$month,
+						$day,
 						$_POST['comment'],
 						$assigned_user[0]['id'],
 						$assigned_service,
-						$this->args[3]			
+						$this->args[4]			
 						);
 
 
@@ -88,7 +96,7 @@ class CalendarController extends Controller{
 		//Show services list
 		else{
 			$view_content = new View(
-						REGIX_PATH."views/layouts/CalendarOverview/service_selection_form.phtml");
+						REGIX_PATH."views/layouts/service_selection_form.phtml");
 			$title = "Calendar :: Regix";
 			
 			$view_content->services = $model->get_services();

@@ -309,15 +309,29 @@ class MySQL_Adapter extends DB_Adapter {
 	}
 
 	 public function select_all_workers_with_service_mark($service_uri_name) {
+		$query = "
+		   select `name`, `user`.`id` as id
+		   from `user`
+		   join `service_has_worker`
+		   on `user`.`id` = `service_has_worker`.`user_id`
+		   where `uri_name`=?
+		   group by `name`;";
+		
+		return $this->query($query, array($service_uri_name), "s");
+	 }
+	 public function select_busy_workers($service,$day,$month,$year,$time) {
 		  $query = "
-			select `name`
-			from `user`
-			join `service_has_worker`
-			on `user`.`id` = `service_has_worker`.`user_id`
-			where `uri_name`=?
-			group by `name`;";
+			SELECT  `name`, `user`.`id` as id
+			FROM  `event`
+			JOIN `user`
+			ON `user`.`id`=`event`.`assigned_user`
+			WHERE  `assigned_service` =  ?
+			AND DAY(`from`)=?
+			AND MONTH(`from`)=?
+			AND YEAR(`from`)=?
+			AND  HOUR(`from`) =?;";
 		  
-		  return $this->query($query, array($service_uri_name), "s");
+		  return $this->query($query, array($service,$day,$month,$year,$time), "siiii");
 	}
 	
 	public function select_local_login($user_id) {
@@ -789,15 +803,40 @@ class MySQL_Adapter extends DB_Adapter {
 		$stmt->close();
 		return $res;
 	}
-	public function select_hours_booked_with_user_mark($assigned_user_id,$day) {
+	public function select_hours_booked_with_user_mark($assigned_user_id,$day,$month,$year) {
 		$query = "
 				SELECT HOUR( `from` ) as booked_hours
 				FROM `event`
 				WHERE assigned_user =?
-				AND DAY( `from` ) =?
+				    AND DAY( `from` ) =?
+					AND MONTH( `from` ) =?
+					AND YEAR( `from` ) =?
 				";
 		
-		return $this->query($query, array($assigned_user_id, $day), "ii");
+		return $this->query($query, array($assigned_user_id, $day,$month,$year), "iiii");
+	}
+	
+	public function select_booked_hours_and_count_them($assigned_service,$day,$month,$year) {
+		$query = "
+				SELECT HOUR( `from` ) as booked_hours, COUNT(HOUR( `from` )) as qty
+				FROM `event`
+				WHERE assigned_service =?
+				    AND DAY( `from` ) =?
+					AND MONTH( `from` ) =?
+					AND YEAR( `from` ) =?
+				GROUP BY booked_hours
+				";
+		
+		return $this->query($query, array($assigned_service, $day,$month,$year), "siii");
+	}
+	public function count_workers_from_service($assigned_service) {
+		$query = "
+				SELECT COUNT(  `user_id` ) as qty
+				FROM  `service_has_worker` 
+				WHERE  `uri_name` =  ?
+				";
+		
+		return $this->query($query, array($assigned_service), "s");
 	}
 	
 	public function select_hours_booked_with_service_mark($assigned_service,$day) {
