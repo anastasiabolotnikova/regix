@@ -22,7 +22,7 @@ class GroupManagerController extends Controller {
 		
 		if (!$this->args[0]) {
 			
-			if ($this->session->user->has_permission("list_groups")) {
+			if ($this->check_permission("list_groups", "")) {
 				
 				// Group list
 				// /
@@ -42,7 +42,7 @@ class GroupManagerController extends Controller {
 			
 		} else if ($this->args[0] == "edit" && isset($this->args[1])) {
 			
-			if ($this->session->user->has_permission("edit_group")) {
+			if ($this->check_permission("edit_group", "edit/".$this->args[1])) {
 			
 				// Group editor
 				// /edit/group_name
@@ -87,7 +87,7 @@ class GroupManagerController extends Controller {
 			
 		} else if ($this->args[0] == "add" && isset($this->args[1])) {
 			
-			if ($this->session->user->has_permission("add_group")) {
+			if ($this->check_permission("add_group", "add/".$this->args[1])) {
 				
 				// Add group
 				// /add/group_name
@@ -113,7 +113,7 @@ class GroupManagerController extends Controller {
 			
 		} else if ($this->args[0] == "add" && isset($_POST["submit"])) {
 			
-			if ($this->session->user->has_permission("add_group")) {
+			if ($this->check_permission("add_group", "add")) {
 		
 				// Add group redirect to clean url
 				// /add (with POST data)
@@ -132,7 +132,7 @@ class GroupManagerController extends Controller {
 			
 		} else if ($this->args[0] == "add") {
 			
-			if ($this->session->user->has_permission("add_group")) {
+			if ($this->check_permission("add_group", "add")) {
 				
 				// Add group interface
 				// /add
@@ -152,7 +152,9 @@ class GroupManagerController extends Controller {
 			
 		} else if ($this->args[0] == "delete" && isset($this->args[1])) {
 			
-			if ($this->session->user->has_permission("delete_group")) {
+			if ($this->check_permission(
+					"delete_group",
+					"delete/".$this->args[1])) {
 				
 				// Delete group
 				// /delete/group_name
@@ -179,7 +181,9 @@ class GroupManagerController extends Controller {
 		} else if ($this->args[0] == "delete_user" &&
 				isset($this->args[1]) && isset($this->args[2])) {
 			
-			if ($this->session->user->has_permission("delete_group_user")) {
+			if ($this->check_permission(
+					"delete_group_user",
+					"delete_user/".$this->args[1]."/".$this->args[2])) {
 				
 				// Delete group user
 				// /delete_user/group_name/user_id
@@ -209,7 +213,9 @@ class GroupManagerController extends Controller {
 		
 		} else if ($this->args[0] == "add_user" && isset($this->args[1])) {
 			
-			if ($this->session->user->has_permission("add_group_user")) {
+			if ($this->check_permission(
+					"add_group_user",
+					"add_user/".$this->args[1])) {
 		
 				// Add user interface
 				// /add_user/group_name
@@ -232,7 +238,9 @@ class GroupManagerController extends Controller {
 		} else if ($this->args[0] == "add_user_by_id" &&
 				isset($this->args[1]) && isset($this->args[2])) {
 			
-			if ($this->session->user->has_permission("add_group_user")) {
+			if ($this->check_permission(
+					"add_group_user",
+					"add_user_by_id/".$this->args[1]."/".$this->args[2])) {
 		
 				// Add group user by id
 				// /add_user_by_id/group_name/user_id
@@ -262,7 +270,9 @@ class GroupManagerController extends Controller {
 		} else if ($this->args[0] == "add_permission" &&
 		isset($this->args[1]) && isset($this->args[2])) {
 			
-			if ($this->session->user->has_permission("add_group_permission")) {
+			if ($this->check_permission(
+					"add_group_permission",
+					"add_permission/".$this->args[1]."/".$this->args[2])) {
 		
 				// Add group permission
 				// /add_permission/group_name/prmission_name
@@ -292,7 +302,9 @@ class GroupManagerController extends Controller {
 		} else if ($this->args[0] == "add_permission" &&
 		isset($this->args[1])) {
 			
-			if ($this->session->user->has_permission("add_group_permission")) {
+			if ($this->check_permission(
+					"add_group_permission",
+					"add_permission/".$this->args[1])) {
 		
 				// Add group permission interface
 				// /add_permission/group_name
@@ -316,7 +328,9 @@ class GroupManagerController extends Controller {
 		} else if ($this->args[0] == "delete_permission" &&
 		isset($this->args[1]) && isset($this->args[2])) {
 			
-			if ($this->session->user->has_permission("delete_group_permission")) {
+			if ($this->check_permission(
+					"delete_group_permission",
+					"delete_permission/".$this->args[1]."/".$this->args[2])) {
 		
 				// Delete (revoke) group permission
 				// /delete_permission/group_name/prmission_name

@@ -26,18 +26,6 @@ class PermissionManagerController extends Controller {
 		$this->model = new PermissionManagerModel($this->db, $this->session);
 	}
 	
-	protected function check_permission($permission, $url) {
-		if ($this->session->user->has_permission($permission)) {
-			return TRUE;
-		} else if ($this->session->user->get_id() == 1) {
-			// Guest
-			header("Location: /login/".$this->get_controller_uri_name()."/".$url);
-			return FALSE;
-		} else {
-			return FALSE;
-		}
-	}
-	
 	
 	public function permission_list() {
 		if ($this->check_permission("list_permissions", "")) {

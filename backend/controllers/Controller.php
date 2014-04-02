@@ -95,4 +95,28 @@ abstract class Controller {
 	 * @return bool TRUE if execution finished successfully, FALSE otherwise.
 	 */
 	abstract public function run();
+	
+	
+	/**
+	 * Checks if user has permission @a $permission. If user is not logged in,
+	 * sends him to login form, which should redirect user to action $url
+	 * *of given controller*.
+	 * 
+	 * @param string $permission name of required permission
+	 * @param string $url URL *within controller* where user can be redirected
+	 * after login
+	 * @return boolean TRUE if user has required permission, FALSE otherwise.
+	 */
+	protected function check_permission($permission, $url) {
+		if ($this->session->user->has_permission($permission)) {
+			return TRUE;
+		} else if ($this->session->user->get_id() == 1) {
+			// Guest
+			header("Location: /login/".$this->get_controller_uri_name()."/".$url);
+			return FALSE;
+		} else {
+			return FALSE;
+		}
+	}
+	
 }
