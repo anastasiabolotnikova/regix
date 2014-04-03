@@ -91,6 +91,8 @@ button:active {
 			<div><input id="username_input" name="username" type="text" class="regix-form-input" value="test_user" /></div>
 			<div class="form-label-container"><label for="password_input">Password: </label></div>
 			<div><input id="password_input" name="password" type="password" class="regix-form-input" value="test_password"/></div>
+			<div class="form-label-container"><label for="db_name_input">Database name: </label></div>
+			<div><input id="db_name_input" name="db_name" type="text" class="regix-form-input" value="test_user"/></div>
 			<div><button name="submit" type="submit">OK</button></div>
 		</form>
 		</div>
@@ -120,7 +122,7 @@ function run_sql_file($location){
 		}
 		//convert to array
 		$commands = explode(";", $commands);
-		mysql_query("USE test_user");
+		mysql_query("USE ".$_POST["db_name"]);
 		//run commands
 		$total = $success = 0;
 		foreach($commands as $command){
@@ -143,7 +145,7 @@ function run_sql_file($location){
 	}
 }
 
-if(isset($_POST["host_name"])&&isset($_POST["username"])&&isset($_POST["password"])){
+if(isset($_POST["host_name"])&&isset($_POST["username"])&&isset($_POST["password"])&&isset($_POST["db_name"])){
 	$files = scandir("test_data");
 	run_sql_file("create.sql");
 	for ($i = 2 ; $i < count($files)-1 ; $i++) {
