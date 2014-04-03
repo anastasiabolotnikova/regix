@@ -104,8 +104,7 @@ function startsWith($haystack, $needle)
 	return (substr($haystack, 0, $length) === $needle);
 }
 
-function run_sql_file($location){
-	$con = @mysql_connect($_POST["host_name"],$_POST["username"],$_POST["password"]);
+function run_sql_file($location, $con){
 	if($con){
 		//load file
 		$commands = file_get_contents($location);
@@ -120,12 +119,12 @@ function run_sql_file($location){
 		}
 		//convert to array
 		$commands = explode(";", $commands);
-		mysql_query("USE test_user");
+		mysqli_query($con, "USE test_user");
 		//run commands
 		$total = $success = 0;
 		foreach($commands as $command){
 			if(trim($command)){
-				if(mysql_query($command,$con)){
+				if(mysqli_query($con, $command)){
 					echo "<div style=\"padding:5px; background-color: #56db6f; border: 1px solid #0d9b08;\">OK ".$command."</div>"; 
 					$success += 1;
 				}
@@ -144,11 +143,14 @@ function run_sql_file($location){
 }
 
 if(isset($_POST["host_name"])&&isset($_POST["username"])&&isset($_POST["password"])){
+
+	$con = mysqli_connect($_POST["host_name"],$_POST["username"],$_POST["password"]);
 	$files = scandir("test_data");
-	run_sql_file("create.sql");
+	run_sql_file("create.sql", $con);
 	for ($i = 2 ; $i < count($files)-1 ; $i++) {
-		run_sql_file("test_data/".$files[$i]);
+		run_sql_file("test_data/".$files[$i], $con);
 	}
+	mysqli_close($con);
 }
 ?>
 		
