@@ -91,6 +91,8 @@ button:active {
 			<div><input id="username_input" name="username" type="text" class="regix-form-input" value="test_user" /></div>
 			<div class="form-label-container"><label for="password_input">Password: </label></div>
 			<div><input id="password_input" name="password" type="password" class="regix-form-input" value="test_password"/></div>
+			<div class="form-label-container"><label for="db_name_input">Database name: </label></div>
+			<div><input id="db_name_input" name="db_name" type="text" class="regix-form-input" value="test_user"/></div>
 			<div><button name="submit" type="submit">OK</button></div>
 		</form>
 		</div>
@@ -119,7 +121,7 @@ function run_sql_file($location, $con){
 		}
 		//convert to array
 		$commands = explode(";", $commands);
-		mysqli_query($con, "USE test_user");
+		mysqli_query($con, "USE ".$_POST["db_name"]);
 		//run commands
 		$total = $success = 0;
 		foreach($commands as $command){
