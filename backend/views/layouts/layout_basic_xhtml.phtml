@@ -6,14 +6,51 @@
 	<title><?php echo $this->title; ?></title>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 	<link rel="stylesheet" href="/css/style.css" />
+	<style type="text/css">
+#container {
+	position: relative;
+	min-height: 100%;
+	width: 100%;
+	padding: 0;
+	border: 0;
+	margin: 0;
+}
+
+#header {
+	width: 100%;
+	color: #babdb6;
+	font-size: 0.8em;
+	overflow: auto;
+}
+
+#footer {
+	width: 100%;
+	height: 2.5em;
+	position: absolute;
+	bottom: 0;
+	color: #babdb6;
+	font-size: 0.8em;	
+	overflow: auto;
+}
+
+#header_user {
+	margin: 0.5em;
+	text-align: right;
+}
+
+#footer_content {
+	margin: 0.5em;
+	text-align: center;
+}
+
+	</style>
 </head>
 
-<body class="body_normal">
+<body>
 	<div id="container">
-		
 		<div id="header"><div id="header_user">Signed in as <a href="/prof"><?php echo $this->user_name; ?></a> <a href="/login/logout" class="no_deco">&times;</a></div></div>
 		
-		<div id="content">
+		<div>
 			<?php echo $this->content; ?>
 			<div class="push"></div>
 		</div>

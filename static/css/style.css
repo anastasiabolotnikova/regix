@@ -8,15 +8,12 @@ html {
 
 body {
 	height: 100%;
-	
 	padding: 0;
 	border: 0;
 	margin: 0;
-	
 	background-color: #2e3436;
 	background-image: url("/img/debut_dark.png");
-	color: white;
-	
+	color: white;	
 	font-family: 'Helvetica', sans-serif;
 }
 
@@ -27,11 +24,6 @@ a {
 	text-decoration: underline;
 	cursor: pointer;
 }
-
-a:link {}
-a:visited {}
-a:hover {}
-a:active {}
 
 a.no_deco {
 	color: inherit;
@@ -56,24 +48,6 @@ a.no_deco {
 	padding: 0.3em;
 }
 
-#container {
-	position: relative;
-	min-height: 100%;
-	width: 100%;
-	
-	padding: 0;
-	border: 0;
-	margin: 0;
-}
-
-#header {
-	width: 100%;
-	/*border-bottom: 1px solid #babdb6;*/
-	color: #babdb6;
-	font-size: 0.8em;
-	overflow: auto;
-}
-
 #header.warning_dark{
 	background-color: #a40000;
 	color: #fff;
@@ -86,31 +60,13 @@ a.no_deco {
 	margin: 0;
 }
 
-#footer {
-	width: 100%;
-	height: 2.5em;
-	
-	position: absolute;
-	bottom: 0;
-	
-	/*border-top: 1px solid #babdb6;*/
-	
-	color: #babdb6;
-	font-size: 0.8em;
-	
-	overflow: auto;
-}
-
-
 
 .error_message_block {
 	width: 24em;
 	padding: 2em;
 	margin-left: auto;
-	margin-right: auto;
-	
+	margin-right: auto;	
 	text-align: center;
-	
 	background-color: #a40000;
 	color: #fff;
 }
@@ -119,27 +75,14 @@ a.no_deco {
 	width: 24em;
 	padding: 2em;
 	margin-left: auto;
-	margin-right: auto;
-	
-	text-align: center;
-	
+	margin-right: auto;	
+	text-align: center;	
 	background-color: #4e9a06;
 	color: #fff;
-
 }
 
 
 /* Basic layout styles */
-
-#header_user {
-	margin: 0.5em;
-	text-align: right;
-}
-
-#footer_content {
-	margin: 0.5em;
-	text-align: center;
-}
 
 .center {
 	text-align: center;
@@ -150,46 +93,30 @@ a.no_deco {
 
 .bl_center {
 	display: block;
-	width: 10em;
-	
+	width: 10em;	
 	position: relative;
 	margin: 0 auto;
 	margin-top: 0.5em;
 	padding-top: 0.6em;
 	padding-bottom: 0.8em;
-	
 	text-align: center;
-	font-family: 'Roboto', 'Helvetica', sans-serif;
+	font-family: 'Helvetica', sans-serif;
 	font-size: 2.3em;
 	text-decoration:none;
+	font-weight: lighter;
 	color: white;
-	
 	outline-style: dashed;
 	outline-color: white;
 	outline-width: 2px;
 }
 
 .bl_center:hover {
-	color: white;
 	outline-style: solid;
 }
 
 .bl_center:active {
-	color: white;
 	outline-style: solid;
 }
-
-/* Fonts */
-
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 100;
-  src: local('Roboto Thin'), local('Roboto-Thin'), url(/fonts/Roboto.woff) format('woff');
-}
-
-
-
 
 /*Test design */
 
@@ -363,9 +290,7 @@ select{
 
 /*Tables*/
 
-.table-content {
-	word-wrap: break-word; color:#5c5c5c;
-}
+.table-content {word-wrap: break-word; color:#5c5c5c;}
 
 table {
 	border-collapse:collapse;
@@ -388,12 +313,7 @@ th {
 	color: #5c5c5c;
 }
 
-.hover-row tr:HOVER td{
-	background-color:#e2e2e2;
-}
-
-.hover-cell td:HOVER{
-	background-color:#e2e2e2;
-}
+.hover-row tr:HOVER td{background-color:#e2e2e2;}
+.hover-cell td:HOVER{background-color:#e2e2e2;}
 
 th, td {border:1px solid #b4b4b4; padding:15px 20px 15px; text-align:center; }
