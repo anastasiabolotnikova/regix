@@ -10,7 +10,7 @@
 			<input id="password" type="password" name="password" class="regix-form-input"/>
 		</div>
 		<div>
-			<button type="submit" class="default-button-single">Login</button>
+			<button name="submit" type="submit" class="default-button-single">Login</button>
 		</div>
 		<?php if($this->redirect_to) { ?>
 		<input id="redirect_to" name="redirect_to" type="hidden" value="<?php echo base64_encode($this->redirect_to); ?>" />
@@ -18,7 +18,7 @@
 	</form>
 	<form action="/reg">
 		<div>
-			<button type="submit" class="secondary-button-single last">Register</button>
+			<button name="submit" type="submit" class="secondary-button-single last">Register</button>
 		</div>
 	</form>
 </div>

@@ -11,9 +11,9 @@
 						</select></div>
 		<div class="form-label-container"><label for="description">Description</label></div>	
 		<div><input id="description" type="text" name="description" class="regix-form-input" value="<?php echo $this->permission_data['description']; ?>"/></div>
-		<div><button type="submit" class="secondary-button-single" >Save</button></div>		
+		<div><button name="submit" type="submit" class="secondary-button-single" >Save</button></div>		
 	</form>
 	<form action="/<?php echo ($this->controller_uri_name . "/delete/" . urlencode($this->permission_data['name'])); ?>">
-		<div><button type="submit" class="warning-button-single last" >Delete permission</button></div>
+		<div><button name="submit" type="submit" class="warning-button-single last" >Delete permission</button></div>
 	</form>
 </div>

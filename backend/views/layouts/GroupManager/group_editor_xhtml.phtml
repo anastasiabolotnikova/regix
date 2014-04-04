@@ -31,7 +31,7 @@
 	<div class="button-holder">
 		<form action="/<?php echo ($this->controller_uri_name . "/add_user/" . urlencode($this->group_data['name'])); ?>" method="post" class="regix-form">
 			<div>
-				<button type="submit" class="secondary-button-single first">Add user to group</button>
+				<button name="submit" type="submit" class="secondary-button-single first">Add user to group</button>
 			</div>
 		</form>
 	</div>
@@ -64,14 +64,14 @@
 	<div class="button-holder">
 		<form action="/<?php echo ($this->controller_uri_name . "/add_permission/" . urlencode($this->group_data['name'])); ?>" method="post" class="regix-form">
 			<div>
-				<button type="submit" class="secondary-button-single first">Add permission</button>
+				<button name="submit" type="submit" class="secondary-button-single first">Add permission</button>
 			</div>
 		</form>
 	</div>
 	<div class="button-holder">
 		<form action="/<?php echo ($this->controller_uri_name . "/delete/" . urlencode($this->group_data['name'])); ?>" method="post" class="regix-form">
 			<div>
-				<button type="submit" class="warning-button-single last">Delete group</button>
+				<button name="submit" type="submit" class="warning-button-single last">Delete group</button>
 			</div>
 		</form>
 	</div>
