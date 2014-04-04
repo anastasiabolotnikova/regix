@@ -208,6 +208,7 @@ class PermissionManagerController extends Controller {
 		if ($this->check_permission(
 				"add_permission_category",
 				"add_category")) {
+			//echo $_POST["name"];
 			if ($this->model->add_permission_category($_POST["name"])) {
 				$view_inner = new View(LAYOUT_SUCCESS);
 				$view_inner->message = "Category added";

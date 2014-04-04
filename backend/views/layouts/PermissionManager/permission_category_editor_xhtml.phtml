@@ -3,9 +3,9 @@
 		<h1>Edit category</h1>
 		<div class="form-label-container"><label for="name">Category name</label></div>
 		<div><input id="name" type="text" name="name" class="regix-form-input" value="<?php echo $this->category_data['name']; ?>"/></div>	
-		<div><button type="submit" class="secondary-button-single" >Save</button></div>		
+		<div><button name="submit" type="submit" class="secondary-button-single" >Save</button></div>		
 	</form>
 	<form action="/<?php echo ($this->controller_uri_name . "/delete_category/" . $this->category_data['id']); ?>">
-		<div><button type="submit" class="warning-button-single last" >Delete category</button></div>
+		<div><button name="submit" type="submit" class="warning-button-single last" >Delete category</button></div>
 		</form>
 </div>
