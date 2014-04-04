@@ -1,0 +1,67 @@
+body {
+	height: 100%;
+	padding: 0;
+	border: 0;
+	margin: 0;
+}
+
+#container {
+	position: absolute;
+	width: 100%;
+	top: 0;
+	bottom: 0;
+}
+
+.event { 
+	padding: 1em;
+	border-radius: 0.5em;
+	margin: 1em;
+	background-color: green;
+}
+
+#event_bar {
+	position: relative;
+	width: 85%;
+	height: 100%;
+	float: right;
+	background-color: #aaa;
+}
+
+#time_bar {
+	position: relative;
+	width: 15%;
+	height: 100%;
+	background-color: #999;
+	overflow-y: auto;
+}
+
+.time_slot {
+	width: 100%;
+	position: absolute;
+	background-color: #56DB6F;
+}
+
+#time_slot_tpl {
+	display: none;
+}
+
+#time_line {
+	border-bottom: 2px solid red;
+	content: "";
+	position: absolute;
+	width: 100%;
+	z-index: 1;
+}
+
+#time_line:after {
+	content: "";
+	width: 0; 
+	height: 0; 
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent; 
+	
+	border-right:10px solid red;
+	position: absolute;
+	right: 0;
+	top: -9px;
+}
