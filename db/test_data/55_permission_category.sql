@@ -8,3 +8,4 @@ INSERT INTO `permission_category` (`id`,`name`) VALUES (1,'Controller management
 INSERT INTO `permission_category` (`id`,`name`) VALUES (2,'Group management');
 INSERT INTO `permission_category` (`id`,`name`) VALUES (4,'Permission Management');
 INSERT INTO `permission_category` (`id`,`name`) VALUES (3,'User management');
+INSERT INTO `permission_category` (`id`,`name`) VALUES (0,'Event management');
