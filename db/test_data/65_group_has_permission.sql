@@ -28,5 +28,5 @@ INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Adm
 INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Administrators','list_permissions');
 INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Administrators','list_permission_categories');
 INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Administrators','list_users');
-INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Administrators','list_events');
-INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Workers','list_events');
+INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Administrators','list_event');
+INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Workers','list_event');
