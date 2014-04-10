@@ -22,7 +22,7 @@ class EventManagerController extends Controller {
 		
 		if (!$this->args[0]) {
 			
-			if ($this->session->user->has_permission("list_event")) {
+			if ($this->check_permission("list_event", "")) {
 				//show list of events from database
 				
 				$view_inner = new View(REGIX_PATH.

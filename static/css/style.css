@@ -205,9 +205,10 @@ input{
 	width: auto;
 	background: #f4f4f4;
 	border-bottom-color: #142647;
+	color: #5c5c5c;
 }
 
-.regix-form h1 {
+.regix-form h1, .regix-form-container h1 {
 	word-wrap: break-word;
 	margin-bottom: 20px;
 	font-size: 30px;
@@ -216,7 +217,7 @@ input{
 	text-align: center;
 }
 
-.regix-form h2 {
+.regix-form h2, .regix-form-container h2 {
 	word-wrap: break-word;
 	margin-bottom: 20px;
 	font-size: 20px;

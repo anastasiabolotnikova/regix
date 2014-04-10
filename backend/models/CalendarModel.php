@@ -125,4 +125,34 @@ class CalendarModel extends Model{
 	public function get_services() {
 		return $this->db->select_all_services();
 	}
+	
+	public function get_free_timeslots($service, $year, $month, $day) {
+		$from=8; //working day starts (calculated using constraints)
+		$to=18; //working day ends (calculated using constraints)
+		
+		$booked_hours = $this->get_booked_hours_for_service($service,$day,$month,$year);
+		
+		$free_timeslots = [];
+		for($hour=$from; $hour<$to; $hour++){
+			if($this::is_hour_booked($booked_hours, $hour)) {
+				continue;
+			}
+			$timeslot = array (
+				"hour" => $hour,
+				"from" => $hour.":00",
+				"to" => ($hour+1).":00"
+			);
+			array_push($free_timeslots, $timeslot);
+		}
+		return $free_timeslots;
+	}
+	
+	public static function is_hour_booked($booked_hours, $hour) {
+		foreach ($booked_hours as $booked) {
+			if($booked==$hour) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

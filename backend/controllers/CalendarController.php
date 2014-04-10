@@ -46,7 +46,7 @@ class CalendarController extends Controller{
 			$view_content->year = $year;
 			$view_content->month = $month;
 			$view_content->day = $day;
-			$view_content->booked_hours = $model->get_booked_hours_for_service($service,$day,$month,$year);
+			$view_content->free_timeslots = $model->get_free_timeslots($service, $year, $month, $day);
 
 		}
 
