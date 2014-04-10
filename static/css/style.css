@@ -377,7 +377,7 @@ table {
 	min-width: 450px;
 	margin:auto;
 	border-spacing: 0px;
-	cursor: pointer;
+
 }
 
 th {
@@ -389,12 +389,24 @@ th {
 	color: #5c5c5c;
 }
 
+.past-day{
+	color:  #d0d0d0;
+}
+
 .hover-row tr:HOVER td{
 	background-color:#e2e2e2;
+	cursor: pointer;
 }
 
-.hover-cell td:HOVER{
+.hover-cell:HOVER{
 	background-color:#e2e2e2;
+	cursor: pointer;
 }
 
-th, td {border:1px solid #b4b4b4; padding:15px 20px 15px; text-align:center; }
+
+td a, td div{
+	display: block;
+	padding: 10px;
+}
+th, td {border:1px solid #b4b4b4; padding:0; text-align:center; }
+th{padding: 15px 20px 15px 20px;

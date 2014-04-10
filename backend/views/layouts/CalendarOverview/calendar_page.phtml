@@ -9,11 +9,11 @@
 <div class="regix-form-container">
 	<form action="" class="regix-form">
 	<div class="table-content">
-		<table class="hover-cell">
+		<table>
 			<thead><tr><th colspan="7"><h1>
 				<a href=''>&lt;&lt; </a><?php echo date("F"); ?> <?php echo $this->year; ?><a href=''> &gt;&gt; </a>
 				</h1></th></tr></thead>
-			<tr><td>Monday</td><td>Tuesday</td><td>Wednesday</td><td>Thursday</td><td>Friday</td><td>Saturday</td><td class="last">Sunday</td></tr>
+			<tr><td><div>Monday</div></td><td><div>Tuesday</div></td><td><div>Wednesday</div></td><td><div>Thursday</div></td><td><div>Friday</div></td><td><div>Saturday</div></td><td class="last"><div>Sunday</div></td></tr>
 			<?php
 			$month_stamp=mktime(0,0,0,$this->month,$this->day,$this->year);
 			$day_count=date("t",$month_stamp);
@@ -39,12 +39,15 @@
 //					echo "<td>";
 //				}
 				 
-				echo " <td>";
+				
 				if ($this->day <= $d){
+					echo " <td class=\"hover-cell\">";
 					echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->year."/".$this->month."/".$d."'>".$d."</a>";
 				}
 				else{
+					echo " <td class=\"past-day\"><div>";
 					echo $d;
+					echo "</div";
 				}
 				echo "</td>\n";
 				$i++;
