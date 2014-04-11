@@ -13,7 +13,7 @@
 			<thead><tr><th colspan="7"><h1>
 				<a href=''>&lt;&lt; </a><?php echo date("F"); ?> <?php echo $this->year; ?><a href=''> &gt;&gt; </a>
 				</h1></th></tr></thead>
-			<tr><td><div>Monday</div></td><td><div>Tuesday</div></td><td><div>Wednesday</div></td><td><div>Thursday</div></td><td><div>Friday</div></td><td><div>Saturday</div></td><td class="last"><div>Sunday</div></td></tr>
+			<tr><td><div class="week-day">Monday</div></td><td><div class="week-day">Tuesday</div></td><td><div class="week-day">Wednesday</div></td><td><div class="week-day">Thursday</div></td><td><div class="week-day">Friday</div></td><td><div>Saturday</div></td><td class="last"><div class="week-day">Sunday</div></td></tr>
 			<?php
 			$month_stamp=mktime(0,0,0,$this->month,$this->day,$this->year);
 			$day_count=date("t",$month_stamp);
@@ -45,7 +45,7 @@
 					echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->year."/".$this->month."/".$d."'>".$d."</a>";
 				}
 				else{
-					echo " <td class=\"past-day\"><div>";
+					echo " <td class=\"past-day\"><div class=\"week-day\">";
 					echo $d;
 					echo "</div";
 				}

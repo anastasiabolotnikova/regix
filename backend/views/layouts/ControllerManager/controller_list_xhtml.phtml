@@ -13,26 +13,38 @@
 	?>
 				<tr onclick="location.href='/<?php echo $this->editor_uri; ?>/edit/<?php echo $controller['id']; ?>'">
 					<td>
+						<div>
 						<?php echo $controller['id']; ?>
+						</div>
 					</td>
 					<td>
+						<div>
 						<?php echo $controller['name']; ?>
+						</div>
 					</td>
 					<td>
+						<div>
 						<?php echo $controller['description']; ?>
+						</div>
 					</td>
 					<td>
+						<div>
 						<?php if($controller['enabled']) {
 							echo "enabled";
 						} else {
 							echo "disabled";
 						}; ?>
+						</div>
 					</td>
 					<td>
+						<div>
 						<?php echo $controller['uri_name']; ?>
+						</div>
 					</td>
 					<td>
+						</div>
 						<?php echo $controller['file_path']; ?>
+						</div>
 					</td>
 				</tr>
 	<?php
@@ -44,14 +56,9 @@
 	</table>
 </div>
 			</form>
-	</div>
-
-
-
-<div class="regix-form-container">
 	<div class="button-holder">
 	<form action="/<?php echo $this->editor_uri; ?>/add" method="post" class="regix-form">
-		<div><button name="submit" type="submit" class="secondary-button-single last"> Add controller</button></div>		
+		<div><button name="submit" type="submit" class="secondary-button-single first"> Add controller</button></div>		
 	</form>
 	</div>
 </div>

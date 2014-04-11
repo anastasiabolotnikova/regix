@@ -13,21 +13,31 @@
 	?>
 				<tr onclick="location.href='/<?php echo $this->editor_uri; ?>/edit/<?php echo $user['id']; ?>'">
 					<td>
+						<div>
 						<?php echo $user['id']; ?>
+						</div>
 					</td>
 					<td>
+						<div>
 						<?php echo $user['name']; ?>
+						</div>
 					</td>
 					<td>
+						<div>
 						<?php echo $user['login']; ?>
+						</div>
 					</td>
 					<td>
+						<div>
 						<?php echo $user['email']; ?>
+						</div>
 					</td>
 					<td>
+						<div>
 						<?php if ($user['id'] != 1) { ?>
 						<a href="/<?php echo $this->editor_uri; ?>/delete/<?php echo $user['id']; ?>">remove</a>
 						<?php }; ?>
+						</div>
 					</td>
 				</tr>
 	<?php
@@ -38,12 +48,10 @@
 	</table>
 </div>
 	</form>
-</div>
 
-<div class="regix-form-container">
 	<div class="button-holder">
 	<form action="/<?php echo $this->editor_uri; ?>/add" method="post" class="regix-form">
-		<div><button name="submit" type="submit" class="secondary-button-single last" > Add user</button></div>		
+		<div><button name="submit" type="submit" class="secondary-button-single first" > Add user</button></div>		
 	</form>
 	</div>
 </div>

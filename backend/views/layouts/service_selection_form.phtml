@@ -16,9 +16,9 @@
 			<tbody>
 			<?php
 			foreach ($this->services as $service) {
-				echo '<tr><td>';
+				echo '<tr><td><div>';
 				echo "<a href='/".$this->cal_uri."/".$service['uri_name']."'>".$service['name']."</a>";
-				echo '</td></tr>';
+				echo '</div></td></tr>';
 			}
 			?>
 			</tbody>
