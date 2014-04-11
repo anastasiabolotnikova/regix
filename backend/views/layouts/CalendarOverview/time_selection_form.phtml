@@ -16,7 +16,7 @@
 			<tbody>
 			<?php
 			foreach ($this->free_timeslots as $free_timeslot) {
-					echo "<tr><td><div><a href='/".$this->cal_uri."/".$this->service."/".$this->year."/".$this->month."/".$this->day."/".$free_timeslot['hour']."'>".$free_timeslot["from"]." - ".$free_timeslot["to"]."</a></div></td></tr>";
+					echo "<tr><td><a href='/".$this->cal_uri."/".$this->service."/".$this->year."/".$this->month."/".$this->day."/".$free_timeslot['hour']."'>".$free_timeslot["from"]." - ".$free_timeslot["to"]."</a></td></tr>";
 			}
 			?>
 			</tbody>
