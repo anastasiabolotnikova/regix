@@ -111,7 +111,7 @@ class CalendarModel extends Model{
 		
 		$booked_hours = $this->get_booked_hours_for_service($service,$day,$month,$year);
 		
-		$free_timeslots = [];
+		$free_timeslots = array();
 		for($hour=$from; $hour<$to; $hour++){
 			if($this::is_hour_booked($booked_hours, $hour)) {
 				continue;
