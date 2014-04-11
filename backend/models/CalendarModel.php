@@ -8,26 +8,6 @@ class CalendarModel extends Model{
 	protected $year;
 	protected $wd;
 	
-	//Get date
-	public function set_current_day(){
-		$this->day = date('j');
-	}
-		
-	public function set_current_month(){
-		$this->month = date('n');
-	}
-		
-	public function set_current_year(){
-		$this->year = date('o');
-	}
-	
-	public function set_current_wd(){
-		$this->wd = date('w', mktime(0,0,0,$this->month,1,$this->year));
-	}
-	//Get events
-	public function get_events() {
-		return "Events";
-	}
 	//Get constraints
 	public function get_constraints() {
 		return "Constraints";
@@ -77,24 +57,23 @@ class CalendarModel extends Model{
 		}
 		return $booked_time;
 	}
-	//Create calendar
 	
-	
+	//Get date
 	//variables to controller
 	public function get_day() {
-		CalendarModel::set_current_day();
+		$this->day = date('j');
 		return $this->day;
 	}
 	public function get_month() {
-		CalendarModel::set_current_month();
+		$this->month = date('n');
 		return $this->month;
 	}
 	public function get_year() {
-		CalendarModel::set_current_year();
+		$this->year = date('o');
 		return $this->year;
 	}
 	public function get_wd() {
-		CalendarModel::set_current_wd();
+		$this->wd = date('w', mktime(0,0,0,$this->month,1,$this->year));
 		if($this->wd == 0){
 			$this->wd = 7;
 		}
