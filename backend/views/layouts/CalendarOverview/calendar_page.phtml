@@ -11,14 +11,17 @@
 	<div class="table-content">
 		<table>
 			<thead><tr><th colspan="7"><h1>
-				<a href=''>&lt;&lt; </a><?php echo date("F"); ?> <?php echo $this->year; ?><a href=''> &gt;&gt; </a>
+				<?php echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->prevmonth."'>&lt;&lt;</a>";
+				      echo date("F", mktime(0,0,0,$this->month,$this->day,$this->year));
+				      echo $this->year;
+				      echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->nextmonth."'>&gt;&gt;</a>";
+				?>
 				</h1></th></tr></thead>
 			<tr><td><div class="week-day">Monday</div></td><td><div class="week-day">Tuesday</div></td><td><div class="week-day">Wednesday</div></td><td><div class="week-day">Thursday</div></td><td><div class="week-day">Friday</div></td><td><div>Saturday</div></td><td class="last"><div class="week-day">Sunday</div></td></tr>
 			<?php
 			$month_stamp=mktime(0,0,0,$this->month,$this->day,$this->year);
 			$day_count=date("t",$month_stamp);
 			$i=$this->wd;
-			
 			echo "<tr>\n";
 			if($this->wd!=1){
 					for($cell=1;$cell<$this->wd;$cell++){
@@ -39,8 +42,10 @@
 //					echo "<td>";
 //				}
 				 
-				
-				if ($this->day <= $d){
+				$date2display = mktime(0,0,0,$this->month,$d,$this->year);
+				$today = mktime(0,0,0,$this->currmonth,$this->day,$this->curryear);
+
+				if ($date2display >= $today){
 					echo " <td class=\"hover-cell\">";
 					echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->year."/".$this->month."/".$d."'>".$d."</a>";
 				}

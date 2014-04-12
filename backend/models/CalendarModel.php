@@ -13,14 +13,26 @@ class CalendarModel extends Model{
 		return "Constraints";
 	}
 	
-	//Next Month
-	public function next_month($curr_mont) {
-		return $this->month+1;
-	}
-	//Previous month
-	public function prev_month() {
-		return $this->month+1;
-	}
+	 //Next Month
+	 public function next_month($month, $year) {
+	  if($month == 12){
+	   $month = 1;
+	   $year += 1;
+	  } else {
+	   $month += 1;
+	  }
+	  return $year."/".$month;
+	 }
+	 //Previous month
+	 public function prev_month($month, $year) {
+	  if($month == 1){
+	   $month = 12;
+	   $year -= 1;
+	  } else {
+	   $month -= 1;
+	  }
+	  return $year."/".$month;
+	 }
 	
 	public function get_workers_to_assign($service,$day,$month,$year,$time){
 		$service_workers = $this->db->select_all_workers_with_service_mark($service);
@@ -72,8 +84,8 @@ class CalendarModel extends Model{
 		$this->year = date('o');
 		return $this->year;
 	}
-	public function get_wd() {
-		$this->wd = date('w', mktime(0,0,0,$this->month,1,$this->year));
+	public function get_wd($month, $year) {
+		$this->wd = date('w', mktime(0,0,0,$month,1,$year));
 		if($this->wd == 0){
 			$this->wd = 7;
 		}
