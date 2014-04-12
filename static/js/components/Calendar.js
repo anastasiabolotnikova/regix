@@ -11,8 +11,8 @@ function Event(id, from, to, user, description) {
 Event.parseEvent = function(ev_data) {
 	return new Event(
 			$(ev_data).find("id").text(),
-			$(ev_data).find("from").text(),
-			$(ev_data).find("to").text(),
+			new Date($(ev_data).find("from").text()),
+			new Date($(ev_data).find("to").text()),
 			"TEST",
 			$(ev_data).find("description").text()
 			);
@@ -38,7 +38,6 @@ UpdateManager.prototype.removeCallback = function(callbacks) {
 }
 
 UpdateManager.prototype.parseData = function(data, update_manager) {
-	console.log(update_manager);
 	
 	xmlData = $($.parseXML(data));
 	
@@ -69,34 +68,90 @@ function SlottedUI(from, to, slot_count) {
 	this.from = from;
 	this.to = to;
 	this.slot_count = slot_count;
-	this.slot_size = (to - from) / slot_count;
+	this.slot_time = (to - from) / slot_count;
+	this.slot_height = 100 / slot_count;
 	
 	this.timeline = $("#timeline");
 	this.timeline_slot_tpl = $("#timeline_slot_tpl").clone().removeAttr("id");
 	this.current_time_line = $("#current_time_line");
 	
-	this.slots = this.generate_slots(slot_count);
+	this.slots = [];
+	this.generate_slots();
 }
 
-SlottedUI.generate_slots(slot_count) {
-	for (var int = 0; int < slot_count; int++) {
+SlottedUI.format_date = function(date) {
+	var m = date.getMinutes();
+	var h = date.getHours();
+	var ms = m < 10 ? "0"+m : m.toString();
+	var hs = h < 10 ? "0"+h : h.toString();
+	return hs + ":" + ms;
+}
+
+SlottedUI.prototype.generate_slots = function() {
+	var cur_slot;
+	var cur_date = new Date(this.from.valueOf());
+	var self = this;
+	
+	for (var i = 0; i < this.slot_count; i++) {
 		
+		cur_slot = this.timeline_slot_tpl.clone();
+		cur_slot.find(".time_slot_from").text(
+				SlottedUI.format_date(new Date(cur_date)));
+		cur_date.setTime(cur_date.valueOf() + this.slot_time);
+		cur_slot.find(".time_slot_to").text(
+				SlottedUI.format_date(new Date(cur_date)));
+		cur_slot.attr("id", "time_slot_"+i);
+		cur_slot.css("top", (i * this.slot_height) + "%");
+		cur_slot.css("height", this.slot_height + "%");
+		(function(i) {
+			cur_slot.click(function() {
+				self.showSlot(i);
+			});
+		})(i);
+		
+		this.timeline.append(cur_slot);
+		this.slots.push(cur_slot);
 	}
 }
 
 SlottedUI.prototype.eventAdder = function(event, ui) {
-	console.log(this);
-	var cur_timeslot = this.timeline_slot_tpl.clone();
-	cur_timeslot.find(".timeslot_from").text(event.from);
-	cur_timeslot.find(".timeslot_to").text(event.to);
+	if(event.to < this.from || event.from > this.to) {
+		return;
+	}
 	
-	this.timeline.append(cur_timeslot);
+	var slot_from = Math.floor(
+			Math.max(
+					(event.from - this.from) / this.slot_time,
+					0
+			)
+	);
+	
+	var slot_to = Math.ceil(
+			Math.min(
+					(event.to - this.from) / this.slot_time,
+					this.slot_count
+			)
+	) - 1;
+	
+	for (var i = slot_from; i <= slot_to; i++) {
+		if(!this.slots[i].hasClass("timeline_slot_taken")) {
+			this.slots[i].addClass("timeline_slot_taken");
+		}
+	}
+}
+
+SlottedUI.prototype.showSlot = function(idx) {
+	console.log(idx);
 }
 
 var url = '/latest/events';
+var from = new Date("2014-04-19 08:00:00");
+var to = new Date("2014-04-19 18:00:00");
 
-sui = new SlottedUI(480, 1080, 10)
+sui = new SlottedUI(from, to, 10);
 um = new UpdateManager(url);
 um.addCallback(function(event) {
 	sui.eventAdder(event, sui);
 });
+
+um.update();

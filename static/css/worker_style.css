@@ -43,6 +43,10 @@ body {
 	background-color: #56DB6F;
 }
 
+.timeline_slot_taken {
+	background-color: red;
+}
+
 #timeline_slot_tpl {
 	display: none;
 }
