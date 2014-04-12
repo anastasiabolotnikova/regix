@@ -27,7 +27,9 @@ body {
 	background-color: #aaa;
 }
 
-#time_bar {
+
+
+#timeline {
 	position: relative;
 	width: 15%;
 	height: 100%;
@@ -35,17 +37,17 @@ body {
 	overflow-y: auto;
 }
 
-.time_slot {
+.timeline_slot {
 	width: 100%;
 	position: absolute;
 	background-color: #56DB6F;
 }
 
-#time_slot_tpl {
+#timeline_slot_tpl {
 	display: none;
 }
 
-#time_line {
+#current_time_line {
 	border-bottom: 2px solid red;
 	content: "";
 	position: absolute;
@@ -53,7 +55,7 @@ body {
 	z-index: 1;
 }
 
-#time_line:after {
+#current_time_line:after {
 	content: "";
 	width: 0; 
 	height: 0; 
