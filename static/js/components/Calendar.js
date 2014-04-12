@@ -64,6 +64,16 @@ UpdateManager.prototype.update = function(url) {
 
 // UI
 
+function Slot(el) {
+	this.el = el;
+	this.events = [];
+}
+
+Slot.prototype.addEvent = function(event) {
+	this.events.push(event);
+}
+
+
 function SlottedUI(from, to, slot_count) {
 	this.from = from;
 	this.to = to;
@@ -79,6 +89,10 @@ function SlottedUI(from, to, slot_count) {
 	this.generate_slots();
 }
 
+
+/**
+ * Return formatted date as string for printing.
+ */
 SlottedUI.format_date = function(date) {
 	var m = date.getMinutes();
 	var h = date.getHours();
@@ -87,6 +101,10 @@ SlottedUI.format_date = function(date) {
 	return hs + ":" + ms;
 }
 
+
+/**
+ * Create empty slots.
+ */
 SlottedUI.prototype.generate_slots = function() {
 	var cur_slot;
 	var cur_date = new Date(this.from.valueOf());
@@ -103,17 +121,21 @@ SlottedUI.prototype.generate_slots = function() {
 		cur_slot.attr("id", "time_slot_"+i);
 		cur_slot.css("top", (i * this.slot_height) + "%");
 		cur_slot.css("height", this.slot_height + "%");
-		(function(i) {
+		(function(i, ui) {
 			cur_slot.click(function() {
 				self.showSlot(i);
 			});
 		})(i);
 		
 		this.timeline.append(cur_slot);
-		this.slots.push(cur_slot);
+		this.slots.push(new Slot(cur_slot));
 	}
 }
 
+
+/**
+ * Add event to an appropriate slot.
+ */
 SlottedUI.prototype.eventAdder = function(event, ui) {
 	if(event.to < this.from || event.from > this.to) {
 		return;
@@ -134,14 +156,19 @@ SlottedUI.prototype.eventAdder = function(event, ui) {
 	) - 1;
 	
 	for (var i = slot_from; i <= slot_to; i++) {
-		if(!this.slots[i].hasClass("timeline_slot_taken")) {
-			this.slots[i].addClass("timeline_slot_taken");
+		this.slots[i].addEvent(event);
+		if(!this.slots[i].el.hasClass("timeline_slot_taken")) {
+			this.slots[i].el.addClass("timeline_slot_taken");
 		}
 	}
 }
 
+
+/**
+ * Display slot events in main area.
+ */
 SlottedUI.prototype.showSlot = function(idx) {
-	console.log(idx);
+	console.log(this.slots[idx].events);
 }
 
 var url = '/latest/events';
