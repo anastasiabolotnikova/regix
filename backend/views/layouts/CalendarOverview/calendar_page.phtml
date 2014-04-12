@@ -11,10 +11,18 @@
 	<div class="table-content">
 		<table>
 			<thead><tr><th colspan="7"><h1>
-				<?php echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->prevmonth."'>&lt;&lt;&nbsp;</a>";
-				      echo date("F", mktime(0,0,0,$this->month,$this->day,$this->year));
-				      echo "&nbsp;".$this->year;
-				      echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->nextmonth."'>&nbsp;&gt;&gt;</a>";
+				<?php 
+					if($this->month > $this->currmonth){
+						 echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->prevmonth."'>&lt;&lt;&nbsp;</a>";
+					     echo date("F", mktime(0,0,0,$this->month,$this->day,$this->year));
+					     echo "&nbsp;".$this->year;
+					     echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->nextmonth."'>&nbsp;&gt;&gt;</a>";
+				 	}
+				 	else{
+				 		 echo date("F", mktime(0,0,0,$this->month,$this->day,$this->year));
+					     echo "&nbsp;".$this->year;
+					     echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->nextmonth."'>&nbsp;&gt;&gt;</a>";
+				 	}
 				?>
 				</h1></th></tr></thead>
 			<tr><td><div class="week-day">Monday</div></td><td><div class="week-day">Tuesday</div></td><td><div class="week-day">Wednesday</div></td><td><div class="week-day">Thursday</div></td><td><div class="week-day">Friday</div></td><td><div>Saturday</div></td><td class="last"><div class="week-day">Sunday</div></td></tr>
