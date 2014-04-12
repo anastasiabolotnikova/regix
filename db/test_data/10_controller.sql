@@ -15,3 +15,4 @@ INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_p
 INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (11,'PermissionManagerController','Add and remove permissions used by the Regix. Note that permissions are granted via group manager.',1,'permissions','controllers/PermissionManagerController.php');
 INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (12,'LatestController','Access to updates.',1,'latest','controllers/LatestController.php');
 INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (13,'EventManagerController','Event management.',1,'emc','controllers/EventManagerController.php');
+INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (14,'ContactPageController','Contact page controller.',1,'contact','controllers/ContactPageController.php');
