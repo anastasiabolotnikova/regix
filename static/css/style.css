@@ -239,7 +239,8 @@ input{
 	height: 37px;
 	font-weight: bold;
 	margin-bottom: 10px;
-	padding: 1 9px;
+	padding: 0 9px;
+	-moz-box-sizing: border-box;
 	color: #3b3b3b;
 	background: #eae8e8;
 	border: 1px solid #5a5a5a;
@@ -411,5 +412,13 @@ td a, td div{
 .week-day{
 	padding: 15px 20px 15px;
 }
-th, td {border:1px solid #b4b4b4; padding:0; text-align:center; }
-th{padding: 15px 20px 15px 20px;
+
+th, td {
+	border:1px solid #b4b4b4; 
+	padding:0;
+	text-align:center;
+}
+
+th{
+	padding: 15px 20px 15px 20px;
+}
