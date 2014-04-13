@@ -196,8 +196,8 @@ SlottedUI.prototype.showSlot = function(idx) {
 }
 
 var url = '/latest/events';
-var from = new Date("2014-04-18 08:00:00");
-var to = new Date("2014-04-18 18:00:00");
+var from = new Date("Fri Apr 18 2014 08:00:00 GMT+0300");
+var to = new Date("Fri Apr 18 2014 18:00:00 GMT+0300");
 
 sui = new SlottedUI(from, to, 5);
 um = new UpdateManager(url);
