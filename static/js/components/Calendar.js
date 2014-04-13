@@ -81,6 +81,9 @@ function SlottedUI(from, to, slot_count) {
 	this.slot_time = (to - from) / slot_count;
 	this.slot_height = 100 / slot_count;
 	
+	this.event_bar = $("#event_bar");
+	this.event_tpl = $("#event_tpl").clone().removeAttr("id");
+	
 	this.timeline = $("#timeline");
 	this.timeline_slot_tpl = $("#timeline_slot_tpl").clone().removeAttr("id");
 	this.current_time_line = $("#current_time_line");
@@ -169,13 +172,34 @@ SlottedUI.prototype.eventAdder = function(event, ui) {
  */
 SlottedUI.prototype.showSlot = function(idx) {
 	console.log(this.slots[idx].events);
+	
+	this.event_bar.empty();
+	var width = 100 / this.slots[idx].events.length;
+	var cur_event;
+	
+	for (var i = 0; i < this.slots[idx].events.length; i++) {
+		cur_event = this.event_tpl.clone();
+		cur_event.find(".event_time").text(
+				SlottedUI.format_date(this.slots[idx].events[i].from) +
+				" — " +
+				SlottedUI.format_date(this.slots[idx].events[i].to));
+		
+		cur_event.find(".event_client").text(this.slots[idx].events[i].user);
+		cur_event.find(".event_description").text(
+				this.slots[idx].events[i].description);
+		
+		cur_event.css("width", width + "%");
+		console.log(this.event_bar);
+		this.event_bar.append(cur_event);
+	}
+	
 }
 
 var url = '/latest/events';
-var from = new Date("2014-04-19 08:00:00");
-var to = new Date("2014-04-19 18:00:00");
+var from = new Date("2014-04-18 08:00:00");
+var to = new Date("2014-04-18 18:00:00");
 
-sui = new SlottedUI(from, to, 10);
+sui = new SlottedUI(from, to, 5);
 um = new UpdateManager(url);
 um.addCallback(function(event) {
 	sui.eventAdder(event, sui);

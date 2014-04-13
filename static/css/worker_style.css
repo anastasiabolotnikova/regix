@@ -13,10 +13,18 @@ body {
 }
 
 .event { 
-	padding: 1em;
-	border-radius: 0.5em;
+	height: 100%;
+	float: left;
+}
+
+.event_data_wrapper {
 	margin: 1em;
-	background-color: green;
+	padding: 1em;
+	border: 1px solid black;
+}
+
+#event_tpl {
+	display: none;
 }
 
 #event_bar {
@@ -44,7 +52,7 @@ body {
 }
 
 .timeline_slot_taken {
-	background-color: red;
+	background-color: #c94040;
 }
 
 #timeline_slot_tpl {
