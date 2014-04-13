@@ -15,25 +15,71 @@ class CalendarModel extends Model{
 	
 	 //Next Month
 	 public function next_month($month, $year) {
-	  if($month == 12){
-	   $month = 1;
-	   $year += 1;
-	  } else {
-	   $month += 1;
-	  }
-	  return $year."/".$month;
+	 	if($month == 12){
+	   		$month = 1;
+	   		$year += 1;
+	 	 } else {
+	   		$month += 1;
+	  	}
+	  	return $year."/".$month;
 	 }
-	 //Previous month
+
+	 //Previous Month
 	 public function prev_month($month, $year) {
-	  if($month == 1){
-	   $month = 12;
-	   $year -= 1;
-	  } else {
-	   $month -= 1;
-	  }
-	  return $year."/".$month;
+	 	if($month == 1){
+	   		$month = 12;
+	   		$year -= 1;
+	  	} else {
+	   		$month -= 1;
+	  	}
+	  	return $year."/".$month;
 	 }
 	
+	 //Next Day
+	 public function next_day($month, $year, $day) {
+	 	$daysInMonth=cal_days_in_month(CAL_GREGORIAN, $month, $year);
+	 		
+	 		if($day==$daysInMonth) {
+	 			if($month == 12){
+	   				$month = 1;
+	  				$year += 1;
+	   				$day = 1;
+	 			}
+	 			else{
+	 				$month +=1;
+	 				$day = 1;
+	 			}
+	 		}
+	 		else{
+	  			$day += 1;
+	  		}
+	 	 return $year."/".$month."/".$day;
+	 }
+
+	 //Previous Day
+	 public function prev_day($month, $year, $day) {
+	 	if($month!=1){
+	 		$daysInPreviousMonth=cal_days_in_month(CAL_GREGORIAN, $month-1, $year);
+	 	}else{
+	 		$daysInPreviousMonth=cal_days_in_month(CAL_GREGORIAN, 12, $year-1);
+	 	}
+	 		if($day == 1) {
+	 			if($month == 1){
+	 				$year -=1;
+	 				$month = 12;
+	 				$day = $daysInPreviousMonth;
+	 			}
+	 			else{
+	 				$month -= 1;
+	 				$day = $daysInPreviousMonth;
+	 			}
+	 		} else{
+	 			$day -= 1;
+	 		}
+
+	 	 return $year."/".$month."/".$day;
+	 }
+
 	public function get_workers_to_assign($service,$day,$month,$year,$time){
 		$service_workers = $this->db->select_all_workers_with_service_mark($service);
 		//Check if worker is busy at selected time

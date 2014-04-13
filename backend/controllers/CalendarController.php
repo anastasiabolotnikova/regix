@@ -52,6 +52,9 @@ class CalendarController extends Controller{
 			$year=$this->args[1];
 			$month=$this->args[2];
 			$day=$this->args[3];
+
+			$view_content->nextday = $model->next_day($month,$year,$day);
+			$view_content->prevday = $model->prev_day($month,$year,$day);
 			
 			$view_content->cal_uri = $this->get_controller_uri_name();
 			$view_content->service = $service;
@@ -59,6 +62,11 @@ class CalendarController extends Controller{
 			$view_content->month = $month;
 			$view_content->day = $day;
 			$view_content->free_timeslots = $model->get_free_timeslots($service, $year, $month, $day);
+
+			// Current month, year, day variables
+			$view_content->currmonth = $model->get_month();
+			$view_content->curryear = $model->get_year();
+			$view_content->currday = $model->get_day();
 
 		}
 
