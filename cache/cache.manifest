@@ -1,7 +1,3 @@
 CACHE MANIFEST
-layout_basic_xhtml.phtml
+/reg
 /css/style.css
-
-FALLBACK:
-/MainPageController.php /ContactPageController.php
-/main_page_xhtml.phtml /cantact_page.phtml
