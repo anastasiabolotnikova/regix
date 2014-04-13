@@ -15,18 +15,30 @@ class CalendarController extends Controller{
 		}
 
 		//Service is selected
-		if(count($this->args)==1){
+		if(count($this->args)==3){
 			//Show a calendar
 			$view_content = new View(
 						REGIX_PATH."views/layouts/CalendarOverview/calendar_page.phtml");
 			$title = "Calendar :: Regix";
 			
 			$view_content->cal_uri = $this->get_controller_uri_name();
+			// Current day
 			$view_content->day = $model->get_day();
-			$view_content->month = $model->get_month();
-			$view_content->year = $model->get_year();
-			$view_content->wd = $model->get_wd();
+
+			// Selected date values
+			$month = $this->args[2];
+			$year = $this->args[1];
+			$view_content->month = $month;
+			$view_content->year = $year;
+			
+			$view_content->nextmonth = $model->next_month($month,$year);
+			$view_content->prevmonth = $model->prev_month($month,$year);
+			$view_content->wd = $model->get_wd($month, $year);
 			$view_content->service = $this->args[0];
+
+			// Current month, year variables
+			$view_content->currmonth = $model->get_month();
+			$view_content->curryear = $model->get_year();
 
 		}
 
@@ -40,13 +52,21 @@ class CalendarController extends Controller{
 			$year=$this->args[1];
 			$month=$this->args[2];
 			$day=$this->args[3];
+
+			$view_content->nextday = $model->next_day($month,$year,$day);
+			$view_content->prevday = $model->prev_day($month,$year,$day);
 			
 			$view_content->cal_uri = $this->get_controller_uri_name();
 			$view_content->service = $service;
 			$view_content->year = $year;
 			$view_content->month = $month;
 			$view_content->day = $day;
-			$view_content->booked_hours = $model->get_booked_hours_for_service($service,$day,$month,$year);
+			$view_content->free_timeslots = $model->get_free_timeslots($service, $year, $month, $day);
+
+			// Current month, year, day variables
+			$view_content->currmonth = $model->get_month();
+			$view_content->curryear = $model->get_year();
+			$view_content->currday = $model->get_day();
 
 		}
 
@@ -104,7 +124,6 @@ class CalendarController extends Controller{
 			$view_content->day = $model->get_day();
 			$view_content->month = $model->get_month();
 			$view_content->year = $model->get_year();
-			$view_content->wd = $model->get_wd();
 		}
 
 		

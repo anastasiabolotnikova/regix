@@ -205,9 +205,10 @@ input{
 	width: auto;
 	background: #f4f4f4;
 	border-bottom-color: #142647;
+	color: #5c5c5c;
 }
 
-.regix-form h1 {
+.regix-form h1, .regix-form-container h1 {
 	word-wrap: break-word;
 	margin-bottom: 20px;
 	font-size: 30px;
@@ -216,7 +217,7 @@ input{
 	text-align: center;
 }
 
-.regix-form h2 {
+.regix-form h2, .regix-form-container h2 {
 	word-wrap: break-word;
 	margin-bottom: 20px;
 	font-size: 20px;
@@ -239,6 +240,7 @@ input{
 	font-weight: bold;
 	margin-bottom: 10px;
 	padding: 0 9px;
+	-moz-box-sizing: border-box;
 	color: #3b3b3b;
 	background: #eae8e8;
 	border: 1px solid #5a5a5a;
@@ -376,7 +378,7 @@ table {
 	min-width: 450px;
 	margin:auto;
 	border-spacing: 0px;
-	cursor: pointer;
+
 }
 
 th {
@@ -388,12 +390,35 @@ th {
 	color: #5c5c5c;
 }
 
+.past-day{
+	color:  #d0d0d0;
+}
+
 .hover-row tr:HOVER td{
 	background-color:#e2e2e2;
+	cursor: pointer;
 }
 
-.hover-cell td:HOVER{
+.hover-cell:HOVER{
 	background-color:#e2e2e2;
+	cursor: pointer;
 }
 
-th, td {border:1px solid #b4b4b4; padding:15px 20px 15px; text-align:center; }
+td a, td div{
+	display: block;
+	padding: 15px 20px 15px;
+}
+
+.week-day{
+	padding: 15px 20px 15px;
+}
+
+th, td {
+	border:1px solid #b4b4b4; 
+	padding:0;
+	text-align:center;
+}
+
+th{
+	padding: 15px 20px 15px 20px;
+}

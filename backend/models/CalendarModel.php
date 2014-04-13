@@ -8,40 +8,78 @@ class CalendarModel extends Model{
 	protected $year;
 	protected $wd;
 	
-	//Get date
-	public function set_current_day(){
-		$this->day = date('j');
-	}
-		
-	public function set_current_month(){
-		$this->month = date('n');
-	}
-		
-	public function set_current_year(){
-		$this->year = date('o');
-	}
-	
-	public function set_current_wd(){
-		$this->wd = date('w', mktime(0,0,0,$this->month,1,$this->year));
-	}
-	//Get events
-	public function get_events() {
-		return "Events";
-	}
 	//Get constraints
 	public function get_constraints() {
 		return "Constraints";
 	}
 	
-	//Next Month
-	public function next_month($curr_mont) {
-		return $this->month+1;
-	}
-	//Previous month
-	public function prev_month() {
-		return $this->month+1;
-	}
+	 //Next Month
+	 public function next_month($month, $year) {
+	 	if($month == 12){
+	   		$month = 1;
+	   		$year += 1;
+	 	 } else {
+	   		$month += 1;
+	  	}
+	  	return $year."/".$month;
+	 }
+
+	 //Previous Month
+	 public function prev_month($month, $year) {
+	 	if($month == 1){
+	   		$month = 12;
+	   		$year -= 1;
+	  	} else {
+	   		$month -= 1;
+	  	}
+	  	return $year."/".$month;
+	 }
 	
+	 //Next Day
+	 public function next_day($month, $year, $day) {
+	 	$daysInMonth=cal_days_in_month(CAL_GREGORIAN, $month, $year);
+	 		
+	 		if($day==$daysInMonth) {
+	 			if($month == 12){
+	   				$month = 1;
+	  				$year += 1;
+	   				$day = 1;
+	 			}
+	 			else{
+	 				$month +=1;
+	 				$day = 1;
+	 			}
+	 		}
+	 		else{
+	  			$day += 1;
+	  		}
+	 	 return $year."/".$month."/".$day;
+	 }
+
+	 //Previous Day
+	 public function prev_day($month, $year, $day) {
+	 	if($month!=1){
+	 		$daysInPreviousMonth=cal_days_in_month(CAL_GREGORIAN, $month-1, $year);
+	 	}else{
+	 		$daysInPreviousMonth=cal_days_in_month(CAL_GREGORIAN, 12, $year-1);
+	 	}
+	 		if($day == 1) {
+	 			if($month == 1){
+	 				$year -=1;
+	 				$month = 12;
+	 				$day = $daysInPreviousMonth;
+	 			}
+	 			else{
+	 				$month -= 1;
+	 				$day = $daysInPreviousMonth;
+	 			}
+	 		} else{
+	 			$day -= 1;
+	 		}
+
+	 	 return $year."/".$month."/".$day;
+	 }
+
 	public function get_workers_to_assign($service,$day,$month,$year,$time){
 		$service_workers = $this->db->select_all_workers_with_service_mark($service);
 		//Check if worker is busy at selected time
@@ -77,24 +115,23 @@ class CalendarModel extends Model{
 		}
 		return $booked_time;
 	}
-	//Create calendar
 	
-	
+	//Get date
 	//variables to controller
 	public function get_day() {
-		CalendarModel::set_current_day();
+		$this->day = date('j');
 		return $this->day;
 	}
 	public function get_month() {
-		CalendarModel::set_current_month();
+		$this->month = date('n');
 		return $this->month;
 	}
 	public function get_year() {
-		CalendarModel::set_current_year();
+		$this->year = date('o');
 		return $this->year;
 	}
-	public function get_wd() {
-		CalendarModel::set_current_wd();
+	public function get_wd($month, $year) {
+		$this->wd = date('w', mktime(0,0,0,$month,1,$year));
 		if($this->wd == 0){
 			$this->wd = 7;
 		}
@@ -124,5 +161,35 @@ class CalendarModel extends Model{
 
 	public function get_services() {
 		return $this->db->select_all_services();
+	}
+	
+	public function get_free_timeslots($service, $year, $month, $day) {
+		$from=8; //working day starts (calculated using constraints)
+		$to=18; //working day ends (calculated using constraints)
+		
+		$booked_hours = $this->get_booked_hours_for_service($service,$day,$month,$year);
+		
+		$free_timeslots = array();
+		for($hour=$from; $hour<$to; $hour++){
+			if($this::is_hour_booked($booked_hours, $hour)) {
+				continue;
+			}
+			$timeslot = array (
+				"hour" => $hour,
+				"from" => $hour.":00",
+				"to" => ($hour+1).":00"
+			);
+			array_push($free_timeslots, $timeslot);
+		}
+		return $free_timeslots;
+	}
+	
+	public static function is_hour_booked($booked_hours, $hour) {
+		foreach ($booked_hours as $booked) {
+			if($booked==$hour) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

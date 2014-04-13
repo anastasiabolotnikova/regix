@@ -9,22 +9,31 @@
 <div class="regix-form-container">
 	<form action="" method="post" class="regix-form">
 		<div class="table-content">
-			<h1><?php echo date("F", mktime(0,0,0,$this->month,$this->day,$this->year)); echo " ".$this->day; ?></h1>
+			<h1><?php 
+                    $selectedDate = mktime(0,0,0,$this->month,$this->day,$this->year);
+					$today = mktime(0,0,0,$this->currmonth,$this->currday,$this->curryear);
+					if($today<$selectedDate){
+						echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->prevday."'>&lt;&lt;&nbsp;</a>";
+						echo date("F", mktime(0,0,0,$this->month,$this->day,$this->year)); echo " ".$this->day; 
+						echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->nextday."'>&nbsp;&gt;&gt;</a>";
+					}else{
+						echo date("F", mktime(0,0,0,$this->month,$this->day,$this->year)); echo " ".$this->day; 
+						echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->nextday."'>&nbsp;&gt;&gt;</a>";
+					}
+				?>
+			</h1>
 			<table>
 				<thead>
-			<tr><th><?php echo date("l", mktime(0,0,0,$this->month,$this->day,$this->year)); ?></th></tr></thead>
+					<tr><th>
+						<?php 
+							echo date("l", mktime(0,0,0,$this->month,$this->day,$this->year)); 
+						?>
+					</th></tr>
+				</thead>
 			<tbody>
 			<?php
-			$from=8; //working day starts (calculated using constraints)
-			$to=18; //working day ends (calculated using constraints)
-			for($hour=$from;$hour<$to;$hour++){
-				foreach ($this->booked_hours as $booked) {
-					if($booked==$hour) $hour++;
-					}
-				echo "<tr><td><a href='/".$this->cal_uri."/".$this->service."/".$this->year."/".$this->month."/".$this->day."/".$hour."'>".$hour.":00 - ";
-				$hour++;
-				echo $hour.":00</a></td></tr>";
-				$hour--;
+			foreach ($this->free_timeslots as $free_timeslot) {
+					echo "<tr><td><a href='/".$this->cal_uri."/".$this->service."/".$this->year."/".$this->month."/".$this->day."/".$free_timeslot['hour']."'>".$free_timeslot["from"]." - ".$free_timeslot["to"]."</a></td></tr>";
 			}
 			?>
 			</tbody>

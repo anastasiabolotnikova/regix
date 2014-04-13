@@ -13,8 +13,11 @@
 	?>
 				<tr onclick="location.href='/<?php echo ($this->controller_uri_name . "/edit/" . urlencode($group['name'])); ?>'">
 					<td>
+						<div>
 						<?php echo $group['name']; ?>
+						</div>
 					</td>
+						
 				</tr>
 	<?php
 			} 

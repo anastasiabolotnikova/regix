@@ -149,7 +149,7 @@ if(isset($_POST["host_name"])&&isset($_POST["username"])&&isset($_POST["password
 	$con = mysqli_connect($_POST["host_name"],$_POST["username"],$_POST["password"]);
 	$files = scandir("test_data");
 	run_sql_file("create.sql", $con);
-	for ($i = 2 ; $i < count($files)-1 ; $i++) {
+	for ($i = 2 ; $i < count($files) ; $i++) {
 		run_sql_file("test_data/".$files[$i], $con);
 	}
 	mysqli_close($con);

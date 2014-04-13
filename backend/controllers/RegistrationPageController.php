@@ -48,7 +48,7 @@ class RegistrationPageController extends Controller{
 			$title = "Registration :: Regix";
 		}
 		
-		$view_outer = new View(REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
+		$view_outer = new View(REGIX_PATH."views/layouts/layout_basic_html.phtml");
 		$view_outer->title = $title;
 		$view_outer->user_name = $model->get_user_name();
 		$view_outer->content = $view_content->render(FALSE);

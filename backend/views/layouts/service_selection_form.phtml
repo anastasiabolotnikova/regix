@@ -17,7 +17,7 @@
 			<?php
 			foreach ($this->services as $service) {
 				echo '<tr><td>';
-				echo "<a href='/".$this->cal_uri."/".$service['uri_name']."'>".$service['name']."</a>";
+				echo "<a href='/".$this->cal_uri."/".$service['uri_name']."/".$this->year."/".$this->month."'>".$service['name']."</a>";
 				echo '</td></tr>';
 			}
 			?>

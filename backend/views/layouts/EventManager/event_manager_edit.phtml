@@ -1,1 +1,41 @@
-<div id="event_manager_editor_container" class="table_container">	<h1 class="title_block">Edit Event</h1>	<form		action="/<?php echo $this->editor_uri; ?>/save/<?php echo $this->edit_event_id; ?>"		method="post">		<table>			<tbody>				<tr>					<th class="table_row_header">Time from</th>					<td><input name="from" type="text"						value="<?php echo $this->edit_event['from']; ?>" /></td>				</tr>				<tr>					<th class="table_row_header">Time to</th>					<td><input name="to" type="text"						value="<?php echo $this->edit_event['to']; ?>" /></td>				</tr>				<tr>					<th class="table_row_header">Worker</th>					<td><input name="worker" type="text"						value="<?php echo $this->edit_event['worker']; ?>" /></td>				</tr>				<tr>					<th class="table_row_header">Description</th>					<td><input name="description" type="text"						value="<?php echo $this->edit_event['description']; ?>" /></td>				</tr>				<tr>					<th class="table_row_header">Client</th>					<td><input name="client" type="text"						value="<?php echo $this->edit_event['client']; ?>" /></td>				</tr>				<tr>					<th class="table_row_header">Service</th>					<td><input name="service" type="text"						value="<?php echo $this->edit_event['service']; ?>" /></td>				</tr>			</tbody>		</table>		<div class="form_controls">			<input name="submit" type="submit" value="Save" /> <input name="cancel" type="submit" value="Cancel" />		</div>	</form></div>
+<div id="event_manager_editor_container" class="regix-form-container">
+	<h1>Edit Event</h1>
+	<form
+		action="/<?php echo $this->editor_uri; ?>/save/<?php echo $this->edit_event_id; ?>"
+		method="post"
+		class="regix-form">
+		<div>
+			<div class="form-label-container"><label for="from">Time from</label></div>
+			<input id="from" type="text" name="from" class="regix-form-input" value="<?php echo $this->edit_event['from']; ?>" />
+		</div>
+	
+		<div>
+			<div class="form-label-container"><label for="to">Time to</label></div>
+			<input id="to" type="text" name="to" class="regix-form-input" value="<?php echo $this->edit_event['to']; ?>" />
+		</div>		
+		
+		<div>
+			<div class="form-label-container"><label for="worker">Worker</label></div>
+			<input id="worker" type="text" name="from" class="regix-form-input" value="<?php echo $this->edit_event['worker']; ?>" />
+			</div>
+		
+		<div>
+			<div class="form-label-container"><label for="description">Description</label></div>
+			<input id="description" type="text" name="description" class="regix-form-input" value="<?php echo $this->edit_event['description']; ?>" />
+		</div>
+		
+		<div>
+			<div class="form-label-container"><label for="client">Client</label></div>
+			<input id="client" type="text" name="client" class="regix-form-input" value="<?php echo $this->edit_event['client']; ?>" />
+		</div>
+		
+		<div>
+			<div class="form-label-container"><label for="service">Service</label></div>
+			<input id="service" type="text" name="service" class="regix-form-input" value="<?php echo $this->edit_event['service']; ?>" />
+		</div>
+	
+		<div>
+			<button name="submit" type="submit" class="secondary-button">Save</button> <button name="cancel" type="submit" class="default-button last">Cancel</button>
+		</div>
+	</form>
+</div>
