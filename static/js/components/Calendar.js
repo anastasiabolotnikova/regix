@@ -205,7 +205,7 @@ function SlottedUI(from, to, slot_count, timeout, prev_date, next_date) {
 	
 	// Generate slots with given parameters
 	this.slots = [];
-	this.generate_slots();
+	this.generateSlots();
 	
 	// Set up autoupdater
 	this.timeout = timeout;
@@ -216,13 +216,15 @@ function SlottedUI(from, to, slot_count, timeout, prev_date, next_date) {
 	this.update_manager.addCallback(function(event) {
 		ui.eventAdder(event, sui);
 	});
+	
+	this.shown_slot = -1;
 }
 
 
 /**
  * Return formatted date as string for printing.
  */
-SlottedUI.format_date_time_only = function(date) {
+SlottedUI.formatDateTimeOnly = function(date) {
 	var m = date.getMinutes();
 	var h = date.getHours();
 	var ms = m < 10 ? "0"+m : m.toString();
@@ -233,7 +235,7 @@ SlottedUI.format_date_time_only = function(date) {
 /**
  * Return formatted date as string for printing (date only).
  */
-SlottedUI.format_date_day_only = function(date) {
+SlottedUI.formatDateDayOnly = function(date) {
 	var d = date.getDate();
 	var m = date.getMonth();
 	var y = date.getFullYear();
@@ -245,9 +247,9 @@ SlottedUI.format_date_day_only = function(date) {
 /**
  * Return formatted date as string for printing (with day).
  */
-SlottedUI.format_date = function(date) {
-	var t = SlottedUI.format_date_time_only(date);
-	var d = SlottedUI.format_date_day_only(date);
+SlottedUI.formatDate = function(date) {
+	var t = SlottedUI.formatDateTimeOnly(date);
+	var d = SlottedUI.formatDateDayOnly(date);
 	return d + ", " + t;
 }
 
@@ -255,20 +257,20 @@ SlottedUI.format_date = function(date) {
 /**
  * Display navigation
  */
-SlottedUI.prototype.update_navigation = function(prev, now, next) {
+SlottedUI.prototype.updateNavigation = function(prev, now, next) {
 	var self = this;
-	this.navigation_prev.text("<< " + SlottedUI.format_date_day_only(prev));
+	this.navigation_prev.text("<< " + SlottedUI.formatDateDayOnly(prev));
 	
-	this.navigation_now.text(SlottedUI.format_date(now));
+	this.navigation_now.text(SlottedUI.formatDate(now));
 	
-	this.navigation_next.text(SlottedUI.format_date_day_only(next) + " >>");
+	this.navigation_next.text(SlottedUI.formatDateDayOnly(next) + " >>");
 }
 
 
 /**
  * Create empty slots.
  */
-SlottedUI.prototype.generate_slots = function() {
+SlottedUI.prototype.generateSlots = function() {
 	var cur_slot;
 	var cur_date = new Date(this.from.valueOf());
 	var self = this;
@@ -277,10 +279,10 @@ SlottedUI.prototype.generate_slots = function() {
 		
 		cur_slot = this.timeline_slot_tpl.clone();
 		cur_slot.find(".time_slot_from").text(
-				SlottedUI.format_date_time_only(new Date(cur_date)));
+				SlottedUI.formatDateTimeOnly(new Date(cur_date)));
 		cur_date.setTime(cur_date.valueOf() + this.slot_time);
 		cur_slot.find(".time_slot_to").text(
-				SlottedUI.format_date_time_only(new Date(cur_date)));
+				SlottedUI.formatDateTimeOnly(new Date(cur_date)));
 		cur_slot.attr("id", "time_slot_"+i);
 		cur_slot.css("top", (i * this.slot_height) + "%");
 		cur_slot.css("height", this.slot_height + "%");
@@ -323,6 +325,10 @@ SlottedUI.prototype.eventAdder = function(event, ui) {
 		if(!this.slots[i].el.hasClass("timeline_slot_taken")) {
 			this.slots[i].el.addClass("timeline_slot_taken");
 		}
+		if (i == ui.shown_slot) {
+			// Refresh current view. May cause data loss.
+			ui.showSlot(i);
+		}
 	}
 }
 
@@ -337,8 +343,7 @@ SlottedUI.prototype.showSlot = function(idx) {
 	
 	if(idx < 0 || idx >= this.slots.length) {
 		// Invalid argument
-		this.event_bar.append(this.event_placeholder_tpl);
-		return;
+		idx = 0;
 	}
 	
 	// Display all events overlapping selected time slot.
@@ -350,9 +355,9 @@ SlottedUI.prototype.showSlot = function(idx) {
 		
 		// Show time
 		cur_event.find(".event_time").text(
-				SlottedUI.format_date_time_only(this.slots[idx].events[i].from) +
+				SlottedUI.formatDateTimeOnly(this.slots[idx].events[i].from) +
 				" — " +
-				SlottedUI.format_date_time_only(this.slots[idx].events[i].to));
+				SlottedUI.formatDateTimeOnly(this.slots[idx].events[i].to));
 		
 		// Show client information
 		cur_event.find(".event_client_name").text(
@@ -377,12 +382,13 @@ SlottedUI.prototype.showSlot = function(idx) {
 		this.event_bar.append(this.event_placeholder_tpl);
 	}
 	this.slots[idx].el.addClass("selected");
+	this.shown_slot = idx;
 }
 
 
 SlottedUI.prototype.setCurrentTime = function(date) {
 	
-	this.update_navigation(this.prev_date, date, this.next_date);
+	this.updateNavigation(this.prev_date, date, this.next_date);
 	
 	if (date < this.from || date > this.to) {
 		this.current_time_line.css("display", "none");
@@ -447,12 +453,12 @@ SlottedUI.prototype.stop = function() {
 
 
 var url = '/latest/events';
-var from = new Date("Fri Apr 14 2014 08:00:00 GMT+0300");
-var to = new Date("Fri Apr 14 2014 20:00:00 GMT+0300");
-var prev = new Date("Fri Apr 13 2014 08:00:00 GMT+0300");
-var next = new Date("Fri Apr 15 2014 08:00:00 GMT+0300");
+var from = new Date("Fri Apr 15 2014 08:00:00 GMT+0300");
+var to = new Date("Fri Apr 15 2014 18:00:00 GMT+0300");
+var prev = new Date("Fri Apr 14 2014 08:00:00 GMT+0300");
+var next = new Date("Fri Apr 16 2014 08:00:00 GMT+0300");
 
-sui = new SlottedUI(from, to, 9, 2000, prev, next);
+sui = new SlottedUI(from, to, 10, 2000, prev, next);
 
 sui.start();
 sui.showSlot(sui.timeToSlot(sui.getSystemTime()));
