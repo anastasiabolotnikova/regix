@@ -22,9 +22,6 @@ class MyPlanController extends Controller {
 	
 	public function show_plan_slotted($year, $month, $day) {
 		$view = new View(LAYOUTS.'MyPlan/plan_slotted_xhtml.phtml');
-		$viev->now_year = $year;
-		$view->now_month = $month;
-		$view->now_day = $day;
 		$view->from = gmdate('r', mktime(8, 0, 0, $month, $day, $year));
 		$view->to = gmdate('r', mktime(18, 0, 0, $month, $day, $year));
 		$view->prev = gmdate('r', mktime(8, 0, 0, $month, $day-1, $year));
@@ -60,7 +57,7 @@ class MyPlanController extends Controller {
 			// Plan view (selected date)
 			// year/month/day
 			$this->show_plan_slotted(
-					$this->args[0], $this->args[1],$this->args[2]);
+					$this->args[0], $this->args[1], $this->args[2]);
 			
 		} else {
 			// Plan view (today)
