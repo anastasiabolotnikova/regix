@@ -9,27 +9,37 @@
 </head>
 <body>
 <div id="container">
-	<div id="timeline_wrapper">
-		<div id="timeline">
-			<div id="current_time_line"></div>
-			<div id="timeline_slot_tpl" class="timeline_slot">
-				<div class="timeline_slot_time_wrapper">
-					<span class="time_slot_from"></span> — <span class="time_slot_to"></span>
+	<div id="navigation_container">
+		<div id="navigation">
+			<a id="navigation_prev" title="Previous date"></a>
+			<a id="navigation_now" title="Current time"></a>
+			<a id="navigation_next" title="Next date"></a>
+		</div>
+	</div>
+	
+	<div id="content_container">
+		<div id="timeline_wrapper">
+			<div id="timeline">
+				<div id="current_time_line"></div>
+				<div id="timeline_slot_tpl" class="timeline_slot">
+					<div class="timeline_slot_time_wrapper">
+						<span class="time_slot_from"></span> — <span class="time_slot_to"></span>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div id="event_bar">
-		<div id="event_tpl" class="event">
-			<div class="event_data_wrapper">
-				<div class="event_time"></div>
-				<div class="event_client"></div>
-				<div class="event_description"></div>
+		<div id="event_bar">
+			<div id="event_tpl" class="event">
+				<div class="event_data_wrapper">
+					<div class="event_time"></div>
+					<div class="event_client"></div>
+					<div class="event_description"></div>
+				</div>
 			</div>
-		</div>
-		<div id="event_placeholder_tpl" class="event_placeholder">
-			<div>
-				No events booked
+			<div id="event_placeholder_tpl" class="event_placeholder">
+				<div>
+					No events booked
+				</div>
 			</div>
 		</div>
 	</div>

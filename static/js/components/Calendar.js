@@ -71,12 +71,24 @@ Slot.prototype.addEvent = function(event) {
 }
 
 
-function SlottedUI(from, to, slot_count, timeout) {
+function SlottedUI(from, to, slot_count, timeout, prev_date, next_date) {
+	ui = this;
 	this.from = from;
 	this.to = to;
 	this.slot_count = slot_count;
 	this.slot_time = (to - from) / slot_count;
 	this.slot_height = 100 / slot_count;
+	
+	this.prev_date = prev_date;
+	this.next_date = next_date;
+	
+	this.navigation_prev = $("#navigation_prev");
+	this.navigation_now = $("#navigation_now");
+	this.navigation_next = $("#navigation_next");
+	
+	this.navigation_now.click(function() {
+		ui.showSlot(ui.timeToSlot(ui.getSystemTime()));
+	});
 	
 	this.event_bar = $("#event_bar");
 	this.event_tpl = $("#event_tpl").clone().removeAttr("id");
@@ -95,7 +107,6 @@ function SlottedUI(from, to, slot_count, timeout) {
 	this.intervalID = 0;
 	
 	this.update_manager = new UpdateManager(url, 2000);
-	ui = this;
 	this.update_manager.addCallback(function(event) {
 		ui.eventAdder(event, sui);
 	});
@@ -105,12 +116,46 @@ function SlottedUI(from, to, slot_count, timeout) {
 /**
  * Return formatted date as string for printing.
  */
-SlottedUI.format_date = function(date) {
+SlottedUI.format_date_time_only = function(date) {
 	var m = date.getMinutes();
 	var h = date.getHours();
 	var ms = m < 10 ? "0"+m : m.toString();
 	var hs = h < 10 ? "0"+h : h.toString();
 	return hs + ":" + ms;
+}
+
+/**
+ * Return formatted date as string for printing (date only).
+ */
+SlottedUI.format_date_day_only = function(date) {
+	var d = date.getDate();
+	var m = date.getMonth();
+	var y = date.getFullYear();
+	var ds = d < 10 ? "0"+d : d.toString();
+	var ms = m < 10 ? "0"+m : m.toString();
+	return ds + "." + ms + "." + y;
+}
+
+/**
+ * Return formatted date as string for printing (with day).
+ */
+SlottedUI.format_date = function(date) {
+	var t = SlottedUI.format_date_time_only(date);
+	var d = SlottedUI.format_date_day_only(date);
+	return d + ", " + t;
+}
+
+
+/**
+ * Display navigation
+ */
+SlottedUI.prototype.update_navigation = function(prev, now, next) {
+	var self = this;
+	this.navigation_prev.text("<< " + SlottedUI.format_date_day_only(prev));
+	
+	this.navigation_now.text(SlottedUI.format_date(now));
+	
+	this.navigation_next.text(SlottedUI.format_date_day_only(next) + " >>");
 }
 
 
@@ -126,10 +171,10 @@ SlottedUI.prototype.generate_slots = function() {
 		
 		cur_slot = this.timeline_slot_tpl.clone();
 		cur_slot.find(".time_slot_from").text(
-				SlottedUI.format_date(new Date(cur_date)));
+				SlottedUI.format_date_time_only(new Date(cur_date)));
 		cur_date.setTime(cur_date.valueOf() + this.slot_time);
 		cur_slot.find(".time_slot_to").text(
-				SlottedUI.format_date(new Date(cur_date)));
+				SlottedUI.format_date_time_only(new Date(cur_date)));
 		cur_slot.attr("id", "time_slot_"+i);
 		cur_slot.css("top", (i * this.slot_height) + "%");
 		cur_slot.css("height", this.slot_height + "%");
@@ -182,6 +227,7 @@ SlottedUI.prototype.eventAdder = function(event, ui) {
 SlottedUI.prototype.showSlot = function(idx) {
 	
 	this.event_bar.empty();
+	$(".timeline_slot").removeClass("selected");
 	
 	if(idx < 0 || idx >= this.slots.length) {
 		// Invalid argument
@@ -195,9 +241,9 @@ SlottedUI.prototype.showSlot = function(idx) {
 	for (var i = 0; i < this.slots[idx].events.length; i++) {
 		cur_event = this.event_tpl.clone();
 		cur_event.find(".event_time").text(
-				SlottedUI.format_date(this.slots[idx].events[i].from) +
+				SlottedUI.format_date_time_only(this.slots[idx].events[i].from) +
 				" — " +
-				SlottedUI.format_date(this.slots[idx].events[i].to));
+				SlottedUI.format_date_time_only(this.slots[idx].events[i].to));
 		
 		cur_event.find(".event_client").text(this.slots[idx].events[i].user);
 		cur_event.find(".event_description").text(
@@ -210,13 +256,14 @@ SlottedUI.prototype.showSlot = function(idx) {
 	if (!this.slots[idx].events.length) {
 		this.event_bar.append(this.event_placeholder_tpl);
 	}
-	
-	$(".timeline_slot").removeClass("selected");
 	this.slots[idx].el.addClass("selected");
 }
 
 
 SlottedUI.prototype.setCurrentTime = function(date) {
+	
+	this.update_navigation(this.prev_date, date, this.next_date);
+	
 	if (date < this.from || date > this.to) {
 		this.current_time_line.css("display", "none");
 	} else {
@@ -282,8 +329,10 @@ SlottedUI.prototype.stop = function() {
 var url = '/latest/events';
 var from = new Date("Fri Apr 14 2014 08:00:00 GMT+0300");
 var to = new Date("Fri Apr 14 2014 20:00:00 GMT+0300");
+var prev = new Date("Fri Apr 13 2014 08:00:00 GMT+0300");
+var next = new Date("Fri Apr 15 2014 08:00:00 GMT+0300");
 
-sui = new SlottedUI(from, to, 9, 2000);
+sui = new SlottedUI(from, to, 9, 2000, prev, next);
 
 sui.start();
 sui.showSlot(sui.timeToSlot(sui.getSystemTime()));
