@@ -21,6 +21,19 @@ body {
 	bottom: 0;
 }
 
+/* Message bar */
+
+#message_bar_container {
+	display: none;
+	height: 1em;
+	background-color: #E74C3C;
+	color: #EFEFEF;
+}
+
+#message_bar {
+	text-align: center;
+	padding: 0.3em;
+}
 
 /* Navigation */
 
@@ -41,11 +54,18 @@ body {
 	table-layout: fixed;
 	padding: 0.3em;
 	cursor: pointer;
+	text-decoration: none;
+	color: #3F5765;
 }
 
 #navigation a:HOVER {
 	color: #EFEFEF;
 	background-color: #3F5765;
+}
+
+#navigation_home {
+	width: 4.75em;
+	text-align: center;
 }
 
 #navigation_prev {

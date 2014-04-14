@@ -68,10 +68,13 @@ Event.parseEvent = function(ev_data) {
  * 
  * @param {string} url URL to request using AJAX.
  */
-function UpdateManager(url) {
+function UpdateManager(url, ajax_error_handler, ajax_recovery_handler) {
 	this.url = url;
 	this.events = {};
 	this.callbacks = $.Callbacks();
+	this.ajax_error_handler = ajax_error_handler;
+	this.ajax_recovery_handler = ajax_recovery_handler;
+	this.error = false;
 }
 
 
@@ -131,6 +134,29 @@ UpdateManager.prototype.parseData = function(data, update_manager) {
 
 
 /**
+ * @brief Handle AJAX errors.
+ * 
+ * @param {UpdateManager} update_manager Update manager that will be used to
+ * handle errors.
+ */
+UpdateManager.prototype.handleAjaxError = function(jqXHR, update_manager) {
+	this.error = true;
+	this.ajax_error_handler(jqXHR);
+}
+
+/**
+ * @brief Handle AJAX recovery after error.
+ * 
+ * @param {UpdateManager} update_manager Update manager that will be used to
+ * handle recovery from errors.
+ */
+UpdateManager.prototype.handleAjaxRecovery = function(update_manager) {
+	this.error = false;
+	this.ajax_recovery_handler();
+}
+
+
+/**
  * @brief Send a new request to server and parse response.
  * 
  * This method requests url configured when creating given UpdateManager object
@@ -143,7 +169,13 @@ UpdateManager.prototype.update = function(update_manager) {
 	$.ajax({
 		url: update_manager.url,
 		success: function(data) {
+			if (this.error) {
+				update_manager.handleAjaxRecovery(update_manager);
+			}
 			update_manager.parseData(data, update_manager);
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			update_manager.handleAjaxError(jqXHR, update_manager);
 		}
 	});
 }
@@ -184,6 +216,9 @@ function SlottedUI(from, to, slot_count, timeout, prev_date, next_date) {
 	this.prev_date = prev_date;
 	this.next_date = next_date;
 	
+	// Prepare message bar
+	this.message_bar_container = $("#message_bar_container");
+	
 	// Set up navigation
 	this.navigation_prev = $("#navigation_prev");
 	this.navigation_now = $("#navigation_now");
@@ -212,7 +247,16 @@ function SlottedUI(from, to, slot_count, timeout, prev_date, next_date) {
 	this.started = false;
 	this.intervalID = 0;
 	
-	this.update_manager = new UpdateManager(url, 2000);
+	this.update_manager = new UpdateManager(
+			url,
+			function(jqXHR) {
+				ui.ajaxErrorHandler(jqXHR, ui);
+			},
+			function() {
+				ui.ajaxRecoveryHandler(ui);
+			}
+	);
+	
 	this.update_manager.addCallback(function(event) {
 		ui.eventAdder(event, sui);
 	});
@@ -253,6 +297,21 @@ SlottedUI.formatDate = function(date) {
 	return d + ", " + t;
 }
 
+/**
+ * Handle AJAX errors
+ */
+SlottedUI.prototype.ajaxErrorHandler = function(jqXHR, ui) {
+	// Show message
+	ui.message_bar_container.css("display", "table-row");
+}
+
+/**
+ * Handle AJAX recovery
+ */
+SlottedUI.prototype.ajaxRecoveryHandler = function(ui) {
+	// Hide message
+	ui.message_bar_container.css("display", "none");
+}
 
 /**
  * Display navigation
@@ -449,16 +508,3 @@ SlottedUI.prototype.stop = function() {
 		clearInterval(this.intervalID);
 	}
 }
-
-
-
-var url = '/latest/events';
-var from = new Date("Fri Apr 15 2014 08:00:00 GMT+0300");
-var to = new Date("Fri Apr 15 2014 18:00:00 GMT+0300");
-var prev = new Date("Fri Apr 14 2014 08:00:00 GMT+0300");
-var next = new Date("Fri Apr 16 2014 08:00:00 GMT+0300");
-
-sui = new SlottedUI(from, to, 10, 2000, prev, next);
-
-sui.start();
-sui.showSlot(sui.timeToSlot(sui.getSystemTime()));
