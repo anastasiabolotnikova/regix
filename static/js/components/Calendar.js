@@ -23,9 +23,7 @@ Event.parseEvent = function(ev_data) {
 
 function UpdateManager(url) {
 	this.url = url;
-	
 	this.events = {};
-	
 	this.callbacks = $.Callbacks();
 }
 
@@ -51,12 +49,11 @@ UpdateManager.prototype.parseData = function(data, update_manager) {
 			});
 }
 
-UpdateManager.prototype.update = function(url) {
-	var self = this;
+UpdateManager.prototype.update = function(update_manager) {
 	$.ajax({
-		url: this.url,
+		url: update_manager.url,
 		success: function(data) {
-			self.parseData(data, self);
+			update_manager.parseData(data, update_manager);
 		}
 	});
 }
@@ -74,7 +71,7 @@ Slot.prototype.addEvent = function(event) {
 }
 
 
-function SlottedUI(from, to, slot_count) {
+function SlottedUI(from, to, slot_count, timeout) {
 	this.from = from;
 	this.to = to;
 	this.slot_count = slot_count;
@@ -86,10 +83,21 @@ function SlottedUI(from, to, slot_count) {
 	
 	this.timeline = $("#timeline");
 	this.timeline_slot_tpl = $("#timeline_slot_tpl").clone().removeAttr("id");
+	
 	this.current_time_line = $("#current_time_line");
 	
 	this.slots = [];
 	this.generate_slots();
+	
+	this.timeout = timeout;
+	this.started = false;
+	this.intervalID = 0;
+	
+	this.update_manager = new UpdateManager(url, 2000);
+	ui = this;
+	this.update_manager.addCallback(function(event) {
+		ui.eventAdder(event, sui);
+	});
 }
 
 
@@ -171,7 +179,6 @@ SlottedUI.prototype.eventAdder = function(event, ui) {
  * Display slot events in main area.
  */
 SlottedUI.prototype.showSlot = function(idx) {
-	console.log(this.slots[idx].events);
 	
 	this.event_bar.empty();
 	var width = 100 / this.slots[idx].events.length;
@@ -189,20 +196,64 @@ SlottedUI.prototype.showSlot = function(idx) {
 				this.slots[idx].events[i].description);
 		
 		cur_event.css("width", width + "%");
-		console.log(this.event_bar);
 		this.event_bar.append(cur_event);
 	}
 	
 }
 
+
+SlottedUI.prototype.setCurrentTime = function(date) {
+	if (date < this.from || date > this.to) {
+		this.current_time_line.css("display", "none");
+	} else {
+		current_time_line_pos = (date.valueOf() - this.from.valueOf()) / 
+				(this.to.valueOf() - this.from.valueOf()) * 100;
+		this.current_time_line.css("top", current_time_line_pos + "%");
+		this.current_time_line.css("display", "block");
+	}
+}
+
+SlottedUI.prototype.getSystemTime = function() {
+	return new Date();
+}
+
+SlottedUI.prototype.update = function() {
+	this.setCurrentTime(this.getSystemTime());
+	this.update_manager.update(this.update_manager);
+}
+
+SlottedUI.prototype.setTiemout = function(timeout) {
+	this.timeout = timeout;
+}
+
+SlottedUI.prototype.start = function() {
+	if (!this.started) {
+		this.started = true;
+		
+		ui = this;
+		ui.update();
+		
+		ui.intervalID = setInterval(
+				function() {
+					ui.update()
+				}, 
+				ui.timeout);
+	}
+}
+
+SlottedUI.prototype.stop = function() {
+	if (this.started) {
+		this.started = false;
+		clearInterval(this.intervalID);
+	}
+}
+
+
+
 var url = '/latest/events';
-var from = new Date("Fri Apr 18 2014 08:00:00 GMT+0300");
-var to = new Date("Fri Apr 18 2014 18:00:00 GMT+0300");
+var from = new Date("Fri Apr 14 2014 08:00:00 GMT+0300");
+var to = new Date("Fri Apr 14 2014 18:00:00 GMT+0300");
 
-sui = new SlottedUI(from, to, 5);
-um = new UpdateManager(url);
-um.addCallback(function(event) {
-	sui.eventAdder(event, sui);
-});
+sui = new SlottedUI(from, to, 5, 2000);
 
-um.update();
+sui.start();
