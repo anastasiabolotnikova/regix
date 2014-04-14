@@ -5,10 +5,14 @@
  * @this {Client}
  * @param {integer} id Id of the client (from the DB).
  * @param {string} name User name.
+ * @param {string} email Client email.
+ * @param {string} phone Client telephone number.
  */
-function Client(id, name) {
+function Client(id, name, email, phone) {
 	this.id = id;
 	this.name = name;
+	this.email = email;
+	this.phone = phone;
 }
 
 
@@ -46,7 +50,12 @@ Event.parseEvent = function(ev_data) {
 			$(ev_data).find("id").text(),
 			new Date($(ev_data).find("from").text()),
 			new Date($(ev_data).find("to").text()),
-			new Client(0, "TEST"),
+			new Client(
+					0,
+					"Bogus Client Name",
+					"bogus@examle.com",
+					"+555 5555"
+					),
 			$(ev_data).find("description").text()
 			);
 }
@@ -332,22 +341,35 @@ SlottedUI.prototype.showSlot = function(idx) {
 		return;
 	}
 	
-	var width = 100 / this.slots[idx].events.length;
+	// Display all events overlapping selected time slot.
+	var width = 100 / this.slots[idx].events.length; // width of a single card
 	var cur_event;
 	
 	for (var i = 0; i < this.slots[idx].events.length; i++) {
-		cur_event = this.event_tpl.clone();
+		cur_event = this.event_tpl.clone();	// Copy template
+		
+		// Show time
 		cur_event.find(".event_time").text(
 				SlottedUI.format_date_time_only(this.slots[idx].events[i].from) +
 				" — " +
 				SlottedUI.format_date_time_only(this.slots[idx].events[i].to));
 		
-		cur_event.find(".event_client").text(
+		// Show client information
+		cur_event.find(".event_client_name").text(
 				this.slots[idx].events[i].client.name);
+		cur_event.find(".event_client_email").text(
+				this.slots[idx].events[i].client.email);
+		cur_event.find(".event_client_phone").text(
+				this.slots[idx].events[i].client.phone);
+		
+		// Show description
 		cur_event.find(".event_description").text(
 				this.slots[idx].events[i].description);
 		
-		cur_event.css("width", width + "%");
+		if (i == this.slots[idx].events.length - 1) {
+			cur_event.addClass("last");
+		}
+		/*cur_event.css("width", width + "%");*/
 		this.event_bar.append(cur_event);
 	}
 	

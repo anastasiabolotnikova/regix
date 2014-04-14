@@ -18,6 +18,9 @@
 	</div>
 	
 	<div id="content_container">
+	
+		<!-- Timeline -->
+		
 		<div id="timeline_wrapper">
 			<div id="timeline">
 				<div id="current_time_line"></div>
@@ -28,20 +31,32 @@
 				</div>
 			</div>
 		</div>
-		<div id="event_bar">
-			<div id="event_tpl" class="event">
-				<div class="event_data_wrapper">
-					<div class="event_time"></div>
-					<div class="event_client"></div>
-					<div class="event_description"></div>
+		
+		<!-- Event details -->
+		
+		<div id="event_bar_wrapper">
+			<div id="event_bar">
+				<div id="event_tpl" class="event">
+					<div class="event_data_wrapper">
+						<div class="event_time"></div>
+						<div class="event_client_name"></div>
+						<div class="event_client_detail_container">
+							<span class="event_client_email"></span>
+						</div>
+						<div class="event_client_detail_container">
+							<span class="event_client_phone"></span>
+						</div>
+						<div class="event_description"></div>
+					</div>
 				</div>
-			</div>
-			<div id="event_placeholder_tpl" class="event_placeholder">
-				<div>
-					No events booked
+				<div id="event_placeholder_tpl" class="event_placeholder">
+					<div>
+						No events booked
+					</div>
 				</div>
 			</div>
 		</div>
+		
 	</div>
 </div>
 
