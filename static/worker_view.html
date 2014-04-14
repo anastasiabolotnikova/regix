@@ -9,6 +9,16 @@
 </head>
 <body>
 <div id="container">
+	<div id="timeline_wrapper">
+		<div id="timeline">
+			<div id="current_time_line"></div>
+			<div id="timeline_slot_tpl" class="timeline_slot">
+				<div class="timeline_slot_time_wrapper">
+					<span class="time_slot_from"></span> — <span class="time_slot_to"></span>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div id="event_bar">
 		<div id="event_tpl" class="event">
 			<div class="event_data_wrapper">
@@ -17,12 +27,8 @@
 				<div class="event_description"></div>
 			</div>
 		</div>
-	</div>
-	
-	<div id="timeline">
-		<div id="current_time_line"></div>
-		<div id="timeline_slot_tpl" class="timeline_slot">
-			<span class="time_slot_from"></span> — <span class="time_slot_to"></span>
+		<div id="event_placeholder_tpl" class="event_placeholder">
+			&nbsp;
 		</div>
 	</div>
 </div>

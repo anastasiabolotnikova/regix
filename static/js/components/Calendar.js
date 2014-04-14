@@ -80,6 +80,7 @@ function SlottedUI(from, to, slot_count, timeout) {
 	
 	this.event_bar = $("#event_bar");
 	this.event_tpl = $("#event_tpl").clone().removeAttr("id");
+	this.event_placeholder_tpl = $("#event_placeholder_tpl").clone().removeAttr("id");
 	
 	this.timeline = $("#timeline");
 	this.timeline_slot_tpl = $("#timeline_slot_tpl").clone().removeAttr("id");
@@ -181,6 +182,13 @@ SlottedUI.prototype.eventAdder = function(event, ui) {
 SlottedUI.prototype.showSlot = function(idx) {
 	
 	this.event_bar.empty();
+	
+	if(idx < 0 || idx >= this.slots.length) {
+		// Invalid argument
+		this.event_bar.append(this.event_placeholder_tpl);
+		return;
+	}
+	
 	var width = 100 / this.slots[idx].events.length;
 	var cur_event;
 	
@@ -199,6 +207,12 @@ SlottedUI.prototype.showSlot = function(idx) {
 		this.event_bar.append(cur_event);
 	}
 	
+	if (!this.slots[idx].events.length) {
+		this.event_bar.append(this.event_placeholder_tpl);
+	}
+	
+	$(".timeline_slot").removeClass("selected");
+	this.slots[idx].el.addClass("selected");
 }
 
 
@@ -217,6 +231,17 @@ SlottedUI.prototype.getSystemTime = function() {
 	return new Date();
 }
 
+SlottedUI.prototype.timeToSlot = function(time) {
+	if (time < this.from || time > this.to) {
+		// Not in range
+		return -1;
+	}
+	
+	return Math.floor((time - this.from) / this.slot_time);
+}
+
+//Autoupdater methods
+
 SlottedUI.prototype.update = function() {
 	this.setCurrentTime(this.getSystemTime());
 	this.update_manager.update(this.update_manager);
@@ -224,6 +249,10 @@ SlottedUI.prototype.update = function() {
 
 SlottedUI.prototype.setTiemout = function(timeout) {
 	this.timeout = timeout;
+	if(this.started) {
+		this.stop();
+		this.start();
+	}
 }
 
 SlottedUI.prototype.start = function() {
@@ -252,8 +281,9 @@ SlottedUI.prototype.stop = function() {
 
 var url = '/latest/events';
 var from = new Date("Fri Apr 14 2014 08:00:00 GMT+0300");
-var to = new Date("Fri Apr 14 2014 18:00:00 GMT+0300");
+var to = new Date("Fri Apr 14 2014 20:00:00 GMT+0300");
 
-sui = new SlottedUI(from, to, 5, 2000);
+sui = new SlottedUI(from, to, 9, 2000);
 
 sui.start();
+sui.showSlot(sui.timeToSlot(sui.getSystemTime()));
