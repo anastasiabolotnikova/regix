@@ -1,3 +1,10 @@
 CACHE MANIFEST
-/reg
+
+CACHE:
+/contact
 /css/style.css
+/fonts/Roboto.woff
+
+FALLBACK:
+/* /offline.html
+

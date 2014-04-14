@@ -9,7 +9,7 @@ class ContactPageController extends Controller{
 		$model = new Model($this->db, $this->session);
 		
 		$view_outer = new View(
-				REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
+				REGIX_PATH."views/layouts/layout_basic_html.phtml");
 		
 		$view_inner = new View(
 				REGIX_PATH."views/layouts/ContactPage/contact_page.phtml");
