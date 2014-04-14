@@ -1,40 +1,111 @@
-// Event
+/**
+ * @brief Class that represents a client (Regix user).
+ * 
+ * @constructor
+ * @this {Client}
+ * @param {integer} id Id of the client (from the DB).
+ * @param {string} name User name.
+ */
+function Client(id, name) {
+	this.id = id;
+	this.name = name;
+}
 
-function Event(id, from, to, user, description) {
+
+/**
+ * @brief Class that represents a single booked event.
+ * 
+ * @constructor
+ * @this {Event}
+ * @param {integer} id Id of the event (from the DB).
+ * @param {Date} from Date (with time) when the event begins.
+ * @param {Date} to Date (with time) when the event ends.
+ * @param {Client} to Client that registered the event.
+ * @param {string} description Description of the event.
+ * 
+ * @todo Replace stub client.
+ */
+function Event(id, from, to, client, description) {
 	this.id = id;
 	this.from = from;
 	this.to = to;
-	this.user = user;
+	this.client = client;
 	this.description = description;
 }
 
+
+/**
+ * @brief Parse an XML event into a new Event object.
+ * 
+ * @param {jQuery object} ev_data XML event.
+ * 
+ * @todo Replace stub client with real data.
+ */
 Event.parseEvent = function(ev_data) {
 	return new Event(
 			$(ev_data).find("id").text(),
 			new Date($(ev_data).find("from").text()),
 			new Date($(ev_data).find("to").text()),
-			"TEST",
+			new Client(0, "TEST"),
 			$(ev_data).find("description").text()
 			);
 }
 
 
-// Update manager
 
+
+/**
+ * @brief Object that receives new Events from the server.
+ * 
+ * @param {string} url URL to request using AJAX.
+ */
 function UpdateManager(url) {
 	this.url = url;
 	this.events = {};
 	this.callbacks = $.Callbacks();
 }
 
+
+/**
+ * @brief Add a callback that will be called for every Event received.
+ * 
+ * @param {Function() | Array} callbacks A function, or array of functions,
+ * that are to be added to the callback list. Note that callbacks will be passed
+ * an event that triggered them.
+ */
 UpdateManager.prototype.addCallback = function(callbacks) {
 	this.callbacks.add(callbacks);
 }
 
+
+/**
+ * @brief Remove a callback that will should be called for every Event received.
+ * 
+ * @param {Function() | Array} callbacks A function, or array of functions,
+ * that are to be removed from the callback list.
+ */
 UpdateManager.prototype.removeCallback = function(callbacks) {
 	this.callbacks.remove(callbacks);
 }
 
+
+/**
+ * @brief Parse an XML reply from the server.
+ * 
+ * This method parses an XML document passed as @a data and tries to create an
+ * Event object from every `<event>` entry in the document using
+ * Event.parseEvent method. For every new event (an event with an id that is not
+ * registered) callbacks of the UpdateManager @a update_manager will be
+ * triggered. Created Event will be passed as the only argument.
+ * 
+ * @param {string} data XML reply from the server containing a message with
+ * events.
+ * 
+ * @param {UpdateManager} update_manager An UpdateManager that will be used to
+ * trigger callbacks for new events.
+ * 
+ * @todo Implement error handling.
+ */
 UpdateManager.prototype.parseData = function(data, update_manager) {
 	
 	xmlData = $($.parseXML(data));
@@ -49,6 +120,16 @@ UpdateManager.prototype.parseData = function(data, update_manager) {
 			});
 }
 
+
+/**
+ * @brief Send a new request to server and parse response.
+ * 
+ * This method requests url configured when creating given UpdateManager object
+ * and parses received response using UpdateManager.prototype.parseData method.
+ * 
+ * @param {UpdateManager} update_manager Update manager that will be used to
+ * parse received response.
+ */
 UpdateManager.prototype.update = function(update_manager) {
 	$.ajax({
 		url: update_manager.url,
@@ -59,8 +140,11 @@ UpdateManager.prototype.update = function(update_manager) {
 }
 
 
-// UI
 
+
+/**
+ * Timeslot, a collection of events registered for given time.
+ */
 function Slot(el) {
 	this.el = el;
 	this.events = [];
@@ -71,8 +155,17 @@ Slot.prototype.addEvent = function(event) {
 }
 
 
+
+
+/**
+ * Main UI
+ */
 function SlottedUI(from, to, slot_count, timeout, prev_date, next_date) {
+	
+	// Closure
 	ui = this;
+	
+	// Save arguments and calculate parameters
 	this.from = from;
 	this.to = to;
 	this.slot_count = slot_count;
@@ -82,6 +175,7 @@ function SlottedUI(from, to, slot_count, timeout, prev_date, next_date) {
 	this.prev_date = prev_date;
 	this.next_date = next_date;
 	
+	// Set up navigation
 	this.navigation_prev = $("#navigation_prev");
 	this.navigation_now = $("#navigation_now");
 	this.navigation_next = $("#navigation_next");
@@ -90,18 +184,21 @@ function SlottedUI(from, to, slot_count, timeout, prev_date, next_date) {
 		ui.showSlot(ui.timeToSlot(ui.getSystemTime()));
 	});
 	
+	// Prepare event bar objects
 	this.event_bar = $("#event_bar");
 	this.event_tpl = $("#event_tpl").clone().removeAttr("id");
 	this.event_placeholder_tpl = $("#event_placeholder_tpl").clone().removeAttr("id");
 	
+	// Prepare timeline objects
 	this.timeline = $("#timeline");
 	this.timeline_slot_tpl = $("#timeline_slot_tpl").clone().removeAttr("id");
-	
 	this.current_time_line = $("#current_time_line");
 	
+	// Generate slots with given parameters
 	this.slots = [];
 	this.generate_slots();
 	
+	// Set up autoupdater
 	this.timeout = timeout;
 	this.started = false;
 	this.intervalID = 0;
@@ -245,7 +342,8 @@ SlottedUI.prototype.showSlot = function(idx) {
 				" — " +
 				SlottedUI.format_date_time_only(this.slots[idx].events[i].to));
 		
-		cur_event.find(".event_client").text(this.slots[idx].events[i].user);
+		cur_event.find(".event_client").text(
+				this.slots[idx].events[i].client.name);
 		cur_event.find(".event_description").text(
 				this.slots[idx].events[i].description);
 		
