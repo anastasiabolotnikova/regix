@@ -28,4 +28,4 @@ INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES 
 INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES ('list_permissions','User can see a list of all permissions in the system.',4);
 INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES ('list_permission_categories','User can see a list of all permission categories in the system.',4);
 INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES ('list_users','User can list all system users and see their personal data.',3);
-INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES ('list_event','User can see list of events and change it (update/delete)',0);
+INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES ('list_event','User can see list of events and change it (update/delete)',5);
