@@ -913,4 +913,42 @@ class MySQL_Adapter extends DB_Adapter {
 	
 		return $this->query($query, array($cal_id,$user_id,$desc,$assigned_user,$assigned_service,$from,$to,$id), "iisisssi", FALSE);
 	}
+	
+	// MyPlan
+	
+	public function select_events_by_employee_and_day(
+			$employee_id, $year, $month, $day) {
+		
+		$from = date("Y-m-d H:i:s", mktime(0, 0, 0, $month, $day, $year));
+		$to = date("Y-m-d H:i:s", mktime(23, 59, 59, $month, $day, $year));
+		
+		$query = "
+				select
+					`e`.`id` as `event_id`,
+					`e`.`user_id` as `client_id`,
+					`u`.`name` as `client_name`,
+					`assigned_service` as `service_uri`,
+					`s`.`name` as `service_name`,
+					`description`,
+					`from`,
+					`to`,
+					`sw`.`user_id` as `employee_id`
+				from `event` as `e`
+				
+				left join `service` as `s`
+				on `s`.`uri_name` = `e`.`assigned_service`
+				
+				left join `service_has_worker` as `sw`
+				on `sw`.`uri_name` = `e`.`assigned_service`
+				
+				left join `user` as `u`
+				on `u`.`id` = `e`.`user_id`
+				
+				where `sw`.`user_id` = ?
+				and `from` < ?
+				and `to` > ?;
+				";
+		
+		return $this->query($query, array($employee_id, $to, $from), "iss");
+	}
 }

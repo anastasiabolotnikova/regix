@@ -17,6 +17,20 @@ function Client(id, name, email, phone) {
 
 
 /**
+ * @brief Class that represents a Regix service.
+ * 
+ * @constructor
+ * @this {Service}
+ * @param {string} uri Service URI name.
+ * @param {string} name Service full name.
+ */
+function Service(uri, name) {
+	this.uri = uri;
+	this.name = name;
+}
+
+
+/**
  * @brief Class that represents a single booked event.
  * 
  * @constructor
@@ -26,15 +40,15 @@ function Client(id, name, email, phone) {
  * @param {Date} to Date (with time) when the event ends.
  * @param {Client} to Client that registered the event.
  * @param {string} description Description of the event.
- * 
- * @todo Replace stub client.
+ * @param {Service} service Service to which this event belongs.
  */
-function Event(id, from, to, client, description) {
+function Event(id, from, to, client, description, service) {
 	this.id = id;
 	this.from = from;
 	this.to = to;
 	this.client = client;
 	this.description = description;
+	this.service = service;
 }
 
 
@@ -51,12 +65,16 @@ Event.parseEvent = function(ev_data) {
 			new Date($(ev_data).find("from").text()),
 			new Date($(ev_data).find("to").text()),
 			new Client(
-					0,
-					"Bogus Client Name",
-					"bogus@examle.com",
-					"+555 5555"
+					parseInt($(ev_data).find("client_id").text()),
+					$(ev_data).find("client_name").text(),
+					$(ev_data).find("client_email").text(),
+					$(ev_data).find("client_phone").text()
 					),
-			$(ev_data).find("description").text()
+			$(ev_data).find("description").text(),
+			new Service(
+					$(ev_data).find("service_uri").text(), 
+					$(ev_data).find("service_name").text()
+					)
 			);
 }
 
@@ -66,6 +84,8 @@ Event.parseEvent = function(ev_data) {
 /**
  * @brief Object that receives new Events from the server.
  * 
+ * @constructor
+ * @this {UpdateManager}
  * @param {string} url URL to request using AJAX.
  */
 function UpdateManager(url, ajax_error_handler, ajax_recovery_handler) {
@@ -223,10 +243,7 @@ function SlottedUI(from, to, slot_count, timeout, prev_date, next_date) {
 	this.navigation_prev = $("#navigation_prev");
 	this.navigation_now = $("#navigation_now");
 	this.navigation_next = $("#navigation_next");
-	
-	this.navigation_now.click(function() {
-		ui.showSlot(ui.timeToSlot(ui.getSystemTime()));
-	});
+	this.updateNavigation(prev_date, from, next_date);
 	
 	// Prepare event bar objects
 	this.event_bar = $("#event_bar");
@@ -281,7 +298,7 @@ SlottedUI.formatDateTimeOnly = function(date) {
  */
 SlottedUI.formatDateDayOnly = function(date) {
 	var d = date.getDate();
-	var m = date.getMonth();
+	var m = date.getMonth() + 1;
 	var y = date.getFullYear();
 	var ds = d < 10 ? "0"+d : d.toString();
 	var ms = m < 10 ? "0"+m : m.toString();
@@ -315,14 +332,32 @@ SlottedUI.prototype.ajaxRecoveryHandler = function(ui) {
 
 /**
  * Display navigation
+ * 
+ * TODO: Implement links
  */
 SlottedUI.prototype.updateNavigation = function(prev, now, next) {
 	var self = this;
 	this.navigation_prev.text("<< " + SlottedUI.formatDateDayOnly(prev));
 	
-	this.navigation_now.text(SlottedUI.formatDate(now));
+	// TODO: This probably should allow to enable "live" mode
+	this.navigation_now.text(SlottedUI.formatDateDayOnly(now));
 	
 	this.navigation_next.text(SlottedUI.formatDateDayOnly(next) + " >>");
+	
+	
+	this.navigation_prev.click(function() {
+		location.href = "/myplan/" + prev.getFullYear() + "/" + 
+				(prev.getMonth() + 1) + "/" + prev.getDate();
+	});
+	
+	this.navigation_now.click(function() {
+		ui.showSlot(ui.timeToSlot(ui.getSystemTime()));
+	});
+	
+	this.navigation_next.click(function() {
+		location.href = "/myplan/" + next.getFullYear() + "/" + 
+			(next.getMonth() + 1) + "/" + next.getDate();
+	});
 }
 
 
@@ -418,6 +453,12 @@ SlottedUI.prototype.showSlot = function(idx) {
 				" — " +
 				SlottedUI.formatDateTimeOnly(this.slots[idx].events[i].to));
 		
+		// Show service information
+		cur_event.find(".event_service_name").text(
+				this.slots[idx].events[i].service.name);
+		cur_event.find(".event_service_uri").text(
+				this.slots[idx].events[i].service.uri);
+		
 		// Show client information
 		cur_event.find(".event_client_name").text(
 				this.slots[idx].events[i].client.name);
@@ -446,8 +487,6 @@ SlottedUI.prototype.showSlot = function(idx) {
 
 
 SlottedUI.prototype.setCurrentTime = function(date) {
-	
-	this.updateNavigation(this.prev_date, date, this.next_date);
 	
 	if (date < this.from || date > this.to) {
 		this.current_time_line.css("display", "none");

@@ -214,4 +214,9 @@ abstract class DB_Adapter {
 	// Latest
 	
 	abstract public function select_last_events($max_event_number);
+	
+	// MyPlan
+	
+	abstract public function select_events_by_employee_and_day(
+			$employee_id, $year, $month, $day);
 }

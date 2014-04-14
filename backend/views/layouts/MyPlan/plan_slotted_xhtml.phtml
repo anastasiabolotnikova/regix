@@ -5,7 +5,7 @@
 <title>Day overview</title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 <meta http-equiv="content-style-type" content="text/css"/>
-<link href="css/components/my_plan_style.css" rel="stylesheet" type="text/css"/>
+<link href="/css/components/my_plan_style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="container">
@@ -47,6 +47,9 @@
 				<div id="event_tpl" class="event">
 					<div class="event_data_wrapper">
 						<div class="event_time"></div>
+						<div class="event_service_data_container">
+							Service: <span class="event_service_name"></span> (<span class="event_service_uri"></span>)
+						</div>
 						<div class="event_client_name"></div>
 						<div class="event_client_detail_container">
 							<span class="event_client_email"></span>
@@ -68,16 +71,16 @@
 	</div>
 </div>
 
-<script type="text/javascript" src="js/libs/jquery-2.1.0.min.js"></script>
-<script type="text/javascript" src="js/components/Calendar.js"></script>
+<script type="text/javascript" src="/js/libs/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="/js/components/Calendar.js"></script>
 
 <script type="text/javascript">
 // Settings and startup
-var url = '/latest/events';
-var from = new Date("Fri Apr 15 2014 08:00:00 GMT+0300");
-var to = new Date("Fri Apr 15 2014 18:00:00 GMT+0300");
-var prev = new Date("Fri Apr 14 2014 08:00:00 GMT+0300");
-var next = new Date("Fri Apr 16 2014 08:00:00 GMT+0300");
+var from = new Date("<?php echo $this->from; ?>");
+var to = new Date("<?php echo $this->to; ?>");
+var prev = new Date("<?php echo $this->prev; ?>");
+var next = new Date("<?php echo $this->next; ?>");
+var url = "/myplan/ajax/" + from.getFullYear() + "/" + (from.getMonth() + 1) + "/" + from.getDate();
 
 sui = new SlottedUI(from, to, 10, 2000, prev, next);
 
