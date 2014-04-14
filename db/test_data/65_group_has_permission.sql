@@ -2,7 +2,7 @@
 -- Query: SELECT * FROM test_user.group_has_permission
 LIMIT 0, 1000
 
--- Date: 2014-04-01 19:12
+-- Date: 2014-04-15 02:15
 */
 INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Administrators','add_controller');
 INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Administrators','add_group');
@@ -24,9 +24,11 @@ INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Adm
 INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Administrators','edit_permission_category');
 INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Administrators','edit_user');
 INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Administrators','list_controllers');
+INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Administrators','list_event');
 INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Administrators','list_groups');
 INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Administrators','list_permissions');
 INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Administrators','list_permission_categories');
 INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Administrators','list_users');
-INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Administrators','list_event');
+INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Administrators','myplan_own_plan');
 INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Workers','list_event');
+INSERT INTO `group_has_permission` (`group_name`,`permission_name`) VALUES ('Workers','myplan_own_plan');

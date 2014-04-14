@@ -3,8 +3,5 @@ CACHE MANIFEST
 CACHE:
 /contact
 /css/style.css
+/img/debut_dark.png
 /fonts/Roboto.woff
-
-FALLBACK:
-/* /offline.html
-

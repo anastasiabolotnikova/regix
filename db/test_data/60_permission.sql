@@ -2,7 +2,7 @@
 -- Query: SELECT * FROM test_user.permission
 LIMIT 0, 1000
 
--- Date: 2014-04-01 19:11
+-- Date: 2014-04-15 02:14
 */
 INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES ('add_controller','User can add controller to the DB.',1);
 INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES ('add_group','User can add a new user group.',2);
@@ -24,8 +24,9 @@ INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES 
 INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES ('edit_permission_category','User can edit all permission categories.',4);
 INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES ('edit_user','User can edit any system user.',3);
 INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES ('list_controllers','User can access controller list.',1);
+INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES ('list_event','User can see list of events and change it (update/delete)',5);
 INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES ('list_groups','User can see a list of all groups.',2);
 INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES ('list_permissions','User can see a list of all permissions in the system.',4);
 INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES ('list_permission_categories','User can see a list of all permission categories in the system.',4);
 INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES ('list_users','User can list all system users and see their personal data.',3);
-INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES ('list_event','User can see list of events and change it (update/delete)',5);
+INSERT INTO `permission` (`name`,`description`,`permission_category_id`) VALUES ('myplan_own_plan','User can use MyPlan module to see his own plan.',6);
