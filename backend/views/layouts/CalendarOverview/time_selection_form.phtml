@@ -13,12 +13,12 @@
                     $selectedDate = mktime(0,0,0,$this->month,$this->day,$this->year);
 					$today = mktime(0,0,0,$this->currmonth,$this->currday,$this->curryear);
 					if($today<$selectedDate){
-						echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->prevday."'>&lt;&lt;&nbsp;</a>";
+						echo "<a class=\"no_deco\" id=\"prev\" href='/".$this->cal_uri."/".$this->service."/".$this->prevday."'>&lt;&lt;&nbsp;</a>";
 						echo date("F", mktime(0,0,0,$this->month,$this->day,$this->year)); echo " ".$this->day; 
-						echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->nextday."'>&nbsp;&gt;&gt;</a>";
+						echo "<a class=\"no_deco\" id=\"next\" href='/".$this->cal_uri."/".$this->service."/".$this->nextday."'>&nbsp;&gt;&gt;</a>";
 					}else{
 						echo date("F", mktime(0,0,0,$this->month,$this->day,$this->year)); echo " ".$this->day; 
-						echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->nextday."'>&nbsp;&gt;&gt;</a>";
+						echo "<a class=\"no_deco\" id=\"next\" href='/".$this->cal_uri."/".$this->service."/".$this->nextday."'>&nbsp;&gt;&gt;</a>";
 					}
 				?>
 			</h1>

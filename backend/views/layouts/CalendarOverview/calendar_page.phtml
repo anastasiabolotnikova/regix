@@ -12,16 +12,16 @@
 		<table>
 			<thead><tr><th colspan="7"><h1>
 				<?php 
-					if($this->month > $this->currmonth or $this->month < $this->currmonth and $this->year > $this->curryear){
-						 echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->prevmonth."'>&lt;&lt;&nbsp;</a>";
+					if($this->month > $this->currmonth or $this->month < $this->currmonth and $this->year > $this->curryear){ 
+						 echo "<a class=\"no_deco\" id=\"prev\" href='/".$this->cal_uri."/".$this->service."/".$this->prevmonth."'>&lt;&lt;&nbsp;</a>";
 					     echo date("F", mktime(0,0,0,$this->month,$this->day,$this->year));
 					     echo "&nbsp;".$this->year;
-					     echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->nextmonth."'>&nbsp;&gt;&gt;</a>";
+					     echo "<a class=\"no_deco\" id=\"next\" href='/".$this->cal_uri."/".$this->service."/".$this->nextmonth."'>&nbsp;&gt;&gt;</a>";
 				 	}
 				 	else{
 				 		 echo date("F", mktime(0,0,0,$this->month,$this->day,$this->year));
 					     echo "&nbsp;".$this->year;
-					     echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->nextmonth."'>&nbsp;&gt;&gt;</a>";
+					     echo "<a class=\"no_deco\" id=\"next\" href='/".$this->cal_uri."/".$this->service."/".$this->nextmonth."'>&nbsp;&gt;&gt;</a>";
 				 	}
 				?>
 				</h1></th></tr></thead>
