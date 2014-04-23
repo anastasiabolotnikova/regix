@@ -17,7 +17,7 @@ class ProfilePageController extends Controller{
 		
 		$view_content = new View(
 					REGIX_PATH."views/layouts/UserProfilePage/content_user_profile.phtml");
-		$title = "Registration :: Regix";
+		$title = "Profile :: Regix";
 		
 		$view_outer = new View(REGIX_PATH."views/layouts/layout_basic_xhtml.phtml");
 		
