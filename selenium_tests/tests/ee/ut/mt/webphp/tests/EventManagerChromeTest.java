@@ -16,9 +16,9 @@ public class EventManagerChromeTest extends TestCase {
 
   @Before
   public void setUp() throws Exception {
-  System.setProperty("webdriver.chrome.driver", "C:/Selenium/chromedriver.exe");
+  System.setProperty("webdriver.chrome.driver", "F:/Selenium/chromedriver.exe");
   driver = new ChromeDriver();
-    baseUrl = "http://regix/";
+    baseUrl = "http://regix.dev/";
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
   }
   
