@@ -1,14 +1,15 @@
-package ee.ut.mt.webphp.tests;
+package testproject;
 
 import java.util.concurrent.TimeUnit;
 
+import junit.framework.TestCase;
+
 import org.junit.*;
 
-import static org.junit.Assert.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class CalendarFirefoxTest {
+public class CalendarFirefoxTest extends TestCase {
   private WebDriver driver;
   private String baseUrl;
   private StringBuffer verificationErrors = new StringBuffer();

@@ -1,12 +1,15 @@
-package ee.ut.mt.webphp.tests;
+package testproject;
 
 import java.util.concurrent.TimeUnit;
+
+import junit.framework.TestCase;
+
 import org.junit.*;
-import static org.junit.Assert.*;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class EventManagerFirefoxTest {
+public class EventManagerFirefoxTest extends TestCase {
   private WebDriver driver;
   private String baseUrl;
   private StringBuffer verificationErrors = new StringBuffer();
@@ -19,32 +22,32 @@ public class EventManagerFirefoxTest {
   }
   
   public void removeEvents() throws Exception {
-		// Login as admin
-	    driver.get(baseUrl + "login");
-	    driver.findElement(By.id("login")).clear();
-	    driver.findElement(By.id("login")).sendKeys("test");
-	    driver.findElement(By.id("password")).clear();
-	    driver.findElement(By.id("password")).sendKeys("test_password");
-	    driver.findElement(By.name("submit")).click();
-	    
-	    //Delete event
-	    driver.get(baseUrl + "emc");
-	    driver.findElement(By.xpath("//td/div[contains(text(), \"selenium_test_event_added\")]/../../td/div/a")).click();
-	    assertEquals("Event deleted", driver.findElement(By.cssSelector("div.success_message_block")).getText());
+    // Login as admin
+      driver.get(baseUrl + "login");
+      driver.findElement(By.id("login")).clear();
+      driver.findElement(By.id("login")).sendKeys("test");
+      driver.findElement(By.id("password")).clear();
+      driver.findElement(By.id("password")).sendKeys("test_password");
+      driver.findElement(By.name("submit")).click();
+      
+      //Delete event
+      driver.get(baseUrl + "emc");
+      driver.findElement(By.xpath("//td/div[contains(text(), \"selenium_test_event_added\")]/../../td/div/a")).click();
+      assertEquals("Event deleted", driver.findElement(By.cssSelector("div.success_message_block")).getText());
   }
 
   @Test
   public void testGuest() throws Exception {
-	// Login as admin
-	driver.get(baseUrl + "login");
-	driver.findElement(By.id("login")).clear();
-	driver.findElement(By.id("login")).sendKeys("test");
-	driver.findElement(By.id("password")).clear();
-	driver.findElement(By.id("password")).sendKeys("test_password");
-	driver.findElement(By.name("submit")).click();
-	
-	//Edit Event
-	driver.get(baseUrl + "emc");
+  // Login as admin
+  driver.get(baseUrl + "login");
+  driver.findElement(By.id("login")).clear();
+  driver.findElement(By.id("login")).sendKeys("test");
+  driver.findElement(By.id("password")).clear();
+  driver.findElement(By.id("password")).sendKeys("test_password");
+  driver.findElement(By.name("submit")).click();
+  
+  //Edit Event
+  driver.get(baseUrl + "emc");
     driver.findElement(By.xpath("//div[@id='content']/div/div/table/tbody/tr[2]/td[5]/div")).click();
     driver.findElement(By.id("from")).clear();
     driver.findElement(By.id("from")).sendKeys("2014-03-12 11:00:00");
@@ -76,7 +79,7 @@ public class EventManagerFirefoxTest {
 
   @After
   public void tearDown() throws Exception {
-	removeEvents();
+  removeEvents();
     driver.quit();
     String verificationErrorString = verificationErrors.toString();
     if (!"".equals(verificationErrorString)) {
