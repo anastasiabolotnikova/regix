@@ -64,7 +64,6 @@ class EventManagerController extends Controller {
 					isset($_POST["service"])) {
 			
 				// Save user
-				
 				$event_data_in = array(
 						"from" => $_POST["from"],
 						"to" => $_POST["to"],
