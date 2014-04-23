@@ -5,18 +5,18 @@ import java.util.concurrent.TimeUnit;
 import junit.framework.TestCase;
 
 import org.junit.*;
+
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class MyPlanFirefoxTest extends TestCase {
+public class MyPlanChromeTest extends TestCase {
 	private WebDriver driver;
 	private String baseUrl;
 	private StringBuffer verificationErrors = new StringBuffer();
 
 	@Before
 	public void setUp() throws Exception {
-		driver = new ChromeDriver();
+		driver = new FirefoxDriver();
 		baseUrl = "http://regix.dev/";
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		addUsers();
