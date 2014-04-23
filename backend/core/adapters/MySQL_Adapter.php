@@ -274,7 +274,7 @@ class MySQL_Adapter extends DB_Adapter {
 
 	public function select_all_services() {
 		$query = "
-				select *
+				select `uri_name`, `name`
 				from  `service`
 				";
 	
@@ -310,10 +310,12 @@ class MySQL_Adapter extends DB_Adapter {
 
 	 public function select_all_workers_with_service_mark($service_uri_name) {
 		$query = "
-		   select `name`, `user`.`id` as id
+		   select `user`.`name` as `name`, `user`.`id` as id
 		   from `user`
-		   join `service_has_worker`
-		   on `user`.`id` = `service_has_worker`.`user_id`
+		   join `user_has_group`
+		   on `user`.`id` = `user_has_group`.`user_id`
+		   join `service_has_group`
+		   on `user_has_group`.`group_name` = `service_has_group`.`group_name`
 		   where `uri_name`=?
 		   group by `name`;";
 		
@@ -831,9 +833,11 @@ class MySQL_Adapter extends DB_Adapter {
 	}
 	public function count_workers_from_service($assigned_service) {
 		$query = "
-				SELECT COUNT(  `user_id` ) as qty
-				FROM  `service_has_worker` 
-				WHERE  `uri_name` =  ?
+				SELECT COUNT(`user_has_group`.`user_id`) as qty
+				FROM  `service_has_group`
+				JOIN `user_has_group`
+				ON `user_has_group`.`group_name` = `service_has_group`.`group_name`
+				WHERE  `service_has_group`.`uri_name` =  ?
 				";
 		
 		return $this->query($query, array($assigned_service), "s");
@@ -932,23 +936,48 @@ class MySQL_Adapter extends DB_Adapter {
 					`description`,
 					`from`,
 					`to`,
-					`sw`.`user_id` as `employee_id`
+					`ug`.`user_id` as `employee_id`
 				from `event` as `e`
 				
 				left join `service` as `s`
 				on `s`.`uri_name` = `e`.`assigned_service`
 				
-				left join `service_has_worker` as `sw`
-				on `sw`.`uri_name` = `e`.`assigned_service`
+				left join `service_has_group` as `sg`
+				on `sg`.`uri_name` = `e`.`assigned_service`
+				
+				left join `user_has_group` as `ug`
+				on `ug`.`group_name` = `sg`.`group_name`
 				
 				left join `user` as `u`
 				on `u`.`id` = `e`.`user_id`
 				
-				where `sw`.`user_id` = ?
+				where `ug`.`user_id` = ?
 				and `from` < ?
 				and `to` > ?;
 				";
 		
 		return $this->query($query, array($employee_id, $to, $from), "iss");
+	}
+	
+	// Service manager
+	
+	public function select_service_data($service_uri_name) {
+		$query = "
+				select `name`, `uri_name`
+				from `service`
+				where `uri_name` = ?;
+				";
+	
+		return $this->query($query, array($service_uri_name), "s");
+	}
+	
+	public function select_service_groups($service_uri_name) {
+		$query = "
+				select `group_name`
+				from `service_has_group`
+				where `uri_name` = ?;
+				";
+		
+		return $this->query($query, array($service_uri_name), "s");
 	}
 }

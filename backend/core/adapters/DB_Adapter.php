@@ -219,4 +219,12 @@ abstract class DB_Adapter {
 	
 	abstract public function select_events_by_employee_and_day(
 			$employee_id, $year, $month, $day);
+	
+	// Service manager
+	
+	abstract public function select_all_services();
+	
+	abstract public function select_service_data($service_uri_name);
+	
+	abstract public function select_service_groups($service_uri_name);
 }

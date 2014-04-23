@@ -1,0 +1,60 @@
+<div class="regix-form-container">
+
+	<form action="/<?php echo $this->controller_uri_name; ?>/save/<?php echo $this->edit_user_id; ?>" method="post" class="regix-form">
+		<h1><?php echo $this->service_data['name']; ?></h1>
+
+		<div>
+			<div class="form-label-container"><label for="name">Name</label></div>
+			<input id="name" type="text" name="name" class="regix-form-input" value="<?php echo $this->service_data['name']; ?>" />
+		</div>
+
+		<div>
+			<div class="form-label-container"><label for="uri_name">URI</label></div>
+			<input id="uri_name" type="text" name="uri_name" class="regix-form-input" value="<?php echo $this->service_data['uri_name']; ?>" />
+		</div>
+		
+		<div class="button-holder">
+			<div><button name="submit" type="submit" class="secondary-button-single">Save</button></div>
+		</div>
+		
+	</form>
+	
+	<div class="table-content">
+		<table>
+			<thead>
+				<tr>
+					<th colspan="2">
+						Groups
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($this->service_groups as $service_group) { ?>
+				<tr>
+					<td>
+						<?php echo($service_group["group_name"]); ?>
+					</td>
+					<td>
+						<a href="/<?php echo($this->controller_uri_name . "/delete_group/" . urlencode($this->service_data['uri_name']) . '/' . urlencode($service_group["group_name"])); ?>">remove</a>
+					</td>
+				</tr>
+				<?php } ?>
+			</tbody>
+		</table>
+	</div>
+		
+	<div class="button-holder">
+		<form action="/<?php echo ($this->controller_uri_name . "/add_group/" . urlencode($this->service_data['uri_name'])); ?>" method="post" class="regix-form">
+			<div>
+				<button name="submit" type="submit" class="secondary-button-single first">Add group</button>
+			</div>
+		</form>
+	</div>
+	<div class="button-holder">
+		<form action="/<?php echo ($this->controller_uri_name . "/delete/" . urlencode($this->service_data['uri_name'])); ?>" method="post" class="regix-form">
+			<div>
+				<button name="submit" type="submit" class="warning-button-single last">Delete service</button>
+			</div>
+		</form>
+	</div>
+</div>

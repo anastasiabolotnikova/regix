@@ -1,0 +1,40 @@
+<div class="regix-form-container">
+	<form action="#" class="regix-form">
+	<h1>Services</h1>
+<div class="table-content">
+		<table class="hover-row">
+		<thead>
+			<tr><th>Name</th><th>URI</th></tr>
+		</thead>
+		<tbody>
+	<?php	
+		if ($this->services){
+			foreach ($this->services as $service) {
+	?>
+				<tr onclick="location.href='/<?php echo ($this->controller_uri_name . "/edit/" . urlencode($service['uri_name'])); ?>'">
+					<td>
+						<div>
+						<?php echo $service['name']; ?>
+						</div>
+					</td>
+					<td>
+					<div>
+						<?php echo $service['uri_name']; ?>
+						</div>
+					</td>
+				</tr>
+	<?php
+			} 
+		}
+	?>
+		</tbody>
+	</table>
+</div>
+	</form>		
+
+	<div class="button-holder">
+	<form action="/<?php echo $this->controller_uri_name; ?>/add" class="regix-form">
+		<div><button name="submit" type="submit" class="secondary-button-single first" >Add service</button></div>		
+	</form>
+	</div>
+</div>
