@@ -448,10 +448,11 @@ SlottedUI.prototype.showSlot = function(idx) {
 		cur_event = this.event_tpl.clone();	// Copy template
 		
 		// Show time
-		cur_event.find(".event_time").text(
-				SlottedUI.formatDateTimeOnly(this.slots[idx].events[i].from) +
-				" — " +
+		cur_event.find(".event_time_from").text(
+				SlottedUI.formatDateTimeOnly(this.slots[idx].events[i].from));
+		cur_event.find(".event_time_to").text(
 				SlottedUI.formatDateTimeOnly(this.slots[idx].events[i].to));
+		
 		
 		// Show service information
 		cur_event.find(".event_service_name").text(
