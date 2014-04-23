@@ -13,6 +13,10 @@ public class RegixTests {
 		suite.addTestSuite(RegistrationChromeTest.class);
 		suite.addTestSuite(SignInFirefoxTest.class);
 		suite.addTestSuite(SignInChromeTest.class);
+		suite.addTestSuite(CalendarFirefoxTest.class);
+		suite.addTestSuite(CalendarChromeTest.class);
+		suite.addTestSuite(EventManagerFirefoxTest.class);
+		suite.addTestSuite(EventManagerChromeTest.class);
 		return suite;
 	}
 
