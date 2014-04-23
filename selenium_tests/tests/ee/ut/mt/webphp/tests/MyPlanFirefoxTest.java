@@ -7,7 +7,6 @@ import junit.framework.TestCase;
 import org.junit.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class MyPlanFirefoxTest extends TestCase {
 	private WebDriver driver;

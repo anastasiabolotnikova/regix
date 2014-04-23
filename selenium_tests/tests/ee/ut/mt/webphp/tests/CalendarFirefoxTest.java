@@ -1,4 +1,4 @@
-package testproject;
+package ee.ut.mt.webphp.tests;
 
 import java.util.concurrent.TimeUnit;
 
