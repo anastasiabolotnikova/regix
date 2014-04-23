@@ -18,7 +18,7 @@
 						echo "<a class=\"no_deco\" id=\"next\" href='/".$this->cal_uri."/".$this->service."/".$this->nextday."'>&nbsp;&gt;&gt;</a>";
 					}else{
 						echo date("F", mktime(0,0,0,$this->month,$this->day,$this->year)); echo " ".$this->day; 
-						echo "<a class=\"no_deco\" href='/".$this->cal_uri."/".$this->service."/".$this->nextday."'>&nbsp;&gt;&gt;</a>";
+						echo "<a class=\"no_deco\" id=\"next\" href='/".$this->cal_uri."/".$this->service."/".$this->nextday."'>&nbsp;&gt;&gt;</a>";
 					}
 				?>
 			</h1>
