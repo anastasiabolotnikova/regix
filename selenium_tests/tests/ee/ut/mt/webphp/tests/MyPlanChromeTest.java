@@ -5,9 +5,8 @@ import java.util.concurrent.TimeUnit;
 import junit.framework.TestCase;
 
 import org.junit.*;
-
 import org.openqa.selenium.*;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 public class MyPlanChromeTest extends TestCase {
 	private WebDriver driver;
@@ -16,7 +15,7 @@ public class MyPlanChromeTest extends TestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		driver = new FirefoxDriver();
+		driver = new ChromeDriver();
 		baseUrl = "http://regix.dev/";
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		addUsers();
@@ -93,9 +92,45 @@ public class MyPlanChromeTest extends TestCase {
 	}
 	
 	public void addEvents() throws Exception {
+		// Login as admin
+	    driver.get(baseUrl + "login");
+	    driver.findElement(By.id("login")).clear();
+	    driver.findElement(By.id("login")).sendKeys("test");
+	    driver.findElement(By.id("password")).clear();
+	    driver.findElement(By.id("password")).sendKeys("test_password");
+	    driver.findElement(By.name("submit")).click();
+	    
+		driver.get(baseUrl + "calendar/tserv1/2014/1/1/8");
+	    driver.findElement(By.id("comment")).clear();
+	    driver.findElement(By.id("comment")).sendKeys("test_event1");
+	    driver.findElement(By.name("reg_event")).click();
+	    
+	    driver.get(baseUrl + "calendar/tserv1/2014/1/1/8");
+	    driver.findElement(By.id("comment")).clear();
+	    driver.findElement(By.id("comment")).sendKeys("test_event2");
+	    driver.findElement(By.name("reg_event")).click();
+	    
+	    driver.get(baseUrl + "calendar/tserv1/2014/1/1/12");
+	    driver.findElement(By.id("comment")).clear();
+	    driver.findElement(By.id("comment")).sendKeys("test_event3");
+	    driver.findElement(By.name("reg_event")).click();
 	}
 	
 	public void removeEvents() throws Exception {
+		// Login as admin
+	    driver.get(baseUrl + "login");
+	    driver.findElement(By.id("login")).clear();
+	    driver.findElement(By.id("login")).sendKeys("test");
+	    driver.findElement(By.id("password")).clear();
+	    driver.findElement(By.id("password")).sendKeys("test_password");
+	    driver.findElement(By.name("submit")).click();
+	    
+		driver.get(baseUrl + "emc");
+		driver.findElement(By.xpath("//div[contains(text(), 'test_event1')]/../../td/div/a")).click();
+		driver.get(baseUrl + "emc");
+		driver.findElement(By.xpath("//div[contains(text(), 'test_event2')]/../../td/div/a")).click();
+		driver.get(baseUrl + "emc");
+		driver.findElement(By.xpath("//div[contains(text(), 'test_event3')]/../../td/div/a")).click();
 	}
 	
 	// Generic complex asserts.
