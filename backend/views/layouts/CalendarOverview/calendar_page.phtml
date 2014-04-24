@@ -27,8 +27,7 @@
 				</h1></th></tr></thead>
 			<tr><td><div class="week-day">Monday</div></td><td><div class="week-day">Tuesday</div></td><td><div class="week-day">Wednesday</div></td><td><div class="week-day">Thursday</div></td><td><div class="week-day">Friday</div></td><td><div>Saturday</div></td><td class="last"><div class="week-day">Sunday</div></td></tr>
 			<?php
-			$month_stamp=mktime(0,0,0,$this->month,$this->day,$this->year);
-			$day_count=date("t",$month_stamp);
+			$day_count=cal_days_in_month(CAL_GREGORIAN, $this->month, $this->year);
 			$i=$this->wd;
 			echo "<tr>\n";
 			if($this->wd!=1){
