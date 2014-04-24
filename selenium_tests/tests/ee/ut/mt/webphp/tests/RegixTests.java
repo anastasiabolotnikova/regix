@@ -17,6 +17,8 @@ public class RegixTests {
 		suite.addTestSuite(CalendarChromeTest.class);
 		suite.addTestSuite(EventManagerFirefoxTest.class);
 		suite.addTestSuite(EventManagerChromeTest.class);
+		suite.addTestSuite(PermissionManagerFirefoxTest.class);
+		suite.addTestSuite(PermissionManagerChromeTest.class);
 		return suite;
 	}
 
