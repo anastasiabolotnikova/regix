@@ -731,7 +731,14 @@ class MySQL_Adapter extends DB_Adapter {
 	public function insert_new_event($user_id, $description, $assigned_user, $assigned_service, $from, $to) {
 
 		$query = "
-				INSERT INTO `event`(`calendar_id`, `user_id`, `description`, `assigned_user`, `assigned_service`, `from`, `to`) 
+				INSERT INTO `event`
+					(`calendar_id`,
+					`user_id`,
+					`description`,
+					`assigned_user`,
+					`assigned_service`,
+					`from`,
+					`to`) 
 				VALUES (1,?,?,?,?,?,?);
 				";
 	
