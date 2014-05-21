@@ -5,26 +5,27 @@
 <head>
 	<title><?php echo $this->title; ?></title>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<meta name="viewport" content="width=480"/>
 	<link rel="stylesheet" href="/css/style.css" />
 </head>
 
 <body class="body_normal">
-	<div id="container">
-		
-		<div id="header"><div id="header_user">Signed in as <a href="/prof"><?php echo $this->user_name; ?></a> <a href="/login/logout" class="no_deco">&times;</a></div></div>
-		
+	<div id="container">		
+		<div id="regixnav">
+		<ul>
+			<li><a href="/login/logout"><span>&#10006;</span></a>
+			</li>
+			<li><a href="/prof"><span>Signed in as <span class="user_name"><?php echo $this->user_name; ?></span></span></a>
+			</li>
+			<li><a href="/"><span>MAIN PAGE</span></a>
+			</li>	
+		</ul>
+		</div>
+			
 		<div id="content">
 			<?php echo $this->content; ?>
 			<div class="push"></div>
-		</div>
-		
-		<div id="footer">
-			<div id="footer_content">
-				<a href="/">&lt;&lt; Back to the main page</a>
-			</div>
-		</div>
-		
+		</div>		
 	</div>
 
 	<script src="/js/libs/jquery-2.1.0.min.js" type="text/javascript"></script>

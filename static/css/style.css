@@ -422,3 +422,77 @@ th, td {
 th{
 	padding: 15px 20px 15px 20px;
 }
+
+
+
+
+/* NAVBAR */
+
+#regixnav {
+	background: #f4f4f4;
+	width: auto;
+	margin-bottom: 30px;
+}
+#regixnav ul {
+	list-style: none;
+	margin: 0;
+	line-height: 1;
+	text-align: right;
+	background: #f4f4f4;
+	padding: 15px 20px 30px 20px
+}
+#regixnav ul:after {
+	content: ' ';
+	font-size: 0;
+	height: 0;
+	visibility: hidden;
+}
+#regixnav ul li {
+	float: right;
+    list-style: none;
+	padding: 0 5px;
+    text-align: center;
+}
+
+#regixnav ul li:last-child {
+	float: left;
+}
+
+#regixnav ul li a {
+	color: #3b3b3b;
+	text-decoration: none;
+	font-weight: 700;
+	font-size: 14px;
+	position: relative;
+	transition: color .25s;
+	padding: 15px 25px;
+}
+
+#regixnav ul li a:hover{
+	color: #2db576;
+}
+
+#regixnav ul li a:hover:before {
+	width: 100%;
+}
+
+#regixnav ul li a:before {
+	content: '';
+	display: block;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	height: 3px;
+	width: 0;
+	background: #2db576;
+	transition: width .35s ease;
+}
+#regixnav ul li.active a {
+	color: #2a2a2a;
+}
+#regixnav ul li.active a:before {
+	width: 100%;
+}
+.user_name{
+	color: #2db576;
+}
