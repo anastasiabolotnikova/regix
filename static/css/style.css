@@ -66,14 +66,6 @@ a.no_deco {
 	margin: 0;
 }
 
-#header {
-	width: 100%;
-	/*border-bottom: 1px solid #babdb6;*/
-	color: #babdb6;
-	font-size: 0.8em;
-	overflow: auto;
-}
-
 #header.warning_dark{
 	background-color: #a40000;
 	color: #fff;
@@ -85,23 +77,6 @@ a.no_deco {
 	border: 0;
 	margin: 0;
 }
-
-#footer {
-	width: 100%;
-	height: 2.5em;
-	
-	position: absolute;
-	bottom: 0;
-	
-	/*border-top: 1px solid #babdb6;*/
-	
-	color: #babdb6;
-	font-size: 0.8em;
-	
-	overflow: auto;
-}
-
-
 
 .error_message_block {
 	width: 24em;
@@ -130,16 +105,6 @@ a.no_deco {
 
 
 /* Basic layout styles */
-
-#header_user {
-	margin: 0.5em;
-	text-align: right;
-}
-
-#footer_content {
-	margin: 0.5em;
-	text-align: center;
-}
 
 .center {
 	text-align: center;
@@ -187,9 +152,6 @@ a.no_deco {
   font-weight: 100;
   src: local('Roboto Thin'), local('Roboto-Thin'), url(/fonts/Roboto.woff) format('woff');
 }
-
-
-
 
 /*Test design */
 
@@ -423,9 +385,6 @@ th{
 	padding: 15px 20px 15px 20px;
 }
 
-
-
-
 /* NAVBAR */
 
 #regixnav {
@@ -459,7 +418,7 @@ th{
 }
 
 #regixnav ul li a {
-	color: #3b3b3b;
+	color: #5c5c5c;
 	text-decoration: none;
 	font-weight: 700;
 	font-size: 14px;
