@@ -138,7 +138,14 @@ class CalendarModel extends Model{
 		return $this->wd;
 	}
 
-	public function save_data($year, $month, $day, $description, $assigned_user, $assigned_service, $time_start) {
+	public function save_data(
+			$year,
+			$month,
+			$day,
+			$description,
+			$assigned_user,
+			$assigned_service,
+			$time_start) {
 		
 		$user_id=$this->get_user_id();
 		
@@ -152,7 +159,14 @@ class CalendarModel extends Model{
 		//echo $timestamp2;
 		$to = date('Y-m-d H:i:s', strtotime($timestamp2));
 		
-		return $this->db->insert_new_event($user_id, $description, $assigned_user, $assigned_service, $from, $to);
+		return $this->db->insert_new_event(
+				$user_id,
+				$description,
+				$assigned_user,
+				$assigned_service,
+				$from,
+				$to
+		);
 	}
 	
 	public function get_assigned_user_id($name) {

@@ -95,7 +95,7 @@ class CalendarController extends Controller{
 					
 					$assigned_service = $service;
 					$assigned_user = $model->get_assigned_user_id($_POST['worker']);
-					$model->save_data(
+					$result = $model->save_data(
 						$year,
 						$month,
 						$day,
