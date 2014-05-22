@@ -111,20 +111,22 @@ function run_sql_file($location, $con){
 		//load file
 		$commands = file_get_contents($location);
 		//delete comments
-		$lines = explode("\n",$commands);
-		$commands = '';
-		foreach($lines as $line){
-			$line = trim($line);
-			if($line && !startsWith($line,'--')){
-				$commands .= $line . "\n";
-			}
-		}
+		//$lines = explode("\n",$commands);
+		//$commands = '';
+		//foreach($lines as $line){
+		//	$line = trim($line);
+		//	if($line && !startsWith($line,'--')){
+		//		$commands .= $line . "\n";
+		//	}
+		//}
 		//convert to array
-		$commands = explode(";", $commands);
+		//$commands = explode(";", $commands);
+		//$commands = preg_split("/(?<!DELIMITER );(?! \/\* DO NOT SPLIT \*\/)/", $commands);
 		mysqli_query($con, "USE ".$_POST["db_name"]);
 		//run commands
 		$total = $success = 0;
-		foreach($commands as $command){
+		$command = $commands;
+		//foreach($commands as $command){
 			if(trim($command)){
 				if(mysqli_query($con, $command)){
 					echo "<div style=\"padding:5px; background-color: #56db6f; border: 1px solid #0d9b08;\">OK ".$command."</div>"; 
@@ -132,10 +134,11 @@ function run_sql_file($location, $con){
 				}
 				else{
 					echo "<div style=\"padding:5px; background-color: hsl(0, 65%, 60%); border: 1px solid hsl(0, 90%, 32%);\">FAIL ".$command."</div>"; 
+					echo mysqli_error($con);
 				}
 				$total += 1;
 			}
-		}
+		//}
 		//return number of successful queries and total number of queries found
 		return array(
 			"success" => $success,

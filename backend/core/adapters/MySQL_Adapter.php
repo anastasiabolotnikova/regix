@@ -728,21 +728,55 @@ class MySQL_Adapter extends DB_Adapter {
 		return $this->query($query, array($group_name), "s");
 	}
 
-	public function insert_new_event($user_id, $description, $assigned_user, $assigned_service, $from, $to) {
+	public function insert_new_event(
+			$user_id,
+			$description,
+			$assigned_user,
+			$assigned_service,
+			$from,
+			$to) {
 
 		$query = "
-				INSERT INTO `event`
-					(`calendar_id`,
+				SET @user_id = ?,
+					@description = ?,
+					@assigned_user = ?,
+					@assigned_service = ?,
+					@from = ?,
+					@to = ?;
+				
+				INSERT INTO `event` (
+					`calendar_id`,
 					`user_id`,
 					`description`,
 					`assigned_user`,
 					`assigned_service`,
 					`from`,
 					`to`) 
-				VALUES (1,?,?,?,?,?,?);
+				SELECT
+					1,
+					@user_id,
+					@description,
+					@assigned_user,
+					@assigned_service,
+					@from,
+					@to
+				FROM (SELECT 1) t
+				WHERE (
+					SELECT count(?)
+					FROM `event`
+					WHERE `assigned_user` = @assigned_user
+					AND `from` < @to
+					AND `to` > @from
+				) < 1;
 				";
 	
-		return $this->query($query, array($user_id, $description, $assigned_user, $assigned_service, $from, $to), "isisss", FALSE);
+		return $this->query($query, array(
+				$user_id,
+				$description,
+				$assigned_user,
+				$assigned_service,
+				$from,
+				$to), "isisss", FALSE);
 	}
 	
 	// Object of Calendar
