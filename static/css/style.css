@@ -387,12 +387,12 @@ th{
 
 /* NAVBAR */
 
-#regixnav {
+.regixnav {
 	background: #f4f4f4;
 	width: 100%;
 	margin-bottom: 30px;
 }
-#regixnav ul {
+.regixnav ul {
 	list-style: none;
 	margin: 0;
 	line-height: 1;
@@ -400,25 +400,24 @@ th{
 	background: #f4f4f4;
 	padding: 15px 20px 30px 20px
 }
-#regixnav ul:after {
+.regixnav ul:after {
 	content: ' ';
 	font-size: 0;
 	height: 0;
 	visibility: hidden;
 }
-#regixnav ul li {
+.regixnav ul li {
 	float: right;
     list-style: none;
 	padding: 0 5px;
     text-align: center;
 }
 
-#regixnav ul li:last-child {
+.regixnav ul li:last-child {
 	float: left;
 }
 
-#regixnav ul li a {
-	color: #5c5c5c;
+.regixnav ul li a {
 	text-decoration: none;
 	font-weight: 700;
 	font-size: 14px;
@@ -427,15 +426,15 @@ th{
 	
 }
 
-#regixnav ul li a:hover{
+.regixnav ul li a:hover{
 	color: #2db576;
 }
 
-#regixnav ul li a:hover:before {
+.regixnav ul li a:hover:before {
 	width: 100%;
 }
 
-#regixnav ul li a:before {
+.regixnav ul li a:before {
 	content: '';
 	display: block;
 	position: absolute;
@@ -446,10 +445,10 @@ th{
 	background: #2db576;
 	transition: width .35s ease;
 }
-#regixnav ul li.active a {
+.regixnav ul li.active a {
 	color: #2a2a2a;
 }
-#regixnav ul li.active a:before {
+.regixnav ul li.active a:before {
 	width: 100%;
 }
 .user_name{
@@ -457,9 +456,16 @@ th{
 }
 
 .navnorm{
+	color: #5c5c5c;
 	padding: 15px 25px;
 }
 
 .navnarrow{
+	color: #5c5c5c;
 	padding: 15px 4px;
+}
+
+.exit{
+	padding: 15px 25px;
+	color: #DB5757;
 }
