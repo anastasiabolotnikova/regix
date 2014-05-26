@@ -227,4 +227,19 @@ abstract class DB_Adapter {
 	abstract public function select_service_data($service_uri_name);
 	
 	abstract public function select_service_groups($service_uri_name);
+	
+	abstract public function update_service(
+			$old_uri_name,
+			$uri_name,
+			$name,
+			$on_success_uri,
+			$on_failure_uri);
+	
+	abstract public function insert_service(
+			$uri_name,
+			$name,
+			$on_success_uri,
+			$on_failure_uri);
+	
+	abstract public function delete_service($uri_name);
 }

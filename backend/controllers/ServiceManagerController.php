@@ -24,7 +24,7 @@ class ServiceManagerController extends Controller {
 		
 		if (!$this->args[0]) {
 			
-			if ($this->check_permission("list_groups", "")) {
+			if ($this->check_permission("list_services", "")) {
 				
 				// Service list
 				// /
@@ -43,7 +43,7 @@ class ServiceManagerController extends Controller {
 			
 		} else if ($this->args[0] == "edit" && isset($this->args[1])) {
 			
-			if ($this->check_permission("edit_group", "edit/".$this->args[1])) {
+			if ($this->check_permission("edit_service", "edit/".$this->args[1])) {
 			
 				// Service editor
 				// /edit/service_uri_name
@@ -58,6 +58,7 @@ class ServiceManagerController extends Controller {
 					
 					$view_inner->controller_uri_name = 
 							$this->get_controller_uri_name();
+					$view_inner->save_uri = "save";
 					$view_inner->service_data = $service_data[0];
 					$view_inner->service_groups = $model->get_service_groups(urldecode($this->args[1]));
 					
@@ -71,6 +72,122 @@ class ServiceManagerController extends Controller {
 					$view_inner->message = "Service does not exist.";
 				}
 				
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+					
+				$view_inner->message = "Action forbidden";
+			}
+			
+		} else if ($this->args[0] == "save" && isset($this->args[1])) {
+				
+			if ($this->check_permission("edit_service", "edit/".$this->args[1])) {
+					
+				// Save service
+				// /save/service_uri_name
+				
+				if ($model->save_service_data(
+						$this->args[1],
+						$_POST["uri_name"],
+						$_POST["name"],
+						$_POST["on_success_uri"],
+						$_POST["on_failure_uri"])) {
+					
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/success_generic_xhtml.phtml");
+						
+					$view_inner->message = "Service modified";
+					
+				} else {
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/failure_generic_xhtml.phtml");
+						
+					$view_inner->message = "Service was not changed";
+				}
+		
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+					
+				$view_inner->message = "Action forbidden";
+			}
+		
+		} else if ($this->args[0] == "add") {
+		
+			if ($this->check_permission("add_service", "add")) {
+					
+				$view_inner = new View(LAYOUTS."service_editor_xhtml.phtml");
+					
+				$view_inner->controller_uri_name = $this->get_controller_uri_name();
+				$view_inner->save_uri = "save_new";
+				$view_inner->service_data = array(
+					"name" => "New Service",
+					"uri_name" => "",
+					"on_success_uri" => "",
+					"on_failure_uri" => ""
+				);
+				$view_inner->service_groups = array();
+		
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+					
+				$view_inner->message = "Action forbidden";
+			}
+			
+		} else if ($this->args[0] == "save_new" && isset($this->args[1])) {
+		
+			if ($this->check_permission("add_service", "add")) {
+					
+				// Save new service
+				// /save_new/service_uri_name
+		
+				if ($model->save_new_service_data(
+						$_POST["uri_name"],
+						$_POST["name"],
+						$_POST["on_success_uri"],
+						$_POST["on_failure_uri"])) {
+						
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/success_generic_xhtml.phtml");
+		
+					$view_inner->message = "Service added";
+						
+				} else {
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/failure_generic_xhtml.phtml");
+		
+					$view_inner->message = "Service could not be added";
+				}
+		
+			} else {
+				$view_inner = new View(REGIX_PATH.
+						"views/layouts/generic/failure_generic_xhtml.phtml");
+					
+				$view_inner->message = "Action forbidden";
+			}
+		
+		} else if ($this->args[0] == "delete" && isset($this->args[1])) {
+		
+			if ($this->check_permission("delete_service", "add")) {
+					
+				// Delete service
+				// /delete/service_uri_name
+		
+				if ($model->delete_service($this->args[1])) {
+		
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/success_generic_xhtml.phtml");
+		
+					$view_inner->message = "Service deleted";
+		
+				} else {
+					$view_inner = new View(REGIX_PATH.
+							"views/layouts/generic/failure_generic_xhtml.phtml");
+		
+					$view_inner->message = "Could not delete service";
+				}
+		
 			} else {
 				$view_inner = new View(REGIX_PATH.
 						"views/layouts/generic/failure_generic_xhtml.phtml");

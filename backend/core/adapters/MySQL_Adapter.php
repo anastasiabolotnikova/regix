@@ -987,4 +987,59 @@ class MySQL_Adapter extends DB_Adapter {
 		
 		return $this->query($query, array($service_uri_name), "s");
 	}
+	
+	public function update_service(
+			$old_uri_name,
+			$uri_name,
+			$name,
+			$on_success_uri,
+			$on_failure_uri) {
+		$query = "
+				update `service`
+				set
+					`uri_name` = ?,
+					`name` = ?,
+					`on_success_uri` = ?,
+					`on_failure_uri` = ?
+				where `uri_name` = ?;
+				";
+	
+		return $this->query($query, array(
+				$uri_name,
+				$name,
+				$on_success_uri,
+				$on_failure_uri,
+				$old_uri_name), "sssss", FALSE);
+	}
+	
+	public function insert_service(
+			$uri_name,
+			$name,
+			$on_success_uri,
+			$on_failure_uri) {
+		$query = "
+				insert into `service` (
+					`uri_name`,
+					`name`,
+					`on_success_uri`,
+					`on_failure_uri`)
+				values (?, ?, ?, ?);
+				";
+	
+		return $this->query($query, array(
+				$uri_name,
+				$name,
+				$on_success_uri,
+				$on_failure_uri), "ssss", FALSE);
+	}
+	
+	public function delete_service($uri_name) {
+		$query = "
+				delete from `service`
+				where `uri_name` = ?
+				limit 1;
+				";
+	
+		return $this->query($query, array($uri_name), "s", FALSE);
+	}
 }
