@@ -88,6 +88,23 @@
 				<?php } ?>
 				<?php } // End of show['users_and_groups'] ?>
 				
+				
+				
+				<?php if ($this->show['system']) { ?>
+				
+				<tr>
+					<th>System settings</th>
+				</tr>
+				
+				<?php if ($this->show['controllers']) { ?>
+				<tr onclick="location.href='/controllers'">
+					<td>
+						<div>Controllers</div>
+					</td>
+				</tr>
+				<?php } ?>
+				<?php } // End of show['system'] ?>
+				
 			</tbody>
 		</table>
 	</div>

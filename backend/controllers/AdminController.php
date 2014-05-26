@@ -23,7 +23,8 @@ class AdminController extends Controller {
 				"events" => $this->check_permission("list_event", ""),
 				"users" => $this->check_permission("list_users", ""),
 				"groups" => $this->check_permission("list_groups", ""),
-				"permissions" => $this->check_permission("list_permissions", "")
+				"permissions" => $this->check_permission("list_permissions", ""),
+				"controllers" => $this->check_permission("list_controllers", "")
 			);
 			
 			$view_inner->show = array(
@@ -39,7 +40,10 @@ class AdminController extends Controller {
 				"users" => $perms["users"],
 				"groups" => $perms["groups"],
 				"permissions" => $perms["permissions"],
-				"users_and_groups" => $perms["users"] || $perms["groups"] || $perms["permissions"]
+				"users_and_groups" => $perms["users"] || $perms["groups"] || $perms["permissions"],
+				
+				"controllers" => $perms["controllers"],
+				"system" => $perms["controllers"]
 			);
 			
 		} else {
