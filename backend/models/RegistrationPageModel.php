@@ -39,7 +39,7 @@ class RegistrationPageModel extends Model{
 		
 		// Check login
 		
-		if (strlen($login) < 1 || !ctype_alnum($login)) {
+		if (strlen($login) < 1) {
 			// Not a valid login
 			return FALSE;
 		}
