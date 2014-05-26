@@ -1,1 +1,9 @@
-<div class="error_message_block">Event registration failed.</div>
+<div class="error_message_block">
+Event registration failed.
+<?php 
+if($this->calendar_seller_uri) { ?>
+<div class="back_to_block">
+	<a class="back_to_btn" href="<?php echo($this->calendar_seller_uri); ?>">Back to service</a>
+</div>
+<?php } ?>
+</div>
