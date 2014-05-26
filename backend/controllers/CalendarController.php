@@ -128,25 +128,35 @@ class CalendarController extends Controller {
 						);
 
 					if($result) {
-						$view_content = new View(
-								REGIX_PATH."views/layouts/CalendarOverview/event_registration_success.phtml");
+						// Booking was successful
 						
 						$s_uri = $model->get_on_success_uri($service);
 						
 						if($s_uri) {
-							$view_content->calendar_seller_uri = $s_uri;
+							// Redirect to custom success page
+							header("Location: " . $s_uri);
+							return TRUE;
+						} else {
+							// Show default success page
+							
+							$view_content = new View(
+									REGIX_PATH."views/layouts/CalendarOverview/event_registration_success.phtml");
+							$title = "Event Registered :: Regix";
 						}
-						$title = "Event Registered :: Regix";
 					} else {
-						$view_content = new View(
-								REGIX_PATH."views/layouts/CalendarOverview/event_registration_failure.phtml");
+						// Booking failed
 						
 						$f_uri = $model->get_on_failure_uri($service);
 						
 						if($f_uri) {
-							$view_content->calendar_seller_uri = $f_uri;
+							// Redirect to custom failure page
+							header("Location: " . $f_uri);
+							return TRUE;
+						} else {
+							$view_content = new View(
+									REGIX_PATH."views/layouts/CalendarOverview/event_registration_failure.phtml");
+							$title = "Registration Failed :: Regix";
 						}
-						$title = "Registration Failed :: Regix";
 					}
 				}
 
