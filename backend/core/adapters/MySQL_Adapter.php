@@ -943,7 +943,8 @@ class MySQL_Adapter extends DB_Adapter {
 					`description`,
 					`from`,
 					`to`,
-					`ug`.`user_id` as `employee_id`
+					`ug`.`user_id` as `employee_id`,
+					`l`.`email` as `client_email`
 				from `event` as `e`
 				
 				left join `service` as `s`
@@ -957,6 +958,9 @@ class MySQL_Adapter extends DB_Adapter {
 				
 				left join `user` as `u`
 				on `u`.`id` = `e`.`user_id`
+				
+				left join `local_login` as `l`
+				on `l`.`user_id` = `e`.`user_id`
 				
 				where `ug`.`user_id` = ?
 				and `from` < ?
