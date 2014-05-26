@@ -274,7 +274,7 @@ class MySQL_Adapter extends DB_Adapter {
 
 	public function select_all_services() {
 		$query = "
-				select `uri_name`, `name`
+				select `uri_name`, `name`, `on_success_uri`, `on_failure_uri`
 				from  `service`
 				";
 	
@@ -970,7 +970,7 @@ class MySQL_Adapter extends DB_Adapter {
 	
 	public function select_service_data($service_uri_name) {
 		$query = "
-				select `name`, `uri_name`
+				select `name`, `uri_name`, `on_success_uri`, `on_failure_uri`
 				from `service`
 				where `uri_name` = ?;
 				";

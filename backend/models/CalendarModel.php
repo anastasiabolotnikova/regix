@@ -206,4 +206,20 @@ class CalendarModel extends Model{
 		}
 		return false;
 	}
+	
+	public function get_on_success_uri($service_uri_name) {
+		$res = $this->db->select_service_data($service_uri_name);
+		if ($res) {
+			return $res[0]['on_success_uri'];
+		}
+		return null;
+	}
+	
+	public function get_on_failure_uri($service_uri_name) {
+		$res = $this->db->select_service_data($service_uri_name);
+		if ($res) {
+			return $res[0]['on_failure_uri'];
+		}
+		return null;
+	}
 }

@@ -2,19 +2,7 @@
 require_once REGIX_PATH.'controllers/Controller.php';
 require_once REGIX_PATH.'views/View.php';
 
-class CalendarController extends Controller{
-	
-	private function set_referer() {
-		// Try to save referer, but do not remove existing one.
-		if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] && 
-				!$this->session->calendar_seller_uri) {
-			$this->session->calendar_seller_uri = $_SERVER['HTTP_REFERER'];
-		}
-	}
-	
-	private function clear_referer() {
-		$this->session->calendar_seller_uri = null;
-	}
+class CalendarController extends Controller {
 	
 	public function run() {
 		if (loadClass(
@@ -51,8 +39,6 @@ class CalendarController extends Controller{
 			// Current month, year variables
 			$view_content->currmonth = $model->get_month();
 			$view_content->curryear = $model->get_year();
-			
-			$this->set_referer();
 		
 		} else if(count($this->args)==3){
 			//Service is selected
@@ -79,8 +65,6 @@ class CalendarController extends Controller{
 			// Current month, year variables
 			$view_content->currmonth = $model->get_month();
 			$view_content->curryear = $model->get_year();
-
-			$this->set_referer();
 		}
 
 
@@ -131,9 +115,6 @@ class CalendarController extends Controller{
 			$view_content->cal_uri = $this->get_controller_uri_name();
 
 			if (isset($_POST['reg_event']) && $_POST['reg_event'] == "Register") {
-					
-					//if(!query()){FAILURE} else {
-					
 					$assigned_service = $service;
 					$assigned_user = $model->get_assigned_user_id($_POST['worker']);
 					$result = $model->save_data(
@@ -150,22 +131,23 @@ class CalendarController extends Controller{
 						$view_content = new View(
 								REGIX_PATH."views/layouts/CalendarOverview/event_registration_success.phtml");
 						
-						if($this->session->calendar_seller_uri) {
-							$view_content->calendar_seller_uri =
-								$this->session->calendar_seller_uri;
+						$s_uri = $model->get_on_success_uri($service);
+						
+						if($s_uri) {
+							$view_content->calendar_seller_uri = $s_uri;
 						}
 						$title = "Event Registered :: Regix";
 					} else {
 						$view_content = new View(
 								REGIX_PATH."views/layouts/CalendarOverview/event_registration_failure.phtml");
 						
-						if($this->session->calendar_seller_uri) {
-							$view_content->calendar_seller_uri =
-							$this->session->calendar_seller_uri;
+						$f_uri = $model->get_on_failure_uri($service);
+						
+						if($f_uri) {
+							$view_content->calendar_seller_uri = $f_uri;
 						}
 						$title = "Registration Failed :: Regix";
 					}
-					$this->clear_referer();
 				}
 
 		}
@@ -181,8 +163,6 @@ class CalendarController extends Controller{
 			$view_content->day = $model->get_day();
 			$view_content->month = $model->get_month();
 			$view_content->year = $model->get_year();
-			
-			$this->set_referer();
 		}
 
 		
