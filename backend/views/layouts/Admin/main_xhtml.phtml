@@ -1,0 +1,94 @@
+<div class="regix-form-container">
+	<div class="table-content">
+			<table class="hover-row">
+			<tbody>
+				<?php if ($this->show['personal']) { ?>
+				
+				<tr>
+					<th>Personal</th>
+				</tr>
+				
+				<?php if ($this->show['myplan']) { ?>
+				<tr onclick="location.href='/myplan'">
+					<td>
+						<div>My Plan</div>
+					</td>
+				</tr>
+				<?php } ?>
+				
+				<?php if ($this->show['profile']) { ?>
+				<tr onclick="location.href='/prof'">
+					<td>
+						<div>My profile</div>
+					</td>
+				</tr>
+				<?php } ?>
+				
+				<?php if ($this->show['logout']) { ?>
+				<tr onclick="location.href='/login/logout'">
+					<td>
+						<div>Log out</div>
+					</td>
+				</tr>
+				<?php } ?>
+				<?php } // End of show['personal']?>
+				
+				
+				
+				<?php if ($this->show['services_and_events']) { ?>
+				
+				<tr>
+					<th>Services and events</th>
+				</tr>
+				
+				<?php if ($this->show['services']) { ?>
+				<tr onclick="location.href='/services'">
+					<td>
+						<div>Services</div>
+					</td>
+				</tr>
+				<?php } ?>
+				<?php if ($this->show['events']) { ?>
+				<tr onclick="location.href='/emc'">
+					<td>
+						<div>Events</div>
+					</td>
+				</tr>
+				<?php } ?>
+				<?php } // End of show['services_and_events']?>
+				
+				
+				
+				<?php if ($this->show['users_and_groups']) { ?>
+				
+				<tr>
+					<th>Users and groups</th>
+				</tr>
+				
+				<?php if ($this->show['users']) { ?>
+				<tr onclick="location.href='/uac'">
+					<td>
+						<div>Users</div>
+					</td>
+				</tr>
+				<?php } ?>
+				<?php if ($this->show['groups']) { ?>
+				<tr onclick="location.href='/groups'">
+					<td>
+						<div>Groups</div>
+					</td>
+				</tr>
+				<?php } ?>
+				<?php if ($this->show['permissions']) { ?>
+				<tr onclick="location.href='/permissions'">
+					<td>
+						<div>Permissions</div>
+					</td>
+				</tr>
+				<?php } ?>
+				<?php } // End of show['users_and_groups'] ?>
+				
+			</tbody>
+		</table>
+	</div>
+</div>

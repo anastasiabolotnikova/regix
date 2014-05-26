@@ -2,7 +2,7 @@
 -- Query: SELECT * FROM test_user.controller
 LIMIT 0, 1000
 
--- Date: 2014-04-23 14:43
+-- Date: 2014-05-26 21:14
 */
 INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (1,'MainPageController','Main page controller',1,'main','controllers/MainPageController.php');
 INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (2,'ControllerManagerController','Management of Regix controllers',1,'controllers','controllers/ControllerManagerController.php');
@@ -18,3 +18,4 @@ INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_p
 INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (14,'ContactPageController','Contact page controller.',1,'contact','controllers/ContactPageController.php');
 INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (15,'MyPlanController','Plan for the day (employee view).',1,'myplan','controllers/MyPlanController.php');
 INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (16,'ServiceManagerController','Manage services.',1,'services','controllers/ServiceManagerController.php');
+INSERT INTO `controller` (`id`,`name`,`description`,`enabled`,`uri_name`,`file_path`) VALUES (17,'AdminController','Administration console.',1,'admin','controllers/AdminController.php');
