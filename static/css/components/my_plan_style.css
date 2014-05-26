@@ -52,20 +52,23 @@ body {
 #navigation a {
 	display: table-cell;
 	table-layout: fixed;
-	padding: 0.3em;
+	padding: 7.2px;
 	cursor: pointer;
 	text-decoration: none;
 	color: #3F5765;
+	box-sizing:border-box;
+	border-bottom: 0px solid #2db576;
 }
 
 #navigation a:HOVER {
+	border-bottom: 4px solid #2db576;
 	background-color: #d1d1d1;
-	letter-spacing: 2px;
-	transition: width .3s ease-out, background-color .5s, letter-spacing .5s;
+	padding: 7.2px 7.2px 3.2px 7.2px;
+	transition: border-bottom .3s ease-out, background-color .5s, padding .3s;
 }
 
 #navigation_home {
-	width: 4.75em;
+	width: 6.4em;
 	text-align: center;
 }
 
