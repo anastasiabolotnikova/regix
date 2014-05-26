@@ -18,12 +18,12 @@ class AdminController extends Controller {
 			$view_inner = new View(LAYOUTS.'Admin/main_xhtml.phtml');
 			
 			$perms = array(
-				"myplan" => $this->check_permission("myplan_own_plan", "admin"),
-				"services" => $this->check_permission("list_services", "admin"),
-				"events" => $this->check_permission("list_event", "admin"),
-				"users" => $this->check_permission("list_users", "admin"),
-				"groups" => $this->check_permission("list_groups", "admin"),
-				"permissions" => $this->check_permission("list_permissions", "admin")
+				"myplan" => $this->check_permission("myplan_own_plan", ""),
+				"services" => $this->check_permission("list_services", ""),
+				"events" => $this->check_permission("list_event", ""),
+				"users" => $this->check_permission("list_users", ""),
+				"groups" => $this->check_permission("list_groups", ""),
+				"permissions" => $this->check_permission("list_permissions", "")
 			);
 			
 			$view_inner->show = array(
