@@ -86,6 +86,7 @@ abstract class Controller {
 		return $this->controller_data[0]["uri_name"];
 	}
 	
+	
 	/**
 	 * Runs an initialized controller.
 	 * 

@@ -29,6 +29,8 @@
 		
 	</form>
 	
+	<?php if ($this->editing_existing) { ?>
+		
 	<div class="table-content">
 		<table>
 			<thead>
@@ -52,7 +54,7 @@
 			</tbody>
 		</table>
 	</div>
-		
+	
 	<div class="button-holder">
 		<form action="/<?php echo ($this->controller_uri_name . "/add_group/" . urlencode($this->service_data['uri_name'])); ?>" method="post" class="regix-form">
 			<div>
@@ -67,4 +69,6 @@
 			</div>
 		</form>
 	</div>
+	
+	<?php } ?>
 </div>

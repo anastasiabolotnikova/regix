@@ -61,6 +61,7 @@ class ServiceManagerController extends Controller {
 					$view_inner->save_uri = "save";
 					$view_inner->service_data = $service_data[0];
 					$view_inner->service_groups = $model->get_service_groups(urldecode($this->args[1]));
+					$view_inner->editing_existing = TRUE;
 					
 				} else {
 					
@@ -127,6 +128,7 @@ class ServiceManagerController extends Controller {
 					"on_failure_uri" => ""
 				);
 				$view_inner->service_groups = array();
+				$view_inner->editing_existing = FALSE;
 		
 			} else {
 				$view_inner = new View(REGIX_PATH.
