@@ -1042,4 +1042,47 @@ class MySQL_Adapter extends DB_Adapter {
 	
 		return $this->query($query, array($uri_name), "s", FALSE);
 	}
+	
+	public function delete_service_has_group($uri_name, $group_name) {
+		$query = "
+				delete from `service_has_group`
+				where `uri_name` = ?
+				and `group_name` = ?
+				limit 1;
+				";
+		
+		return $this->query($query, array($uri_name, $group_name), "ss", FALSE);
+	}
+	
+	public function select_groups_not_assigned_to_service($uri_name) {
+		$query = "
+				select `name`
+				from  `group`
+				where not exists (
+					select *
+					from `service_has_group`
+					where `service_has_group`.`group_name` =
+						`group`.`name`
+					and `service_has_group`.`uri_name` = ?
+				)
+				order by `name`;
+				";
+	
+		return $this->query($query, array($uri_name), "s");
+	}
+	
+	public function insert_service_has_group(
+			$uri_name,
+			$group_name) {
+		$query = "
+				insert into `service_has_group` (
+					`uri_name`,
+					`group_name`)
+				values (?, ?);
+				";
+		
+		return $this->query($query, array(
+				$uri_name,
+				$group_name), "ss", FALSE);
+	}
 }

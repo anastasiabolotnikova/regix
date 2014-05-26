@@ -242,4 +242,8 @@ abstract class DB_Adapter {
 			$on_failure_uri);
 	
 	abstract public function delete_service($uri_name);
+	
+	abstract public function select_groups_not_assigned_to_service($uri_name);
+	
+	abstract public function insert_service_has_group($uri_name, $group_name);
 }

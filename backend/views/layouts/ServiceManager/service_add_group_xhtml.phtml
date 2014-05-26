@@ -1,0 +1,31 @@
+<div class="regix-form-container">
+	<form action="#" class="regix-form">
+		<h1>
+			<?php echo $this->service_name;?></h1>
+		<div class="table-content">
+				<table class="hover-row">
+				<thead>
+					<tr>
+						<th colspan="2">Groups not assigned to service</th>
+					</tr>
+				</thead>
+						<tbody>
+<?php
+	foreach ($this->groups_not_assigned as $group) {
+?>
+			<tr>
+				<td>
+					<?php echo($group["name"]); ?>
+				</td>
+				<td>
+					<a href="/<?php echo($this->controller_uri_name . "/add_group/" . $this->service_uri_name . '/' . urlencode($group["name"])); ?>">assign</a>
+				</td>
+			</tr>
+<?php
+	}
+?>
+		</tbody>
+			</table>
+		</div>
+	</form>
+</div>
