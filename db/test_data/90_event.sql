@@ -1,10 +1,12 @@
-/*
--- Query: SELECT * FROM test_user.event
-LIMIT 0, 1000
-
--- Date: 2014-03-21 20:10
-*/
-INSERT INTO `event`(`calendar_id`, `user_id`, `description`, `assigned_user`, `assigned_service`, `from`, `to`) VALUES (1,2,'I have a problem',4,'tserv1', TIMESTAMP '2014-3-12 8:00:00',TIMESTAMP '2014-3-12 9:00:00');
-INSERT INTO `event`(`calendar_id`, `user_id`, `description`, `assigned_user`, `assigned_service`, `from`, `to`) VALUES (1,3,'I have a problem',5,'tserv2', TIMESTAMP '2014-3-12 10:00:00',TIMESTAMP '2014-3-12 11:00:00');
-INSERT INTO `event`(`calendar_id`, `user_id`, `description`, `assigned_user`, `assigned_service`, `from`, `to`) VALUES (1,2,'I have a problem',6,'tserv3', TIMESTAMP '2014-3-12 11:00:00',TIMESTAMP '2014-3-12 12:00:00');
-INSERT INTO `event`(`calendar_id`, `user_id`, `description`, `assigned_user`, `assigned_service`, `from`, `to`) VALUES (1,3,'I have a problem',4,'tserv1',TIMESTAMP '2014-3-12 15:00:00',TIMESTAMP '2014-3-12 16:00:00');
+INSERT INTO `event` (`id`, `calendar_id`, `user_id`, `description`, `assigned_user`, `assigned_service`, `from`, `to`) VALUES
+(1, 1, 2, 'I have a problem', NULL, NULL, '2014-03-12 08:00:00', '2014-03-12 09:00:00'),
+(2, 1, NULL, 'I have a problem', NULL, NULL, '2014-03-12 10:00:00', '2014-03-12 11:00:00'),
+(3, 1, 2, 'I have a problem', NULL, NULL, '2014-03-12 11:00:00', '2014-03-12 12:00:00'),
+(4, 1, NULL, 'I have a problem', NULL, NULL, '2014-03-12 15:00:00', '2014-03-12 16:00:00'),
+(5, 1, 2, '', NULL, NULL, '2014-05-29 12:00:00', '2014-05-29 13:00:00'),
+(6, 1, 2, '', NULL, NULL, '2014-05-29 13:00:00', '2014-05-29 14:00:00'),
+(7, 1, 2, 'Need a new car.', 7, 'consulting', '2014-05-30 12:00:00', '2014-05-30 13:00:00'),
+(8, 1, 1, 'Choosing a new car. Can you help?', 12, 'consulting', '2014-05-27 09:00:00', '2014-05-27 10:00:00'),
+(9, 1, 1, '', 12, 'tech_ev', '2014-05-27 10:00:00', '2014-05-27 11:00:00'),
+(10, 1, 1, 'Need new tires.', 12, 'tires', '2014-05-28 11:00:00', '2014-05-28 12:00:00'),
+(11, 1, 2, '', 12, 'tech_ev', '2014-05-29 11:00:00', '2014-05-29 12:00:00');

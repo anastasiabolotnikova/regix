@@ -1,8 +1,9 @@
-/*
--- Query: SELECT * FROM test_user.local_login
-LIMIT 0, 1000
-
--- Date: 2014-03-21 20:10
-*/
-INSERT INTO `local_login` (`user_id`,`login`,`salt`,`hash`,`email`) VALUES (2,'test','$6$rounds=5000$MjkyNTg3MzAxNTMyYzdiMTlkMDc0Zj','$6$rounds=5000$MjkyNTg3MzAxNTMy$cU8jZ3xUKvHCiiHyhqxEg/De/EhXvb51ifvTc4Fi.0FZJdxoJbAUjquhqfM5xaSBny110fl31OTs2cNrxZCp2/','test1@example.com');
-INSERT INTO `local_login` (`user_id`,`login`,`salt`,`hash`,`email`) VALUES (3,'test_two','$6$rounds=5000$MTcxNjQzMzg0OTUzMmM3YjU0N2ZkYz','$6$rounds=5000$MTcxNjQzMzg0OTUz$0y6vlPWzVRYJZ7RdpVpM28A5FXLKcmf2ZBbsvhVJONbbuZ7bdcwHpXp4wnd0BB2E30iSS6ORygd.3PXOmT2Jh0','test2@example.com');
+INSERT INTO `local_login` (`user_id`, `login`, `salt`, `hash`, `email`) VALUES
+(2, 't.anderson', '$6$rounds=5000$MjMxOTM1NjQwNTM4MzZlMzc0YWIwNT', '$6$rounds=5000$MjMxOTM1NjQwNTM4$C.d4cDAHBEY7F6NgHDkHWp/dmQOtO3DqiBc8KVwCnW/PnUafKcf4LDBAbdsCn9rYsprE9e5iC8S90haXE5gM2/', 't.anderson@regix'),
+(7, 'e.adams', '$6$rounds=5000$NDY5MTgzNjQxNTM4MzcxYTU1YTk2ND', '$6$rounds=5000$NDY5MTgzNjQxNTM4$5OA4ntzNutrfvn3l1OeJ1kl6MpIY6VGf/VYwYqD7skM.EGAFLomrLMZ5p6lpaJDJN.eyWVTMxqnZ36nezH3y8/', 'e.adams@regix'),
+(8, 'l.andrews', '$6$rounds=5000$MTk3NzE2OTYxNDUzODM3MWNjM2IyN2', '$6$rounds=5000$MTk3NzE2OTYxNDUz$vEEhD6mtrlXmJqBiJdbPOGtYhHBkRotoCV1s5AC.Cpn8KLo/mVRGnpIwh9P9uPneVd5OTzlTPvgdsgmL77LVk.', 'l.andrews@regix'),
+(9, 'a.brewer', '$6$rounds=5000$NDQxMzIwNjM3NTM4MzcxZTQzMzNkZT', '$6$rounds=5000$NDQxMzIwNjM3NTM4$dzD7cxONmiAcgY4lE83NqJ4zexMDlbp77uqGor1nTP7gn5bOGZagThEU0pn8g4/stEOorV.GE8QbKYV0Qr56v.', 'a.brewer@regix'),
+(10, 'p.bowman', '$6$rounds=5000$MTE2ODkzMjc3ODUzODM3MWZjNjJlOG', '$6$rounds=5000$MTE2ODkzMjc3ODUz$r7MX7iEybq9nD.EWe2SxAHSPtqMvweM4dUvkselb0FW67k244Neg4JlSTUNVU0AcTv4crlX6M2agILki7AlE90', 'p.bowman@regix'),
+(11, 'j.calvin', '$6$rounds=5000$MTQzMTY5ODUwOTUzODM3MjU2MmJhM2', '$6$rounds=5000$MTQzMTY5ODUwOTUz$mXHOxnsxXEyVPS.kRRiMLpvqIsGassQTFA6AYa/6AuZzKepLFS0THs38EErO0acBKMbFqCwUVR/nH3u2nQIDc0', 'j.calvin@regix'),
+(12, 'a.ehrhardt', '$6$rounds=5000$NTAyMTk2Nzc0NTM4MzcyNzE2ZDEwYz', '$6$rounds=5000$NTAyMTk2Nzc0NTM4$Rit7tCGwCWFGehaI/vIUcvA80kOws7ZJlB19qmYLI34.vHwoEjYnXbzK0QbAB6uI4Vur/nuVsVMlBksd22QT11', 'a.ehrhardt@regix'),
+(13, 'w.fox', '$6$rounds=5000$OTQyODQzNjQ0NTM4MzcyOTFlYTM1ND', '$6$rounds=5000$OTQyODQzNjQ0NTM4$InKjigJkr81nugB09YwR1bqRL7nv0B.XqmHEUinb7T4mKGZevtdSWg4200g/41RmSn8WhtoautqsyiB4tw9g4/', 'w.fox@regix');
