@@ -8,7 +8,7 @@ body {
 	border: 0;
 	margin: 0;
 	color: #2B3A42;
-	background-color: #EFEFEF;
+	background-color:  #EFEFEF;
 	font-family: "Helvetica", sans-serif;
 }
 
@@ -40,7 +40,7 @@ body {
 #navigation_container {
 	display: table-row;
 	height: 1em;
-	background-color: #BDD4DE;
+	background-color:  #e5e5e5;
 	font-size: 1.5em;
 }
 
@@ -59,8 +59,9 @@ body {
 }
 
 #navigation a:HOVER {
-	color: #EFEFEF;
-	background-color: #3F5765;
+	background-color: #d1d1d1;
+	letter-spacing: 2px;
+	transition: width .3s ease-out, background-color .5s, letter-spacing .5s;
 }
 
 #navigation_home {
@@ -93,11 +94,10 @@ body {
 
 #timeline_wrapper {
 	display: table-cell;
-	width: 8em;
+	width: 10em;
 	min-width: 8em;
 	height: 100%;
 	overflow: hidden;
-	background-color: #BDD4DE;
 }
 
 #timeline {
@@ -107,24 +107,34 @@ body {
 
 .timeline_slot {
 	position: absolute;
-	width: 100%;
+	width: 95%;
 	cursor: pointer;
 	text-align: center;
 	font-family: sans-serif;
+	background-color: #e5e5e5;
 }
 
 .timeline_slot:HOVER {
-	color: #EFEFEF;
-	background-color: #3F5765;
+	background-color: #d1d1d1;
+	width: 100%;
+	transition: width .3s ease-out, background-color .5s;
 }
 
 .timeline_slot.selected {
 	color: #EFEFEF;
-	background-color: #3F5765;
+	background-color: #3487bc;
+	width: 100%;
 }
 
 .timeline_slot_taken {
 	color: #EFEFEF;
+	background-color: #E74C3C;
+}
+
+.timeline_slot_taken:hover {
+	color: #EFEFEF;
+	width: 100%;
+	transition: width .3s ease-out;
 	background-color: #E74C3C;
 }
 
