@@ -60,7 +60,6 @@ a.no_deco {
 	position: relative;
 	min-height: 100%;
 	width: 100%;
-	
 	padding: 0;
 	border: 0;
 	margin: 0;
@@ -388,16 +387,14 @@ th{
 
 .regixnav {
 	background: #f4f4f4;
-	width: 100%;
 	margin-bottom: 30px;
 }
 .regixnav ul {
 	list-style: none;
-	margin: 0;
-	line-height: 1;
+	margin: auto;
 	text-align: right;
+	padding: 15px 30px 30px 30px;
 	background: #f4f4f4;
-	padding: 15px 20px 30px 20px
 }
 .regixnav ul:after {
 	content: ' ';
@@ -405,7 +402,8 @@ th{
 	height: 0;
 	visibility: hidden;
 }
-.regixnav ul li {
+.regixnav ul li{
+	display: inline;
 	float: right;
     list-style: none;
 	padding: 0 5px;
@@ -419,7 +417,6 @@ th{
 .regixnav ul li a {
 	text-decoration: none;
 	font-weight: 700;
-	font-size: 14px;
 	position: relative;
 	transition: color .25s;
 	
@@ -455,11 +452,13 @@ th{
 }
 
 .navnorm{
+	font-size: 14px;
 	color: #5c5c5c;
 	padding: 15px 25px;
 }
 
 .navnarrow{
+	font-size: 14px;
 	color: #5c5c5c;
 	padding: 15px 4px;
 }
@@ -468,3 +467,11 @@ th{
 	padding: 15px 25px;
 	color: #DB5757;
 }
+
+@media (max-width: 600px){
+	.navnorm, .exit, .navnarrow{
+		padding: 15px 2px;
+		font-size: 12px;
+	}
+}
+	
